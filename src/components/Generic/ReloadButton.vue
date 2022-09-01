@@ -1,5 +1,6 @@
 <template>
   <v-btn
+      id="reloadButton"
       :loading="loading"
       :disabled="loading"
       fab

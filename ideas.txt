@@ -1,0 +1,7 @@
+- cleanup numbers in order to fix sorting and calculating KpToPts and KpAvgPts
+- dark mode
+- loading indicator
+- hide footer
+- combine with kickbase id
+- links to ligainsider from player card
+- news on player card?

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:100%">
     <v-container v-if="lineup && lineup.length">
       <div class="d-md-flex flex-wrap flex-md-nowrap align-center justify-space-between mb-5">
         <div class="wid">
@@ -189,7 +189,6 @@ export default {
       position: '',
       player: null,
     },
-
   }),
   computed: {
     ...mapGetters([
@@ -508,7 +507,7 @@ export default {
     },
     playerVs(player) {
       return nextMatch(this.matches, player)
-    }
+    },
   }
 };
 </script>

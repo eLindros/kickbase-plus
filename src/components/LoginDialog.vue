@@ -19,17 +19,17 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field label="username" v-model="user" required></v-text-field>
+                <v-text-field id="usernameInput" label="username" v-model="user" required></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field label="password*" type="password" v-model="password" required></v-text-field>
+                <v-text-field id="passwordInput" label="password*" type="password" v-model="password" required></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="info darken-1" large :loading="loading" @click="login">Login</v-btn>
+          <v-btn id="loginButton" color="info darken-1" large :loading="loading" @click="login">Login</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

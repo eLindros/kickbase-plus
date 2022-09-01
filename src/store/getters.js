@@ -14,6 +14,14 @@ function getPlayers(state) {
   return state.players
 }
 
+function getSelectedPlayers(state) {
+  return state.selectedPlayers
+}
+
+function getSelectedPlayersMarketValueSum(state) {
+  return state.selectedPlayersMarketValueSum
+}
+
 function getLiveData(state) {
   return state.liveData
 }
@@ -129,11 +137,17 @@ function getDefaults(state) {
   return state.defaults
 }
 
+function getLigainsiderPlayers(state) {
+  return state.ligainsiderPlayers
+}
+
 export default {
   getAuthData,
   getErrorMessage,
   getBids,
   getPlayers,
+	getSelectedPlayers,
+	getSelectedPlayersMarketValueSum,
   getUsers,
   getTeams,
   getBearerToken,
@@ -159,5 +173,6 @@ export default {
   getOfferShowTooLowOffersOnly,
   getOfferOrder,
   getOfferOrderLabel,
-  getDefaults
+  getDefaults,
+  getLigainsiderPlayers
 }
