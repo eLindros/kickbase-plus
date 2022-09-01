@@ -129,6 +129,10 @@ function getDefaults(state) {
   return state.defaults
 }
 
+function getLigainsiderPlayers(state) {
+  return state.ligainsiderPlayers
+}
+
 export default {
   getAuthData,
   getErrorMessage,
@@ -159,5 +163,6 @@ export default {
   getOfferShowTooLowOffersOnly,
   getOfferOrder,
   getOfferOrderLabel,
-  getDefaults
+  getDefaults,
+  getLigainsiderPlayers
 }

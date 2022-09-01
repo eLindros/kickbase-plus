@@ -1,4 +1,5 @@
 import Constants from "../Constants"
+import fuzzysort from "fuzzysort"
 
 function setPlayers(state, players) {
   state.players = players
@@ -173,6 +174,21 @@ function setOfferOrder(state, payload) {
   }
 }
 
+function setLigainsiderPlayers(state, players) {
+  state.ligainsiderPlayers = players
+}
+
+function addPlayerLigainsiderId(state, playerId) {
+  if(state.players[playerId]){
+    const player = state.players[playerId];
+    const searchLigainsiderPlayers = fuzzysort.go(player.firstName + ' ' + player.lastName, state.ligainsiderPlayers, {key: 'name'});
+    const bestResult = searchLigainsiderPlayers.length > 0 ? searchLigainsiderPlayers[0] : undefined;
+    if(bestResult && bestResult.obj && bestResult.obj.url){
+      state.players[playerId].ligainsiderId = bestResult.obj.url;
+    }
+  }
+}
+
 export default {
   addPlayer,
   addUsersPlayer,
@@ -204,4 +220,6 @@ export default {
   setOfferOpenPlayerNotOnMarketPanel,
   setOfferOpenPlayerWithoutAnyOfferPanel,
   setOfferOrder,
+  setLigainsiderPlayers,
+  addPlayerLigainsiderId,
 }
