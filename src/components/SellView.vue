@@ -34,6 +34,7 @@
         <reload-button :loading="loading" v-on:click.native="load" :large=true color="secondary"></reload-button>
         <v-btn
             v-if="tooLowOffers.length"
+            id="declineAllTooLowOffersButton"
             large
             fab
             @click="declineAllTooLowOffers"
