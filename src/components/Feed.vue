@@ -140,33 +140,24 @@ export default {
       let purchaseInfo = null
 
       // purchase info
-      if (item.type === 15 && item.meta && item.meta.b) {
-        const p = numeral(item.meta.v).format('0,0 $')
-        purchaseInfo = `${p}`
+      if (item.type === 15 && item.meta && (item.meta.b || item.meta.s)) {
+        const verb = item.meta.b ? 'paid' : 'sold';
+        const determiner = item.meta.b ? ['more', 'less'] : ['over', 'below'];
+        
+        const price = item.meta.v;
+        const priceFormated = numeral(price).format('0,0 $')
+        purchaseInfo = `${priceFormated}`
 
         if (item.meta.p && this.getPlayers[item.meta.p.i]) {
-          purchaseInfo += ' / MV: ' + numeral(this.getPlayers[item.meta.p.i].marketValue).format('0,0 $')
-          const pp = item.meta.v - this.getPlayers[item.meta.p.i].marketValue
+          const marketValue = this.getPlayers[item.meta.p.i].marketValue;
+          purchaseInfo += ' | MV: ' + numeral(marketValue).format('0,0 $')
+          const pp = item.meta.v - marketValue
+          const ppct = (item.meta.v - marketValue)/marketValue
 
           if (pp > 0) {
-            purchaseInfo += '&nbsp;/&nbsp;<span style="color: red"> paid ' + numeral(pp).format('0,0 $') + ' more than MV</span>'
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: green">${verb} ${numeral(pp).format('0,0 $')} ${determiner[0]} MV (${numeral(ppct).format('0.00 %')})</span>`
           } else {
-            purchaseInfo += '&nbsp;/&nbsp;<span style="color: green"> paid ' + numeral(pp).format('0,0 $') + ' less than MV</span>'
-          }
-
-        }
-      } else if (item.type === 15 && item.meta && item.meta.s) {
-        const p = numeral(item.meta.v).format('0,0 $')
-        purchaseInfo = `${p}`
-
-        if (item.meta.p && this.getPlayers[item.meta.p.i]) {
-          purchaseInfo += ' / MV: ' + numeral(this.getPlayers[item.meta.p.i].marketValue).format('0,0 $')
-          const pp = item.meta.v - this.getPlayers[item.meta.p.i].marketValue
-
-          if (pp > 0) {
-            purchaseInfo += '&nbsp;/&nbsp;<span style="color: green"> sold ' + numeral(pp).format('0,0 $') + ' over MV</span>'
-          } else {
-            purchaseInfo += '&nbsp;/&nbsp;<span style="color: red"> sold ' + numeral(pp).format('0,0 $') + ' below MV</span>'
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: red">${verb} ${numeral(pp).format('0,0 $')} ${determiner[1]} MV (${numeral(ppct).format('0.00 %')})</span>`
           }
 
         }
