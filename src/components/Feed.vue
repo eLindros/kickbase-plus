@@ -141,8 +141,17 @@ export default {
 
       // purchase info
       if (item.type === 15 && item.meta && (item.meta.b || item.meta.s)) {
-        const verb = item.meta.b ? 'paid' : 'sold';
-        const determiner = item.meta.b ? ['more', 'less'] : ['over', 'below'];
+        const options = {
+          verb: item.meta.b ? 'paid' : 'sold',
+          over: {
+            color: item.meta.b ? 'red' : 'green',
+            determiner: item.meta.b ? 'more' : 'over',
+          },
+          under: {
+            color: item.meta.b ? 'green' : 'red',
+            determiner: item.meta.b ? 'less' : 'below',
+          },
+        };
         
         const price = item.meta.v;
         const priceFormated = numeral(price).format('0,0 $')
@@ -155,9 +164,9 @@ export default {
           const ppct = (item.meta.v - marketValue)/marketValue
 
           if (pp > 0) {
-            purchaseInfo += `&nbsp;|&nbsp;<span style="color: green">${verb} ${numeral(pp).format('0,0 $')} ${determiner[0]} MV (${numeral(ppct).format('0.00 %')})</span>`
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.over.color}">${options.verb} ${numeral(pp).format('0,0 $')} ${options.over.determiner} MV (${numeral(ppct).format('0.00 %')})</span>`
           } else {
-            purchaseInfo += `&nbsp;|&nbsp;<span style="color: red">${verb} ${numeral(pp).format('0,0 $')} ${determiner[1]} MV (${numeral(ppct).format('0.00 %')})</span>`
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.under.color}">${options.verb} ${numeral(pp).format('0,0 $')} ${options.under.determiner} MV (${numeral(ppct).format('0.00 %')})</span>`
           }
 
         }
