@@ -12,6 +12,7 @@
     "@netlify/functions": "^1.2.0",
     "axios": "^0.27.2",
     "chart.js": "^2.9.4",
+    "cheerio": "^1.0.0-rc.12",
     "chrome-aws-lambda": "^10.1.0",
     "core-js": "^3.23.5",
     "dotenv": "^16.0.2",
