@@ -173,6 +173,10 @@ function setOfferOrder(state, payload) {
   }
 }
 
+function setLigainsiderPlayers(state, players) {
+  state.ligainsiderPlayers = players
+}
+
 export default {
   addPlayer,
   addUsersPlayer,
@@ -204,4 +208,5 @@ export default {
   setOfferOpenPlayerNotOnMarketPanel,
   setOfferOpenPlayerWithoutAnyOfferPanel,
   setOfferOrder,
+  setLigainsiderPlayers,
 }

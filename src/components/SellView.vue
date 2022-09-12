@@ -196,7 +196,8 @@ export default {
       'getOfferOpenPlayerNotOnMarketPanel',
       'getOfferOpenPlayerWithoutAnyOfferPanel',
       'getOfferOrder',
-      'getOfferShowTooLowOffersOnly'
+      'getOfferShowTooLowOffersOnly',
+      'getLigainsiderPlayers',
     ]),
     getToken() {
       return api.getToken()
@@ -221,6 +222,7 @@ export default {
   mounted() {
     this.init()
     this.showPlayerWithTooLowOffersOnly = this.getOfferShowTooLowOffersOnly
+    this.getLigainsiderPlayers
   },
   methods: {
     ...mapMutations(['addLoadingMessage', 'setLoading', 'resetLoading']),
