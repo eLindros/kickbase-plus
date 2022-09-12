@@ -9,7 +9,7 @@ const ligainsider = {
     })
       .then((response) => {
         if (response.status === 200) {
-          store.commit("setLigainsiderPlayers", response.data);
+          store.commit("setLigainsiderPlayers", response.data.players);
         }
       })
       .catch(function () {

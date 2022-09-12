@@ -11,8 +11,6 @@
             v-model="showPlayerWithTooLowOffersOnly"
             label="show only too low offers"
         ></v-checkbox>
- <p class="text-caption">Players imported from Ligainsider: {{getLigainsiderCount}}</p>
-
         <div v-if="tooLowOffers.length">
           <v-btn
               class="kp-button kp-button__decline-all kp-button--in-options-bar mb-4"
@@ -199,7 +197,6 @@ export default {
       'getOfferOpenPlayerWithoutAnyOfferPanel',
       'getOfferOrder',
       'getOfferShowTooLowOffersOnly',
-      'getLigainsiderPlayers',
     ]),
     getToken() {
       return api.getToken()
@@ -220,14 +217,10 @@ export default {
     getComputedOrder() {
       return this.getOfferOrder.temporary ?? this.getOfferOrder.init
     },
-    getLigainsiderCount(){
-       return this.$store.state.ligainsiderPlayers.length;
-    },
   },
   mounted() {
     this.init()
     this.showPlayerWithTooLowOffersOnly = this.getOfferShowTooLowOffersOnly
-    this.getLigainsiderPlayers
   },
   methods: {
     ...mapMutations(['addLoadingMessage', 'setLoading', 'resetLoading']),
