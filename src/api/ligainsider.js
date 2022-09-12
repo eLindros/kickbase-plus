@@ -4,7 +4,7 @@ import store from "../store/store";
 const ligainsider = {
   loadLigainsiderPlayers() {
     axios({
-      url: "/ligainsider",
+      url: "/.netlify/functions/ligainsider",
       method: "GET",
     })
       .then((response) => {

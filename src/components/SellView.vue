@@ -11,6 +11,7 @@
             v-model="showPlayerWithTooLowOffersOnly"
             label="show only too low offers"
         ></v-checkbox>
+ <p class="text-caption">Players imported from Ligainsider: {{getLigainsiderCount}}</p>
 
         <div v-if="tooLowOffers.length">
           <v-btn
@@ -21,7 +22,6 @@
             decline all <strong>{{ tooLowOffers.length }} offers</strong> that are too low
           </v-btn>
           
- <p class="text-caption">Players imported from Ligainsider: {{getLigainsiderCount}}</p>
         
           <p class="text-caption">Players with too low offers:</p>
           <ol class="text-caption mb-5">
