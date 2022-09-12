@@ -221,7 +221,7 @@ export default {
       return this.getOfferOrder.temporary ?? this.getOfferOrder.init
     },
     getLigainsiderCount(){
-       return store.ligainsiderPlayers.length;
+       return store.state.ligainsiderPlayers.length;
     },
   },
   mounted() {
