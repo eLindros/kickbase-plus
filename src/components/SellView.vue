@@ -20,7 +20,9 @@
           >
             decline all <strong>{{ tooLowOffers.length }} offers</strong> that are too low
           </v-btn>
-
+          
+ <p class="text-caption">Players imported from Ligainsider: {{getLigainsiderCount}}</p>
+        
           <p class="text-caption">Players with too low offers:</p>
           <ol class="text-caption mb-5">
             <li v-for="tooLowOffer in tooLowOffers" :key="tooLowOffer.id">
@@ -217,6 +219,9 @@ export default {
     },
     getComputedOrder() {
       return this.getOfferOrder.temporary ?? this.getOfferOrder.init
+    },
+    getLigainsiderCount(){
+       return store.ligainsiderPlayers.length;
     },
   },
   mounted() {
