@@ -17,6 +17,7 @@ exports.handler = async () => {
     const playerPositions = [];
     const playerMarketvalue = [];
     const playerTotalPoints = [];
+    const playerGamesPlayed = [];
     const playerAveragePoints = [];
     const players = [];
 
@@ -56,6 +57,14 @@ exports.handler = async () => {
           }
         );
 
+        //  games played column
+        $("#DataTable > tbody > tr > td:nth-child(7)").each(
+          (_idx, el) => {
+            const gamesPlayed = $(el).text();
+            playerGamesPlayed.push(gamesPlayed);
+          }
+        );
+
         // average points column
         $("#DataTable > tbody > tr > td:nth-child(8)").each(
           (_idx, el) => {
@@ -81,6 +90,7 @@ exports.handler = async () => {
         teamURL: playerTeamURLs[index],
         position: playerPositions[index],
         totalPoints: playerTotalPoints[index],
+        gamesPlayed: playerGamesPlayed[index],
         averagePoints: playerAveragePoints[index],
         marketValue: playerMarketvalue[index],
       })
@@ -89,7 +99,7 @@ exports.handler = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        players
+        players,
       })
     };
 };
