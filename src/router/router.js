@@ -23,7 +23,7 @@ const routes = [
   { path: '/lineup', component: Lineup },
   { path: '/table', component: Ranking },
   { path: '/settings', component: SettingsView },
-  { path: '/ligainsider', component: TableView },
+  { path: '/research', component: TableView },
 ]
 
 const router = new VueRouter({

@@ -91,6 +91,15 @@
               <v-list-item-title>Lineup</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          
+          <v-list-item to="/research" color="white">
+            <v-list-item-action>
+              <v-icon>fa-microscope</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Research</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
 
           <v-list-item to="/live" color="white">
             <v-list-item-action>
