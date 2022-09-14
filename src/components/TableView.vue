@@ -68,23 +68,13 @@ export default {
         sort: (a, b) => sortNumeral(a, b),
       },
       {
-        text: "Avg. Points per Games Played",
-        value: "averagePointsPerGamesPlayed",
-        sort: (a, b) => sortNumeral(a, b),
-      },
-      {
-        text: "Avg. Points per Game Days",
-        value: "averagePointsPerGameDays",
+        text: "Avg. Points",
+        value: "averagePoints",
         sort: (a, b) => sortNumeral(a, b),
       },
       {
         text: "Market Value",
         value: "marketValue",
-        sort: (a, b) => sortNumeral(a, b),
-      },
-      {
-        text: "K per Point",
-        value: "kpToPts",
         sort: (a, b) => sortNumeral(a, b),
       },
       {
@@ -96,26 +86,14 @@ export default {
   }),
   computed: {
     ...mapGetters(["getSelf", "getLigainsiderPlayers"]),
-    getGameDays() {
-      const maxPlayer =  this.getLigainsiderPlayers.reduce((a, b) => {
-        return (numeral(a.gamesPlayed).value() > numeral(b.gamesPlayed).value())
-          ? a
-          : b;
-      });
-      return numeral(maxPlayer.gamesPlayed).value();
-    },
     getLigainsiderPlayersWithLinks() {
       return this.getLigainsiderPlayers.map((player) => {
         return {
           ...player,
-          averagePointsPerGamesPlayed: numeral(
+          averagePoints: numeral(
             numeral(player.averagePoints).value()
           ).format("0,0"),
-          averagePointsPerGameDays: numeral(
-            numeral(player.totalPoints).value() / this.getGameDays
-          ).format("0,0"),
           kpAvPts: KpP(player.marketValue, player.averagePoints),
-          kpToPts: KpP(player.marketValue, player.totalPoints),
         };
       });
     },
