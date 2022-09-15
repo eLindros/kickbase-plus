@@ -1,51 +1,54 @@
 <template>
-    <v-simple-table dense>
-        <template v-slot:default>
-            <thead>
-                <tr>
-                    <th class="text-left" style="width: 25%">
-                        Name
-                    </th>
-                    <th class="text-left" style="width: 25%">
-                        Total points
-                    </th>
-                    <th class="text-left" style="width: 25%">
-                        Average points
-                    </th>
-                    <th class="text-left" style="width: 25%">
-                        Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                v-for="item in items"
-                :key="item.name"
-                >
-                    <td>
-                        <span v-if="item.knownName">{{ item.knownName }}</span>
-                        <span v-else>{{ item.firstName }} {{ item.lastName }}</span>
-                    </td>
-                    <td>{{ item.totalPoints }}</td>
-                    <td>{{ item.averagePoints }}</td>
-                    <td><status-pill :player="item"></status-pill></td>
-                </tr>
-            </tbody>
-        </template>
-    </v-simple-table>
+  <v-simple-table dense>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left" style="width: 5%">Check</th>
+          <th class="text-left" style="width: 25%">Name</th>
+          <th class="text-left" style="width: 20%">Market Value</th>
+          <th class="text-left" style="width: 15%">Total points</th>
+          <th class="text-left" style="width: 15%">Average points</th>
+          <th class="text-left" style="width: 20%">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in items" :key="item.name">
+          <td><v-checkbox
+            :value=item
+            @change="$emit('onSelectPlayer', item)">
+            </v-checkbox>
+          </td>
+          <td>
+            <span v-if="item.knownName">{{ item.knownName }}</span>
+            <span v-else>{{ item.firstName }} {{ item.lastName }}</span>
+          </td>
+          <td>{{ marketValueFormated(item) }}</td>
+          <td>{{ item.totalPoints }}</td>
+          <td>{{ item.averagePoints }}</td>
+          <td><status-pill :player="item"></status-pill></td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 </template>
 
 <script>
-import StatusPill from './StatusPill'
+import numeral from "numeral";
+import StatusPill from "./StatusPill";
 export default {
-    props: {
-        items: {
-            type: Array,
-            required: true,
-        }
+  props: {
+    items: {
+      type: Array,
+      required: true,
     },
-    components: {
-        StatusPill
+  },
+  components: {
+    StatusPill,
+  },
+  methods: {
+    marketValueFormated(item) {
+      return numeral(item.marketValue).format("0,0");
     },
+  },
 };
 </script>
