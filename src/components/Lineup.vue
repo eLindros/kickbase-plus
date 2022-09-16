@@ -517,7 +517,8 @@ export default {
 
       let players = Object.values(this.selectedPlayers);
       console.log(this.selectedPlayers)
-			const sum = players.reduce((acc, obj) => acc + obj.marketValue, 	this.selectedPlayerMarketValueSum = numeral(sum).format('0,0');
+			const sum = players.reduce((acc, obj) => acc + obj.marketValue,0);
+			this.selectedPlayerMarketValueSum = numeral(sum).format('0,0');
     },
   }
 };
