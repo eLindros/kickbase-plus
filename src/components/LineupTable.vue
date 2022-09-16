@@ -36,7 +36,11 @@
 
 <script>
 import numeral from "numeral";
+import {mapMutations} from 'vuex'
+
 import StatusPill from "./StatusPill";
+
+
 export default {
   props: {
     items: {
