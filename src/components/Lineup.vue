@@ -140,6 +140,7 @@
 import api from '../api/api'
 import moment from 'moment'
 import {mapGetters, mapMutations} from 'vuex'
+import numeral from 'numeral'
 
 import StatusPill from './StatusPill'
 import Spinner from './Spinner'
@@ -191,7 +192,7 @@ export default {
       player: null,
     },
     selectedPlayers: {},
-    selectedPlayerMarketValueSum: 0,
+    selectedPlayerMarketValueSum: '',
   }),
   computed: {
     ...mapGetters([
@@ -516,7 +517,7 @@ export default {
 
       let players = Object.values(this.selectedPlayers);
       console.log(this.selectedPlayers)
-      this.selectedPlayerMarketValueSum = players.reduce((acc, obj) => acc + obj.marketValue, 0);
+			const sum = players.reduce((acc, obj) => acc + obj.marketValue, 	this.selectedPlayerMarketValueSum = numeral(sum).format('0,0');
     },
   }
 };
