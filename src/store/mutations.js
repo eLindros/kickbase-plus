@@ -4,6 +4,16 @@ function setPlayers(state, players) {
   state.players = players
 }
 
+function setSelectedPlayers(state, player) {
+  state.selectedPlayers[player.id] !== undefined ? delete state.selectedPlayers[player.id]: state.selectedPlayers[player.id] = player;
+  setSelectedPlayersMarketValueSum(state);
+}
+
+function setSelectedPlayersMarketValueSum(state){
+  let players = Object.values(state.selectedPlayers);
+  state.selectedPlayersMarketValueSum  = players.reduce((acc, obj) => acc + obj.marketValue,0);
+}
+
 function setUsers(state, users) {
   state.users = users
 }

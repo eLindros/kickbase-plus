@@ -58,14 +58,14 @@
       </div>
 
       <div class="h4 mt-4">Goalies</div>
-      <lineup-table :items="goalies" @onSelectPlayer="onSelectPlayer"></lineup-table>
+      <lineup-table :items="goalies"></lineup-table>
       <div class="h4 mt-4">Defenders</div>
-      <lineup-table :items="defenders" @onSelectPlayer="onSelectPlayer"></lineup-table>
+      <lineup-table :items="defenders"></lineup-table>
       <div class="h4 mt-4">Midfielders</div>
-      <lineup-table :items="midfielders" @onSelectPlayer="onSelectPlayer"></lineup-table>
+      <lineup-table :items="midfielders"></lineup-table>
       <div class="h4 mt-4">Forwards</div>
-      <lineup-table :items="forwards" @onSelectPlayer="onSelectPlayer"></lineup-table>
-      <p>Combined Market Value of Selected Players: {{ selectedPlayerMarketValueSum }}</p>
+      <lineup-table :items="forwards"></lineup-table>
+      <p>Combined Market Value of Selected Players: {{ getSelectedPlayersMarketValueSum }}</p>
 
       <v-dialog
           v-model="lineUpDialog.show"
@@ -191,13 +191,13 @@ export default {
       position: '',
       player: null,
     },
-    selectedPlayers: {},
     selectedPlayerMarketValueSum: '',
   }),
   computed: {
     ...mapGetters([
       'getLeague',
       'getSelf',
+      'getSelectedPlayersMarketValueSum',
     ]),
     goalies() {
       let goalies = []
@@ -311,6 +311,9 @@ export default {
       }
       return players
     },
+    getSelectedPlayersMarketValueSum(){
+      return numeral(this.getSelectedPlayersMarketValueSum).format('0,0')
+    }
   },
   mounted() {
     this.init()
@@ -511,14 +514,6 @@ export default {
     },
     playerVs(player) {
       return nextMatch(this.matches, player)
-    },
-    onSelectPlayer(item){
-      this.selectedPlayers[item.id] !== undefined ? delete this.selectedPlayers[item.id]: this.selectedPlayers[item.id] = item;
-
-      let players = Object.values(this.selectedPlayers);
-      console.log(this.selectedPlayers)
-			const sum = players.reduce((acc, obj) => acc + obj.marketValue,0);
-			this.selectedPlayerMarketValueSum = numeral(sum).format('0,0');
     },
   }
 };

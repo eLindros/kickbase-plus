@@ -14,6 +14,14 @@ function getPlayers(state) {
   return state.players
 }
 
+function getSelectedPlayers(state) {
+  return state.selectedPlayers
+}
+
+function getSelectedPlayersMarketValueSum(state) {
+  return state.selectedPlayersMarketValueSum
+}
+
 function getLiveData(state) {
   return state.liveData
 }

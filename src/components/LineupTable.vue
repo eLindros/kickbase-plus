@@ -16,7 +16,7 @@
         <tr v-for="item in items" :key="item.name">
           <td><v-checkbox
             :value=item
-            @change="$emit('onSelectPlayer', item)">
+            @change="setSelectedPlayers(item)">
             </v-checkbox>
           </td>
           <td>
@@ -47,7 +47,10 @@ export default {
   components: {
     StatusPill,
   },
-  methods: {
+  methods: { 
+       ...mapMutations([
+      'setSelectedPlayers'
+    ]),
     marketValueFormated(item) {
       return numeral(item.marketValue).format("0,0");
     },
