@@ -54,6 +54,9 @@ export default {
     marketValueFormated(item) {
       return numeral(item.marketValue).format("0,0");
     },
+    setSelectedPlayers(item){
+      this.setSelectedPlayers(item);
+    }
   },
 };
 </script>
