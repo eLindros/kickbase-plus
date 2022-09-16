@@ -65,7 +65,7 @@
       <lineup-table :items="midfielders" @onSelectPlayer="onSelectPlayer"></lineup-table>
       <div class="h4 mt-4">Forwards</div>
       <lineup-table :items="forwards" @onSelectPlayer="onSelectPlayer"></lineup-table>
-      <p>Combined Market Value of Selected Players: {{ selectedPlayerMarketValueSum() }}</p>
+      <p>Combined Market Value of Selected Players: {{ selectedPlayerMarketValueSum }}</p>
 
       <v-dialog
           v-model="lineUpDialog.show"
