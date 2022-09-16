@@ -142,6 +142,8 @@ export default {
   getErrorMessage,
   getBids,
   getPlayers,
+	getSelectedPlayers,
+	getSelectedPlayersMarketValueSum,
   getUsers,
   getTeams,
   getBearerToken,

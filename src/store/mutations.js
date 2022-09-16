@@ -215,6 +215,8 @@ export default {
   setSelfData,
   setLeague,
   setPlayers,
+	setSelectedPlayers,
+	setSelectedPlayersMarketValueSum,
   setUsers,
   setBids,
   setErrorMessage,
