@@ -1,4 +1,5 @@
 <template>
+<v-container class="overflow-auto">
   <v-simple-table dense>
     <template v-slot:default>
       <thead>
@@ -30,6 +31,7 @@
       </tbody>
     </template>
   </v-simple-table>
+	</v-container>
 </template>
 
 <script>
