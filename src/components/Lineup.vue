@@ -191,6 +191,7 @@ export default {
       player: null,
     },
     selectedPlayers: {},
+    selectedPlayerMarketValueSum: 0,
   }),
   computed: {
     ...mapGetters([
@@ -511,13 +512,11 @@ export default {
       return nextMatch(this.matches, player)
     },
     onSelectPlayer(item){
-        this.selectedPlayers[item.id] !== undefined ? delete this.selectedPlayers[item.id]: this.selectedPlayers[item.id] = item;
-    },
-    selectedPlayerMarketValueSum(){
+      this.selectedPlayers[item.id] !== undefined ? delete this.selectedPlayers[item.id]: this.selectedPlayers[item.id] = item;
+
       let players = Object.values(this.selectedPlayers);
       console.log(this.selectedPlayers)
-      let marketValueSum = players.reduce((acc, obj) => acc + obj.marketValue, 0);
-      return marketValueSum;
+      this.selectedPlayerMarketValueSum = players.reduce((acc, obj) => acc + obj.marketValue, 0);
     },
   }
 };
