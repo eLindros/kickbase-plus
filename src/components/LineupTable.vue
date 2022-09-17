@@ -16,7 +16,7 @@
         <tr v-for="item in items" :key="item.name">
           <td><v-checkbox
             :value=item
-            @change="setSelectedPlayers(item)">
+            @change="selectPlayer(item)">
             </v-checkbox>
           </td>
           <td>
@@ -36,7 +36,7 @@
 
 <script>
 import numeral from "numeral";
-import {mapMutations} from 'vuex'
+import {mapMutations} from 'vuex';
 
 import StatusPill from "./StatusPill";
 
@@ -58,7 +58,7 @@ export default {
     marketValueFormated(item) {
       return numeral(item.marketValue).format("0,0");
     },
-    setSelectedPlayers(item){
+    selectPlayer(item){
       this.setSelectedPlayers(item);
     }
   },

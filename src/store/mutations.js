@@ -5,12 +5,14 @@ function setPlayers(state, players) {
 }
 
 function setSelectedPlayers(state, player) {
-  if (state.selectedPlayers[player.id] !== undefined) {
-    delete state.selectedPlayers[player.id];
-  } else {
-    state.selectedPlayers[player.id] = player;
+  if (player.id) {
+    if (state.selectedPlayers[player.id] !== undefined) {
+      delete state.selectedPlayers[player.id];
+    } else {
+      state.selectedPlayers[player.id] = player;
+    }
+    setSelectedPlayersMarketValueSum(state);
   }
-  setSelectedPlayersMarketValueSum(state);
 }
 
 function setSelectedPlayersMarketValueSum(state) {
@@ -215,8 +217,8 @@ export default {
   setSelfData,
   setLeague,
   setPlayers,
-	setSelectedPlayers,
-	setSelectedPlayersMarketValueSum,
+  setSelectedPlayers,
+  setSelectedPlayersMarketValueSum,
   setUsers,
   setBids,
   setErrorMessage,
