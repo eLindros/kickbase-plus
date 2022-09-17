@@ -1,5 +1,4 @@
 <template>
-<v-container class="overflow-auto">
   <v-simple-table dense>
     <template v-slot:default>
       <thead>
@@ -14,10 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="item in items" :key="item.name">
-          <td><v-checkbox
-            :value=item
-            @change="selectPlayer(item)">
-            </v-checkbox>
+          <td><select-player-check-box :item="item"></select-player-check-box>
           </td>
           <td>
             <span v-if="item.knownName">{{ item.knownName }}</span>
@@ -31,14 +27,12 @@
       </tbody>
     </template>
   </v-simple-table>
-	</v-container>
 </template>
 
 <script>
 import numeral from "numeral";
-import {mapMutations} from 'vuex';
-
 import StatusPill from "./StatusPill";
+import SelectPlayerCheckBox from "./Generic/SelectPlayerCheckBox.vue";
 
 
 export default {
@@ -50,17 +44,12 @@ export default {
   },
   components: {
     StatusPill,
+    SelectPlayerCheckBox,
   },
   methods: { 
-       ...mapMutations([
-      'setSelectedPlayers'
-    ]),
     marketValueFormated(item) {
       return numeral(item.marketValue).format("0,0");
     },
-    selectPlayer(item){
-      this.setSelectedPlayers(item);
-    }
   },
 };
 </script>
