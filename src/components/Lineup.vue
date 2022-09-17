@@ -65,7 +65,6 @@
       <lineup-table :items="midfielders"></lineup-table>
       <div class="h4 mt-4">Forwards</div>
       <lineup-table :items="forwards"></lineup-table>
-      <p>Combined Market Value of Selected Players: {{ selectedPlayersMarketValueSum }}</p>
 
       <v-dialog
           v-model="lineUpDialog.show"
