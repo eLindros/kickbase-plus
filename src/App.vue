@@ -259,6 +259,7 @@ export default {
       'getLeagues',
       'getLeague',
       'getDefaults',
+      'getSelectedPlayersMarketValueSum',
     ]),
     hasUser() {
       const now = moment()
@@ -275,8 +276,13 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getSelfPlayerDetails && this.getSelfPlayerDetails.budget) {
-        details += 'Budget: ' + numeral(this.getSelfPlayerDetails.budget).format('0,0')
-        details += '&nbsp; / Team: ' + numeral(this.getSelfPlayerDetails.teamValue).format('0,0')
+        if (this.getSelectedPlayersMarketValueSum == 0) {
+          details += 'Budget: ' + numeral(this.getSelfPlayerDetails.budget).format('0,0');
+          details += '&nbsp;/ Team: ' + numeral(this.getSelfPlayerDetails.teamValue).format('0,0')
+        } else {
+          details += 'Budget: ' + numeral( this.getSelfPlayerDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
+          details += '&nbsp;/ Team: ' + numeral(this.getSelfPlayerDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0')
+        }
       }
 
       if (this.getBids && this.getSelfPlayerDetails) {
