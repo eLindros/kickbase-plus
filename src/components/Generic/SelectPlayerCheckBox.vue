@@ -19,17 +19,24 @@ export default {
     ...mapGetters([
       'getSelectedPlayers'
     ]),
-       ...mapMutations([
-      'setSelectedPlayers'
-    ]),
     isSelectedPlayer: {
         get() {
             return this.getSelectedPlayers[this.item.id] !== undefined;
         },
-        set() {
-          this.setSelectedPlayers(this.item);
+        set(value) {
+          if(value && this.getSelectedPlayers[this.item.id] === undefined){
+            this.setSelectedPlayers(this.item);
+          } else if (!value && this.getSelectedPlayers[this.item.id] !== undefined){
+            this.setSelectedPlayers(this.item)
+          }
         }
     },
   },
+  methods: {
+       ...mapMutations([
+      'setSelectedPlayers'
+    ]),
+
+  }
 }
 </script>
