@@ -55,6 +55,7 @@
               :initialNumber="bidValue"
               :has-bid="(playerBid !== null)"
               :min="1"
+              :step="getPercentMVValueRounded(0.1)"
               align="center"
               :mousewheel=false
               v-on:input="setInputValue"
@@ -508,6 +509,9 @@ export default {
     },
     getPercentMVValueRepresentation(percent) {
       return numeral(this.getPercentMVValue(percent)).format('0,0')
+    },
+    getPercentMVValueRounded(percent) {
+      return Math.round(this.player.marketValue * percent / 100);
     },
     getButtonLabel(percent) {
       let mvA = ''
