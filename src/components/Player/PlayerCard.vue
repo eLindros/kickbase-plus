@@ -11,8 +11,11 @@
       <div class="player-card-meta" >
         <div class="player-card-meta__content">
           <div class="player-card__image">
+             <a v-if="getLigainsiderLink" :href="getLigainsiderTeamLink" target="_blank">
             <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image">
             </v-img>
+             </a>
+             <a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
             <v-img :src="getPlayerImage" aspect-ratio="1" class="hidden-xs-only player-card__player-image">
               <template v-slot:placeholder>
                 <v-row
@@ -26,6 +29,7 @@
                 </v-row>
               </template>
             </v-img>
+             </a>
           </div>
           <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
             <status-pill :player="player"></status-pill>
@@ -68,15 +72,9 @@
       <div class="player-card-slot" ref="playerCardContent">
         <div class="player-card-head">
           <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
-            <a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
               <span v-if="player.knownName">{{ player.knownName }}</span>
               <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-            </a>
-            <span v-else>
-              <span v-if="player.knownName">{{ player.knownName }}</span>
-              <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-            </span>
-            <span class="hidden-xs-only caption">(#{{ player.id }})</span>
+            <span class="hidden-xs-only caption">&nbsp;(#{{ player.id }})</span>
           </h2>
         </div>
         <slot></slot>
@@ -185,6 +183,7 @@ export default {
   computed: {
     ...mapGetters([
       'getPlayers',
+      'getTeams',
     ]),
     hasPreHeadSlot() {
       return !!this.$slots['pre-head']
@@ -336,11 +335,20 @@ export default {
     },
     getLigainsiderLink(){
       if( this.getPlayers[this.player.id]){
-        if(this.getPlayers[this.player.ligainsiderId] === undefined){
+        if(this.getPlayers[this.player.id].ligainsiderId === undefined){
           this.addPlayerLigainsiderId(this.player.id);
         }
         if(this.getPlayers[this.player.id].ligainsiderId){
          return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
+        }
+      }
+        return false;
+      },
+    getLigainsiderTeamLink() {
+      if( this.getPlayers[this.player.id]){
+        const teamId = this.getPlayers[this.player.id].teamId;
+        if(teamId && this.getTeams[teamId]){
+         return `https://www.ligainsider.de${this.getTeams[teamId].ligainsiderUrl}`;
         }
       }
         return false;

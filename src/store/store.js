@@ -14,7 +14,80 @@ const store = new Vuex.Store({
     giftLevel: 0,
     errorMessage: null,
     authData: {},
-    teams: [],
+    teams: {
+      8: {
+        name: 'FC Schalke 04',
+        ligainsiderUrl: '/fc-schalke-04/13/'
+      },
+      3: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      1: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      2: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      4: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      5: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      6: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      7: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      9: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      10: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      11: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      12: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      13: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      14: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      15: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      16: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      17: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+      18: {
+        name: 'Borussia Dortmund',
+        ligainsiderUrl: '/borussia-dortmund/14/'
+      },
+    },
     bids: [],
     players: {},
     selectedPlayers: {},
