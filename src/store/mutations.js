@@ -215,7 +215,7 @@ function setLigainsiderPlayers(state, players) {
 
 function addPlayerLigainsiderId(state, playerId) {
   // eslint-disable-next-line no-control-regex
-  const removeAccents = it => it.normalize('NFC').replace(/[^\x20-\x7E]/g, '');
+  const removeAccents = it => it.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const target = state.ligainsiderPlayers.map( player => {
     return {
       ...player, 
@@ -232,7 +232,8 @@ function addPlayerLigainsiderId(state, playerId) {
         searchTerm = 'Rafa Gikiewicz';
         break;
       case 'Justin Isiah Che':
-        searchTerm ='Justin Che'
+        searchTerm ='Justin Che';
+        break;
     }
 
     const searchLigainsiderPlayers = fuzzysort.go(searchTerm, target, {key: 'normalized'});
