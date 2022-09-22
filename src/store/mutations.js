@@ -1,4 +1,5 @@
-import Constants from "../Constants";
+import Constants from "../Constants"
+import fuzzysort from "fuzzysort"
 
 function setPlayers(state, players) {
   state.players = players;
@@ -208,6 +209,40 @@ function setOfferOrder(state, payload) {
   }
 }
 
+function setLigainsiderPlayers(state, players) {
+  state.ligainsiderPlayers = players
+}
+
+function addPlayerLigainsiderId(state, playerId) {
+  // eslint-disable-next-line no-control-regex
+  const removeAccents = it => it.normalize('NFC').replace(/[^\x20-\x7E]/g, '');
+  const target = state.ligainsiderPlayers.map( player => {
+    return {
+      ...player, 
+      normalized: removeAccents(player.name),
+    }
+  })
+
+  if(state.players[playerId]){
+    const player = state.players[playerId];
+    let searchTerm = player.knownName ? removeAccents(player.knownName) : removeAccents(player.firstName + ' ' + player.lastName);
+   
+    switch(searchTerm) {
+      case 'Rafal Gikiewicz':
+        searchTerm = 'Rafa Gikiewicz';
+        break;
+      case 'Justin Isiah Che':
+        searchTerm ='Justin Che'
+    }
+
+    const searchLigainsiderPlayers = fuzzysort.go(searchTerm, target, {key: 'normalized'});
+    const bestResult = searchLigainsiderPlayers.length > 0 ? searchLigainsiderPlayers[0] : undefined;
+    if(bestResult && bestResult.obj && bestResult.obj.url){
+      state.players[playerId].ligainsiderId = bestResult.obj.url;
+    }
+  }
+}
+
 export default {
   addPlayer,
   addUsersPlayer,
@@ -241,4 +276,6 @@ export default {
   setOfferOpenPlayerNotOnMarketPanel,
   setOfferOpenPlayerWithoutAnyOfferPanel,
   setOfferOrder,
+  setLigainsiderPlayers,
+  addPlayerLigainsiderId,
 };

@@ -68,8 +68,14 @@
       <div class="player-card-slot" ref="playerCardContent">
         <div class="player-card-head">
           <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
-            <span v-if="player.knownName">{{ player.knownName }}</span>
-            <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+            <a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
+              <span v-if="player.knownName">{{ player.knownName }}</span>
+              <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+            </a>
+            <span v-else>
+              <span v-if="player.knownName">{{ player.knownName }}</span>
+              <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+            </span>
             <span class="hidden-xs-only caption">(#{{ player.id }})</span>
           </h2>
         </div>
@@ -117,7 +123,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 import StatusPill from "../StatusPill";
 import numeral from "numeral";
@@ -328,8 +334,22 @@ export default {
     genericInfoFieldColor() {
       return (this.$vuetify.theme.dark) ? '#ccc' : '#2A3B4D'
     },
+    getLigainsiderLink(){
+      if( this.getPlayers[this.player.id]){
+        if(this.getPlayers[this.player.ligainsiderId] === undefined){
+          this.addPlayerLigainsiderId(this.player.id);
+        }
+        if(this.getPlayers[this.player.id].ligainsiderId){
+         return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
+        }
+      }
+        return false;
+      },
   },
   methods: {
+    ...mapMutations([
+      "addPlayerLigainsiderId",
+      ]),
     toggleStatistics() {
       if (this.statsCssClass === this.initStatsCssClass) {
         this.statsCssClass = null

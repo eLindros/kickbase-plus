@@ -9,6 +9,7 @@ import LiveView from '../components/LiveView'
 import Lineup from '../components/Lineup'
 import Ranking from '../components/Ranking'
 import SettingsView from '../components/SettingsView'
+import ResearchView from '../components/ResearchView'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,7 @@ const routes = [
   { path: '/lineup', component: Lineup },
   { path: '/table', component: Ranking },
   { path: '/settings', component: SettingsView },
+  { path: '/research', component: ResearchView },
 ]
 
 const router = new VueRouter({

@@ -11,7 +11,6 @@
             v-model="showPlayerWithTooLowOffersOnly"
             label="show only too low offers"
         ></v-checkbox>
-
         <div v-if="tooLowOffers.length">
           <v-btn
               class="kp-button kp-button__decline-all kp-button--in-options-bar mb-4"
@@ -20,7 +19,8 @@
           >
             decline all <strong>{{ tooLowOffers.length }} offers</strong> that are too low
           </v-btn>
-
+          
+        
           <p class="text-caption">Players with too low offers:</p>
           <ol class="text-caption mb-5">
             <li v-for="tooLowOffer in tooLowOffers" :key="tooLowOffer.id">
@@ -34,6 +34,7 @@
         <reload-button :loading="loading" v-on:click.native="load" :large=true color="secondary"></reload-button>
         <v-btn
             v-if="tooLowOffers.length"
+            id="declineAllTooLowOffersButton"
             large
             fab
             @click="declineAllTooLowOffers"
@@ -195,7 +196,7 @@ export default {
       'getOfferOpenPlayerNotOnMarketPanel',
       'getOfferOpenPlayerWithoutAnyOfferPanel',
       'getOfferOrder',
-      'getOfferShowTooLowOffersOnly'
+      'getOfferShowTooLowOffersOnly',
     ]),
     getToken() {
       return api.getToken()
