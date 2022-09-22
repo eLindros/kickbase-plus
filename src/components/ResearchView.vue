@@ -19,12 +19,12 @@
       class="elevation-1"
     >
       <template v-slot:[`item.name`]="{ item }">
-        <a :href="`https://www.ligainsider.de${item.url}`">
+        <a :href="`https://www.ligainsider.de${item.url}`" target="_blank">
           {{ item.name }}
         </a>
       </template>
       <template v-slot:[`item.team`]="{ item }">
-        <a :href="`https://www.ligainsider.de${item.teamURL}`">
+        <a :href="`https://www.ligainsider.de${item.teamURL}`" target="_blank">
           {{ item.team }}
         </a>
       </template>
