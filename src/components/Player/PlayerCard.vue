@@ -11,7 +11,7 @@
       <div class="player-card-meta" >
         <div class="player-card-meta__content">
           <div class="player-card__image">
-             <a v-if="getLigainsiderLink" :href="getLigainsiderTeamLink" target="_blank">
+             <a v-if="getLigainsiderTeamLink" :href="getLigainsiderTeamLink" target="_blank">
             <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image">
             </v-img>
              </a>
@@ -76,7 +76,7 @@
               <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
             <span class="hidden-xs-only caption">&nbsp;(#{{ player.id }})</span>
 						  <a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
-								<v-icon size="16">fa-info</v-icon>
+								?
 							</a>
           </h2>
         </div>
