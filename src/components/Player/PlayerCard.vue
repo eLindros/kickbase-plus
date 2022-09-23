@@ -75,8 +75,9 @@
               <span v-if="player.knownName">{{ player.knownName }}</span>
               <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
             <span class="hidden-xs-only caption">&nbsp;(#{{ player.id }})</span>
-						  <a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
-								?
+            &nbsp;
+				<a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
+								<v-icon size="16">fa-info</v-icon>
 							</a>
           </h2>
         </div>
