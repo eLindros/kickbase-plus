@@ -23,70 +23,70 @@ const store = new Vuex.Store({
         name: 'Borussia Dortmund',
         ligainsiderUrl: '/borussia-dortmund/14/'
       },
-      1: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
-      },
-      2: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+      40: {
+        name: '1. FC Union Berlin',
+        ligainsiderUrl: '/1-fc-union-berlin/1246/'
       },
       4: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'Eintracht Frankfurt',
+        ligainsiderUrl: '/eintracht-frankfurt/3/'
+      },
+      2: {
+        name: 'FC Bayern München',
+        ligainsiderUrl: '/fc-bayern-muenchen/1/'
       },
       5: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
-      },
-      6: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'SC Freiburg',
+        ligainsiderUrl: '/sc-freiburg/18/'
       },
       7: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'Bayer 04 Leverkusen',
+        ligainsiderUrl: '/bayer-04-leverkusen/4/'
       },
       9: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'VfB Stuttgart',
+        ligainsiderUrl: '/vfb-stuttgart/12/'
       },
       10: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'SV Werder Bremen',
+        ligainsiderUrl: '/sv-werder-bremen/2/'
       },
       11: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
-      },
-      12: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'Vfl Wolfsburg',
+        ligainsiderUrl: '/vfl-wolfsburg/16/'
       },
       13: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'FC Augsburg',
+        ligainsiderUrl: '/fc-augsburg/21/'
       },
       14: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'TSG Hoffenheim',
+        ligainsiderUrl: '/tsg-hoffenheim/10/'
       },
       15: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
-      },
-      16: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
-      },
-      17: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: 'Borussia Mönchengladbach',
+        ligainsiderUrl: '/borussia-moenchengladbach/5/'
       },
       18: {
-        name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        name: '1. FSV Mainz 05',
+        ligainsiderUrl: '/1-fsv-mainz-05/17/'
       },
+      20: {
+        name: 'Hertha BSC Berlin',
+        ligainsiderUrl: '/hertha-bsc/6/'
+      },
+      24: {
+        name: 'Vfl Bochum',
+        ligainsiderUrl: '/vfl-bochum/11/'
+      }, 
+      28: {
+        name: '1. FC Köln',
+        ligainsiderUrl: '/1-fc-koeln/15/'
+      },
+      43: {
+        name: 'RB Leipzig',
+        ligainsiderUrl: '/rb-leipzig/1311/'
+      },         
     },
     bids: [],
     players: {},
