@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" fullscreen hide-overlay>
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" text v-bind="attrs" v-on="on">
           <slot></slot>
