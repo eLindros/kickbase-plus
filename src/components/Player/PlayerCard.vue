@@ -79,6 +79,7 @@
 				<a v-if="getLigainsiderLink" :href="getLigainsiderLink" target="_blank">
 								<v-icon size="16">fa-info</v-icon>
 							</a>
+							<ExternalInfoIframe url="getLigainsiderLink">Test</ExternalInfoIframe>
           </h2>
         </div>
         <slot></slot>
@@ -128,6 +129,7 @@
 import {mapGetters, mapMutations} from "vuex";
 
 import StatusPill from "../StatusPill";
+import ExternalInfoIframe from "../Generic/ExternalInfoIframe";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 
