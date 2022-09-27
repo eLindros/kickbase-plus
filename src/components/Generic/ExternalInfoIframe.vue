@@ -12,7 +12,7 @@
           <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <iframe src="{{url}}"></iframe>
+        <iframe :src="url"></iframe>
       </v-card>
     </v-dialog>
   </div>

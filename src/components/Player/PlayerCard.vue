@@ -138,6 +138,7 @@ export default {
   components: {
     StatusPill,
     PlayerMarketValueTrend,
+    ExternalInfoIframe,
   },
   props: {
     player: {
