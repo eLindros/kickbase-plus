@@ -1,54 +1,36 @@
 <template>
   <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
+    <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          text
-          v-bind="attrs"
-          v-on="on"
-        >
+        <v-btn color="primary" text v-bind="attrs" v-on="on">
           <slot></slot>
         </v-btn>
       </template>
 
       <v-card>
-
-   
-
         <v-card-actions>
-				<v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-           Close
-          </v-btn>
+          <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
         </v-card-actions>
-				     <v-divider></v-divider>
-						 <iframe src="{{url}}"></iframe>
-						 
+        <v-divider></v-divider>
+        <iframe src="{{url}}"></iframe>
       </v-card>
     </v-dialog>
   </div>
-	</template>
+</template>
 	
 	<script>
-  export default {
-		props: {
-			url: {
-				type: String,
-				required: true,
-				default: 'https://www.ligainsider.de',
-			},
-		},
-    data () {
-      return {
-        dialog: false,
-      }
+export default {
+  props: {
+    url: {
+      type: String,
+      required: true,
+      default: "https://www.ligainsider.de",
     },
-  }
-	</script>
+  },
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+};
+</script>
