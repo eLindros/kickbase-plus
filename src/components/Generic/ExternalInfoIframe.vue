@@ -7,12 +7,12 @@
         </v-btn>
       </template>
 
-      <v-card>
+      <v-card height="100%"
         <v-card-actions>
           <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <iframe :src="url" width="100%" height="100%"></iframe>
+        <iframe :src="url" width="100%" height="100vh"></iframe>
       </v-card>
     </v-dialog>
   </div>
