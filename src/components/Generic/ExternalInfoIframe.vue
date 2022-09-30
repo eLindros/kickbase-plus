@@ -7,7 +7,7 @@
         </v-btn>
       </template>
 
-      <v-card height="100%"
+      <v-card height="100%">
         <v-card-actions>
           <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
         </v-card-actions>
