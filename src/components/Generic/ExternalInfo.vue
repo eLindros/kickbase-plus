@@ -1,14 +1,20 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" fullscreen hide-overlay>
+  <div class="external_info">
+    <v-dialog 
+      v-model="dialog" 
+      fullscreen
+      transition="dialog-bottom-transition"
+      hide-overlay
+      >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" text v-bind="attrs" v-on="on">
+        <span text v-bind="attrs" v-on="on">
           <slot></slot>
-        </v-btn>
+        </span>
       </template>
       <v-card>
         <v-card-actions>
-          <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialog = false">Close</v-btn>
         </v-card-actions>
         <v-divider></v-divider>
         <iframe :src="src"></iframe>
@@ -16,7 +22,13 @@
     </v-dialog>
   </div>
 </template>
-	
+
+<style scoped>
+.external_info {
+  display: inline;
+}
+</style>	
+
 <script>
 export default {
   props: {
