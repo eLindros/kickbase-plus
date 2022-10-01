@@ -6,13 +6,12 @@
           <slot></slot>
         </v-btn>
       </template>
-
-      <v-card height="100vh">
+      <v-card>
         <v-card-actions>
           <v-btn color="primary" text @click="dialog = false"> Close </v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <iframe :src="url" width="100vw" height="100vh"></iframe>
+        <iframe :src="src"></iframe>
       </v-card>
     </v-dialog>
   </div>
@@ -21,7 +20,7 @@
 	<script>
 export default {
   props: {
-    url: {
+    src: {
       type: String,
       required: true,
       default: "https://www.ligainsider.de",
