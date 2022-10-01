@@ -76,9 +76,9 @@
               <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
             <span class="hidden-xs-only caption">&nbsp;(#{{ player.id }})</span>
             &nbsp;
-							<ExternalInfoIframe v-if="getLigainsiderLink" :src="getLigainsiderLink">
+							<ExternalInfo v-if="getLigainsiderLink" :src="getLigainsiderLink">
 								<v-icon size="16">fa-info</v-icon>
-              </ExternalInfoIframe>
+              </ExternalInfo>
           </h2>
         </div>
         <slot></slot>
@@ -128,7 +128,7 @@
 import {mapGetters, mapMutations} from "vuex";
 
 import StatusPill from "../StatusPill";
-import ExternalInfoIframe from "../Generic/ExternalInfoIframe";
+import ExternalInfo from "../Generic/ExternalInfo";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 
@@ -137,7 +137,7 @@ export default {
   components: {
     StatusPill,
     PlayerMarketValueTrend,
-    ExternalInfoIframe,
+    ExternalInfo,
   },
   props: {
     player: {
