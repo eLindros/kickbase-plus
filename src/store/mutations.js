@@ -1,4 +1,5 @@
 import Constants from "../Constants"
+import fuzzysort from "fuzzysort"
 
 function setPlayers(state, players) {
   state.players = players
@@ -203,6 +204,49 @@ function setInitialized(state, initialized) {
 function setNextThreeMatchDays(state, nextThreeMatchDays) {
   state.nextThreeMatchDays = nextThreeMatchDays
 }
+function setLigainsiderPlayers(state, players) {
+  state.ligainsiderPlayers = players
+}
+
+function addPlayerLigainsiderId(state, playerId) {
+  // eslint-disable-next-line no-control-regex
+  const removeAccents = it => it.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const target = state.ligainsiderPlayers.map( player => {
+    return {
+      ...player, 
+      normalized: removeAccents(player.name),
+    }
+  })
+
+  if(state.players[playerId]){
+    const player = state.players[playerId];
+    let searchTerm = player.knownName ? removeAccents(player.knownName) : removeAccents(player.firstName + ' ' + player.lastName);
+   
+    switch(searchTerm) {
+      case 'Rafal Gikiewicz':
+        searchTerm = 'Rafa Gikiewicz';
+        break;
+      case 'Justin Isiah Che':
+        searchTerm ='Justin Che';
+        break;
+      case 'M. Wolf':
+        searchTerm ='Marius Wolf';
+        break;
+      case 'Derry Lionel Scherhant':
+        searchTerm = 'Derry Scherhant';
+        break;
+      case 'Eric Maxim Choupo-Moting':
+        searchTerm = 'Choupo-Moting';
+        break;
+    }
+
+    const searchLigainsiderPlayers = fuzzysort.go(searchTerm, target, {key: 'normalized'});
+    const bestResult = searchLigainsiderPlayers.length > 0 ? searchLigainsiderPlayers[0] : undefined;
+    if(bestResult && bestResult.obj && bestResult.obj.url){
+      state.players[playerId].ligainsiderId = bestResult.obj.url;
+    }
+  }
+}
 
 export default {
   setInitialized,
@@ -242,4 +286,6 @@ export default {
   setTransfermarketExpiryDisplayType,
   setOfferOrder,
   setMarketValueComparison,
+  setLigainsiderPlayers,
+  addPlayerLigainsiderId,
 }

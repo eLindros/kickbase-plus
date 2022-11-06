@@ -9,6 +9,7 @@ import LiveView from '../components/LiveView'
 import Lineup from '../components/Lineup'
 import Ranking from '../components/Ranking'
 import SettingsView from '../components/SettingsView'
+import ResearchView from '../components/ResearchView'
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,7 @@ const routes = [
   { path: '/feed', component: Feed },
   { path: '/transfermarket', component: TransfermarketView },
   { path: '/sell', component: SellView },
+  { path: '/research', component: ResearchView },
   { path: '/live', component: LiveView },
   { path: '/lineup', component: Lineup },
   { path: '/table', component: Ranking },

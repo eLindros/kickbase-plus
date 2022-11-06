@@ -96,6 +96,15 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item to="/research" color="white">
+            <v-list-item-action>
+              <v-icon>fa-microscope</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Research</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item to="/live" color="white">
             <v-list-item-action>
               <v-icon>fa-satellite-dish</v-icon>
@@ -210,6 +219,7 @@ import numeral from 'numeral'
 numeral.locale('deff')
 
 import api from './api/api'
+import ligainsider from './api/ligainsider'
 import LoginDialog from './components/LoginDialog'
 
 export default {
@@ -369,6 +379,7 @@ export default {
       await api.loadUsersStats()
       await api.loadMatches()
       await api.loadNextTwoMatchDays()
+      await ligainsider.loadLigainsiderPlayers()
       this.setLoading(false)
       this.setAsInitialized()
     }
