@@ -161,6 +161,14 @@ function getNextThreeMatchDays(state) {
   return state.nextThreeMatchDays
 }
 
+function getLigainsiderTeams(state) {
+  return state.ligainsiderTeams
+}
+
+function getLigainsiderPlayers(state) {
+  return state.ligainsiderPlayers
+}
+
 export default {
   getInitialized,
   getAuthData,
@@ -200,4 +208,6 @@ export default {
   getDefaults,
   getMarketValueComparisonPlayer,
   getNextThreeMatchDays,
+  getLigainsiderTeams,
+  getLigainsiderPlayers,
 }

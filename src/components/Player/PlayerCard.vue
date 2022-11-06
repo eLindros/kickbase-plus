@@ -11,8 +11,11 @@
       <div class="player-card-meta" v-if="hideMeta===false" :style="{width: playerMetaWidth}">
         <div class="player-card-meta__content">
           <div class="player-card__image">
+            <ExternalInfo v-if="getLigainsiderTeamLink" :src="getLigainsiderTeamLink">
             <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image">
             </v-img>
+            </ExternalInfo>
+            <ExternalInfo :src="getLigainsiderLink">
             <v-img :src="getPlayerImage" aspect-ratio="1" class="hidden-xs-only player-card__player-image">
               <template v-slot:placeholder>
                 <v-row
@@ -26,6 +29,7 @@
                 </v-row>
               </template>
             </v-img>
+            </ExternalInfo>
           </div>
           <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
             <status-pill :player="player"></status-pill>
@@ -79,9 +83,11 @@
       <div class="player-card-slot" ref="playerCardContent">
         <div class="player-card-head">
           <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
+						<ExternalInfo :src="getLigainsiderLink">            
             <span v-if="player.knownName">{{ player.knownName }}</span>
             <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
             <span class="hidden-xs-only caption">(#{{ player.id }})</span>
+            </ExternalInfo>
           </h2>
         </div>
         <slot></slot>
@@ -137,9 +143,10 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 import StatusPill from "../StatusPill";
+import ExternalInfo from "../Generic/ExternalInfo";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 import {getMarketValueGrowth, getBundesligaClubImageUrlById, nextMatch, getPositionWording} from "@/helper/helper"
@@ -151,6 +158,7 @@ export default {
     PlayerPointsStatistic,
     StatusPill,
     PlayerMarketValueTrend,
+    ExternalInfo,
   },
   props: {
     player: {
@@ -204,6 +212,7 @@ export default {
     ...mapGetters([
       'getPlayers',
       'getMatches',
+      'getLigainsiderTeams',
     ]),
     hasPreHeadSlot() {
       return !!this.$slots['pre-head']
@@ -344,8 +353,31 @@ export default {
     nextMatchComputed() {
       return nextMatch(this.getMatches, this.player)
     },
+    getLigainsiderLink(){
+      if( this.getPlayers[this.player.id]){
+        if(this.getPlayers[this.player.id].ligainsiderId === undefined){
+          this.addPlayerLigainsiderId(this.player.id);
+        }
+        if(this.getPlayers[this.player.id].ligainsiderId){
+         return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}noten_und_einsatzhistorie/`;
+        }
+      }
+        return undefined;
+      },
+    getLigainsiderTeamLink() {
+      if( this.getPlayers[this.player.id]){
+        const teamId = this.getPlayers[this.player.id].teamId;
+        if(teamId && this.getLigainsiderTeams[teamId]){
+         return `https://www.ligainsider.de${this.getLigainsiderTeams[teamId].ligainsiderUrl}`;
+        }
+      }
+        return false;
+      },
   },
   methods: {
+      ...mapMutations([
+      "addPlayerLigainsiderId",
+      ]),
     toggleStatistics() {
       if (this.statsCssClass === this.initStatsCssClass) {
         this.statsCssClass = null
