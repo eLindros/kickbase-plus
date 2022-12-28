@@ -18,7 +18,7 @@
         </v-card-actions>
         <v-divider></v-divider>
         <div class="iframe_container">
-        <iframe :src="src" width="800 height="600"></iframe>
+        <iframe :src="src" width="800" height="600"></iframe>
 				</div>
       </v-card>
     </v-dialog>
