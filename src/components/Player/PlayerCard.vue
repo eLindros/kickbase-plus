@@ -359,7 +359,7 @@ export default {
           this.addPlayerLigainsiderId(this.player.id);
         }
         if(this.getPlayers[this.player.id].ligainsiderId){
-         return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}noten_und_einsatzhistorie/`;
+         return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
         }
       }
         return undefined;
