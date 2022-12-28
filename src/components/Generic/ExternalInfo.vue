@@ -17,7 +17,9 @@
           <v-btn color="primary" text @click="dialog = false">Close</v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <iframe :src="src"></iframe>
+        <div class="iframe_container">
+        <iframe :src="src" width="800 height="600"></iframe>
+				</div>
       </v-card>
     </v-dialog>
   </div>
