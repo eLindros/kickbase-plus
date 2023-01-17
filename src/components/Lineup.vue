@@ -154,7 +154,6 @@ import StatusPill from './StatusPill'
 import Spinner from './Spinner'
 import LineupItem from './LineupItem'
 import LineupTable from './LineupTable'
-import ExternalInfo from './Generic/ExternalInfo'
 import {getBundesligaClubImageUrlById, nextMatch} from '@/helper/helper'
 import SavedAlert from "@/components/Generic/SavedAlert";
 
@@ -166,7 +165,6 @@ export default {
     LineupItem,
     StatusPill,
     Spinner,
-    ExternalInfo,
   },
   data: () => ({
     loading: false,
