@@ -89,6 +89,14 @@ const store = new Vuex.Store({
         name: 'RB Leipzig',
         ligainsiderUrl: '/rb-leipzig/1311/'
       },         
+      50: {
+        name: '1. FC Heidenheim',
+        ligainsiderUrl: '/1-fc-heidenheim/1259/'
+      },         
+      42: {
+        name: 'SV Darmstadt 98',
+        ligainsiderUrl: '/sv-darmstadt-98/1267/'
+      },         
     },
     bids: [],
     players: {},
