@@ -48,6 +48,26 @@ function addUsersPlayer(state, payload) {
   }
 }
 
+function addMatchDay(state, payload) {
+  if (payload.day && payload.data) {
+    const matchDays = Object.assign({}, state.matchDays)
+    matchDays[payload.day] = payload.data
+    state.matchDays = matchDays
+  }
+}
+
+function addUsersLineup(state, payload) {
+  if (payload.user && payload.data) {
+    const users = Object.assign({}, state.users)
+    const user = Object.assign({}, users[payload.user])
+
+    user.lineup = payload.data
+
+    users[payload.user] = user
+    state.users = users
+  }
+}
+
 function addTransfersToUser(state, payload) {
   if (payload.user && payload.transfers) {
     const users = Object.assign({}, state.users)
@@ -272,7 +292,9 @@ export default {
   setInitialized,
   addPlayer,
   addUsersPlayer,
+  addUsersLineup,
   addTransfersToUser,
+  addMatchDay,
   addUser,
   setSelf,
   setTeams,

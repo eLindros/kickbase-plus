@@ -106,6 +106,7 @@ const store = new Vuex.Store({
     users: {},
     liveData: {},
     matches: [],
+    matchDays: {},
     nextThreeMatchDays: [],
     nextMatchDay: null,
     loading: false,

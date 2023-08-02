@@ -65,7 +65,7 @@
               <v-icon>fa-trophy</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>League Table</v-list-item-title>
+              <v-list-item-title>League</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -383,6 +383,12 @@ export default {
       await api.loadUsers()
       await api.loadUsersStats()
       await api.loadMatches()
+      if (this.getLeagues.length) {
+        for (let i = 1; i <= this.getLeagues[0].pl; i++) {
+          await api.loadMatchDay(i)
+        }
+      }
+
       await api.loadNextTwoMatchDays()
       await ligainsider.loadLigainsiderPlayers()
       this.setLoading(false)

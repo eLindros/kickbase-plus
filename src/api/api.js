@@ -31,6 +31,20 @@ const api = {
         }
         return false
     },
+    async loadMatchDay(matchDay) {
+        await axios({
+            'url': 'https://api.kickbase.com/v2/competitions/1/matches?matchDay=' + matchDay,
+            "method": 'GET',
+            'data': {},
+        }).then((gameMatchResponse) => {
+            if (gameMatchResponse.data && gameMatchResponse.data.day) {
+                store.commit('addMatchDay', {
+                    day: gameMatchResponse.data.day,
+                    data: gameMatchResponse.data
+                })
+            }
+        })
+    },
     async loadClubs() {
         await axios({
             'url': 'https://api.kickbase.com/v2/competitions/1/overview',
@@ -194,7 +208,7 @@ const api = {
                 store.commit('setErrorMessage', 'login issues')
             })
     },
-    loadRanking(cb) {
+    async loadRanking(cb) {
         axios({
             'url': 'https://api.kickbase.com/leagues/' + store.getters.getLeague + '/stats',
             "method": "GET",
@@ -562,9 +576,24 @@ const api = {
             .finally(function () {
             });
     },
+
+    async loadUsersLineup(userId) {
+        const user = userId
+        await axios({
+            'url': 'https://api.kickbase.com/leagues/' + store.getters.getLeague + '/users/' + user + '/lineup',
+            "method": "GET",
+        }).then(async (response) => {
+            if (response.status === 200) {
+                store.commit('addUsersLineup', {
+                    user,
+                    data: response.data
+                })
+            }
+        })
+    },
     async loadUsersPlayers(userId, loadPlayerStates = true) {
         const user = userId
-        store.commit('addLoadingMessage', 'loading players of user #' + user)
+        store.commit('addLoadingMessage', 'loading players and lineup of user #' + user)
         await axios({
             'url': 'https://api.kickbase.com/leagues/' + store.getters.getLeague + '/users/' + user + '/players',
             "method": "GET",
@@ -579,6 +608,7 @@ const api = {
                     for (let i = 0; i < response.data.players.length; i++) {
                         playerIds.push(response.data.players[i].id)
                     }
+                    await api.loadUsersLineup(user)
                     await smartPlayerStatsLoading(playerIds)
                 }
             }

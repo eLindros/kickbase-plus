@@ -69,6 +69,10 @@ function getRanking(state) {
   return state.ranking
 }
 
+function getMatchDays(state) {
+  return state.matchDays
+}
+
 function getMatches(state) {
   return state.matches
 }
@@ -182,6 +186,7 @@ export default {
   getSelf,
   getSelfData,
   getTeams,
+  getMatchDays,
   getMatches,
   getNextMatchDay,
   getLeague,
