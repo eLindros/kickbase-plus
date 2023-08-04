@@ -10,9 +10,13 @@
     <div class="player-card-content-wrapper">
       <div class="player-card-meta" v-if="hideMeta===false" :style="{width: playerMetaWidth}">
         <div class="player-card-meta__content">
+          <slot name="pre-meta"></slot>
           <div class="player-card__image">
+            <ExternalInfo v-if="getLigainsiderTeamLink" :src="getLigainsiderTeamLink">
             <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image">
             </v-img>
+            </ExternalInfo>
+            <ExternalInfo :src="getLigainsiderLink">
             <v-img :src="getPlayerImage" aspect-ratio="1" class="hidden-xs-only player-card__player-image">
               <template v-slot:placeholder>
                 <v-row
@@ -26,6 +30,7 @@
                 </v-row>
               </template>
             </v-img>
+            </ExternalInfo>
           </div>
           <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
             <status-pill :player="player"></status-pill>
@@ -48,6 +53,19 @@
               ⌀ {{ player.averagePoints }} / {{ player.totalPoints }}
             </v-alert>
           </div>
+          <div
+             class="player-card-meta__item player-card-meta__item--sm-fifth"
+             v-if="hidePlayerPoints === false"
+           >
+             <v-alert
+               :color="getPricePerPointColor"
+               dense
+               text
+               icon="fa-bullseye"
+             >
+               {{ getComputedPricePerPoint }} KpP
+             </v-alert>
+           </div>
           <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="nextMatchComputed && nextMatchComputed.img">
             <v-alert :color="nextGameColor" dense text icon="fa-beer">
               <div class="d-flex align-center text-left ">
@@ -66,9 +84,11 @@
       <div class="player-card-slot" ref="playerCardContent">
         <div class="player-card-head">
           <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
+						<ExternalInfo :src="getLigainsiderLink">            
             <span v-if="player.knownName">{{ player.knownName }}</span>
             <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
             <span class="hidden-xs-only caption">(#{{ player.id }})</span>
+            </ExternalInfo>
           </h2>
         </div>
         <slot></slot>
@@ -124,9 +144,10 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 import StatusPill from "../StatusPill";
+import ExternalInfo from "../Generic/ExternalInfo";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 import {getMarketValueGrowth, getBundesligaClubImageUrlById, nextMatch, getPositionWording} from "@/helper/helper"
@@ -138,6 +159,7 @@ export default {
     PlayerPointsStatistic,
     StatusPill,
     PlayerMarketValueTrend,
+    ExternalInfo,
   },
   props: {
     player: {
@@ -191,6 +213,7 @@ export default {
     ...mapGetters([
       'getPlayers',
       'getMatches',
+      'getLigainsiderTeams',
     ]),
     hasPreHeadSlot() {
       return !!this.$slots['pre-head']
@@ -225,6 +248,23 @@ export default {
       }
       return icon
     },
+    getPricePerPoint() {
+       return (this.player.marketValue / 1000 / this.player.averagePoints) | 0;
+     },
+     getComputedPricePerPoint() {
+       return numeral(this.getPricePerPoint).format("0,0");
+     },
+     getPricePerPointColor() {
+       let positive = "#2a5b2a";
+       let negative = "#682828";
+       if (this.$vuetify.theme.dark) {
+         positive = "#afd3af";
+         negative = "#e6b6b6";
+       }
+       return this.getPricePerPoint < 200 && this.getPricePerPoint > 0
+         ? positive
+         : negative;
+     },
     getPlayerStatistics() {
       return {
         headers: [
@@ -314,8 +354,31 @@ export default {
     nextMatchComputed() {
       return nextMatch(this.getMatches, this.player)
     },
+    getLigainsiderLink(){
+      if( this.getPlayers[this.player.id]){
+        if(this.getPlayers[this.player.id].ligainsiderId === undefined){
+          this.addPlayerLigainsiderId(this.player.id);
+        }
+        if(this.getPlayers[this.player.id].ligainsiderId){
+         return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
+        }
+      }
+        return undefined;
+      },
+    getLigainsiderTeamLink() {
+      if( this.getPlayers[this.player.id]){
+        const teamId = this.getPlayers[this.player.id].teamId;
+        if(teamId && this.getLigainsiderTeams[teamId]){
+         return `https://www.ligainsider.de${this.getLigainsiderTeams[teamId].ligainsiderUrl}`;
+        }
+      }
+        return false;
+      },
   },
   methods: {
+      ...mapMutations([
+      "addPlayerLigainsiderId",
+      ]),
     toggleStatistics() {
       if (this.statsCssClass === this.initStatsCssClass) {
         this.statsCssClass = null

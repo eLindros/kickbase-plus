@@ -18,6 +18,14 @@ function getLiveData(state) {
   return state.liveData
 }
 
+function getSelectedPlayers(state) {
+  return state.selectedPlayers
+}
+
+function getSelectedPlayersMarketValueSum(state) {
+  return state.selectedPlayersMarketValueSum
+}
+
 function getUsers(state) {
   return state.users
 }
@@ -59,6 +67,10 @@ function getSelectedLeague(state) {
 
 function getRanking(state) {
   return state.ranking
+}
+
+function getMatchDays(state) {
+  return state.matchDays
 }
 
 function getMatches(state) {
@@ -153,17 +165,28 @@ function getNextThreeMatchDays(state) {
   return state.nextThreeMatchDays
 }
 
+function getLigainsiderTeams(state) {
+  return state.ligainsiderTeams
+}
+
+function getLigainsiderPlayers(state) {
+  return state.ligainsiderPlayers
+}
+
 export default {
   getInitialized,
   getAuthData,
   getErrorMessage,
   getBids,
   getPlayers,
+  getSelectedPlayers,
+	getSelectedPlayersMarketValueSum,
   getUsers,
   getBearerToken,
   getSelf,
   getSelfData,
   getTeams,
+  getMatchDays,
   getMatches,
   getNextMatchDay,
   getLeague,
@@ -190,4 +213,6 @@ export default {
   getDefaults,
   getMarketValueComparisonPlayer,
   getNextThreeMatchDays,
+  getLigainsiderTeams,
+  getLigainsiderPlayers,
 }

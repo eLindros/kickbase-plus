@@ -58,9 +58,16 @@
               v-on:openChangeDialog="openChangeDialog"
           ></lineup-item>
         </div>
-
+      <div class="ligainsider-plus-link">
+          <a href="https://www.ligainsider.de/ligainsider-plus/kickbase/" target="_blank">
+            <v-img 
+              alt="LigaInsider Logo"
+              max-width="100"
+              src="https://cdn.ligainsider.de/images/menu/ligainsider-logo-white.png">
+            </v-img>
+          </a>
       </div>
-
+      </div>
       <div class="h4 mt-4">Goalies</div>
       <lineup-table :items="goalies"></lineup-table>
       <div class="h4 mt-4">Defenders</div>

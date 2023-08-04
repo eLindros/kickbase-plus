@@ -65,7 +65,7 @@
               <v-icon>fa-trophy</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>League Table</v-list-item-title>
+              <v-list-item-title>League</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -93,6 +93,15 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Lineup</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item to="/research" color="white">
+            <v-list-item-action>
+              <v-icon>fa-microscope</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Research</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -210,6 +219,7 @@ import numeral from 'numeral'
 numeral.locale('deff')
 
 import api from './api/api'
+import ligainsider from './api/ligainsider'
 import LoginDialog from './components/LoginDialog'
 
 export default {
@@ -260,6 +270,7 @@ export default {
       'getLeagues',
       'getLeague',
       'getDefaults',
+      'getSelectedPlayersMarketValueSum',
     ]),
     hasUser() {
       const now = moment()
@@ -276,10 +287,14 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-        details += 'Budget: ' + numeral(this.getUsersDetails.budget).format('0,0')
-        details += '&nbsp; / Team: ' + numeral(this.getUsersDetails.teamValue).format('0,0')
+          if (this.getSelectedPlayersMarketValueSum == 0) {
+            details += 'Budget: ' + numeral(this.getUsersDetails.budget).format('0,0');
+            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue).format('0,0')
+          } else {
+            details += 'Budget: ' + numeral( this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
+            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0')
+          }
       }
-
       if (this.getBids && this.getUsersDetails) {
         details += '<br>Bids: ' + numeral(this.getPlayerBidsSum).format('0,0')
         // details += ' / A<span class="d-none d-sm-none d-md-inline-block">fter</span> B<span class="d-none d-sm-none d-md-inline-block">ids</span>: ' + numeral(this.getUsersDetails.budget - this.getPlayerBidsSum).format('0,0')
@@ -368,7 +383,14 @@ export default {
       await api.loadUsers()
       await api.loadUsersStats()
       await api.loadMatches()
+      if (this.getLeagues.length) {
+        for (let i = 1; i <= this.getLeagues[0].pl; i++) {
+          await api.loadMatchDay(i)
+        }
+      }
+
       await api.loadNextTwoMatchDays()
+      await ligainsider.loadLigainsiderPlayers()
       this.setLoading(false)
       this.setAsInitialized()
     }

@@ -177,3 +177,18 @@ fieldset {
 .reload-button {
   cursor: pointer;
 }
+
+.iframe_container{
+    position: relative;
+    padding-bottom: 168%;
+    height: 0;
+    overflow: hidden;
+}
+
+.iframe_container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
