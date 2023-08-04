@@ -1,19 +1,9 @@
 <template>
-  <player-card
-      :class="{'own-bid':player.hasOwnBid, 'no-bid':player.hasNoBid, 'only':player.hasOnlySelfBid}"
-      class="bid-row"
-      :player="player"
-      :show-purchase-statistic=false
-  >
+  <player-card :class="{ 'own-bid': player.hasOwnBid, 'no-bid': player.hasNoBid, 'only': player.hasOnlySelfBid }"
+    class="bid-row" :player="player" :show-purchase-statistic=false>
     <template v-slot:pre-meta>
-      <v-alert
-          text
-          :color="(isDarkTheme) ? 'deep-purple lighten-3': 'deep-purple darken-4'"
-          icon="fa-clock"
-          class="expiry-info"
-          style="cursor: pointer"
-          @click="toggleExpiryAsDateTime"
-      >
+      <v-alert text :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'" icon="fa-clock"
+        class="expiry-info" style="cursor: pointer" @click="toggleExpiryAsDateTime">
         <transition name="fade">
           <span v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</span>
         </transition>
@@ -29,33 +19,21 @@
     <v-form @submit.prevent="dummySubmit" class="playerBidForm mt-5 mb-4">
       <div class="d-sm-flex d-block">
         <div class="bid-input-container mr-5">
-          <vue-numeric-input
-              :initialNumber="bidValue"
-              :has-bid="(playerBid !== null)"
-              :reset-call="resetCall"
-              :min="1"
-              align="center"
-              :mousewheel=false
-              v-on:input="setInputValue"
-              v-on:input-reset="inputReset"
-              v-on:submit="setInputValue"
-              v-on:preview="preview"
-              :placeholder="inputPlaceholder"
-          ></vue-numeric-input>
+          <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall" :min="1"
+            align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
+            v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
           <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
         </div>
         <div class="bid-input-container">
           <div class="text-caption">
-            <span
-                v-if="getComputedBid !== 'no bid'"
-            >
-            you <span v-if="previewValue && !getValidBidNumber" class="font-italic">would</span> bid
-            <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
-            (<span
-                :class="{'text--green': (getComputedDifference.number<=0), 'text--red': (getComputedDifference.number>0)}">{{
-                getComputedDifference.percentage
-              }} %</span>)
-          </span>
+            <span v-if="getComputedBid !== 'no bid'">
+              you <span v-if="previewValue && !getValidBidNumber" class="font-italic">would</span> bid
+              <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
+              (<span
+                :class="{ 'text--green': (getComputedDifference.number <= 0), 'text--red': (getComputedDifference.number > 0) }">{{
+                  getComputedDifference.percentage
+                }} %</span>)
+            </span>
           </div>
         </div>
       </div>
@@ -70,22 +48,17 @@
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
-        <v-btn
-            @click="sendPercentageBid(percent)"
-            dense
-            outlined
-            v-for="percent in bidButtons"
-            :key="percent"
-        >
+        <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
+        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
           <span v-html="getButtonLabel(percent)"></span>
         </v-btn>
+        <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
       </div>
     </div>
 
     <template v-slot:extra-expansion-panel
-              v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
-      <v-expansion-panel
-      >
+      v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
+      <v-expansion-panel>
         <v-expansion-panel-header class="elevation-0">
           <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1">fa-money-bill-wave</v-icon>
           <strong>{{ player.offers.length }}</strong> user bid on this player
@@ -94,29 +67,29 @@
           <v-simple-table class="mb-5 bid-table">
             <template>
               <tbody>
-              <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Details
-                </th>
-              </tr>
-              <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{'foo': offer.isSelf}">
-                <td>
-                  <span v-if="offer.userName">{{ offer.userName }}</span>
-                  <span v-else>KICKBASE</span>:
-                </td>
-                <td>
-              <span v-if="offer.userId != getSelf">
-              {{ getDate(offer.date) }}
-              <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
-            </span>
-                  <span v-else>
-            {{ offer.price | numeral('0,0 $') }}
-          </span>
-                </td>
-              </tr>
+                <tr>
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Details
+                  </th>
+                </tr>
+                <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{ 'foo': offer.isSelf }">
+                  <td>
+                    <span v-if="offer.userName">{{ offer.userName }}</span>
+                    <span v-else>KICKBASE</span>:
+                  </td>
+                  <td>
+                    <span v-if="offer.userId != getSelf">
+                      {{ getDate(offer.date) }}
+                      <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
+                    </span>
+                    <span v-else>
+                      {{ offer.price | numeral('0,0 $') }}
+                    </span>
+                  </td>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>
@@ -129,7 +102,7 @@
 
 <script>
 import api from '../api/api'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import debounce from "lodash.debounce";
 
 import moment from 'moment'
@@ -140,7 +113,7 @@ numeral.locale('deff')
 import PlayerCard from './Player/PlayerCard'
 import VueNumericInput from './Generic/NumericInput'
 import SavedAlert from './Generic/SavedAlert'
-import {sleep, getBundesligaClubImageUrlById, getPositionWording} from "@/helper/helper";
+import { sleep, getBundesligaClubImageUrlById, getPositionWording } from "@/helper/helper";
 
 const lastDayChangesClassConst = 'hidden-sm-and-down'
 
@@ -180,12 +153,11 @@ export default {
       expiryAsDateTime: false,
       expiryTimer: null,
       bidButtons: [
-        0,
         -0.9,
-        //-0.5,
-        0.3,
+        -0.5,
+        0,
         0.5,
-        //0.9,
+        1.0,
       ]
     }
   },
@@ -399,6 +371,14 @@ export default {
     },
   },
   methods: {
+    incrementPercentBidCount() {
+      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
+      this.sendPercentageBid(percent);
+    },
+    decrementPercentBidCount() {
+      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 - 0.1 : - 0.1
+      this.sendPercentageBid(percent);
+    },
     toggleExpiryAsDateTime() {
       this.toggledExpiryDate = true
       this.expiryAsDateTime = !this.expiryAsDateTime
@@ -486,7 +466,7 @@ export default {
     getUsersPlayers(userId) {
       const users = this.getUsers
       return (
-          users[userId] && users[userId].players && users[userId].players.length
+        users[userId] && users[userId].players && users[userId].players.length
       ) ? users[userId].players.length : 0
     },
     getPercentMVValue(percent) {
