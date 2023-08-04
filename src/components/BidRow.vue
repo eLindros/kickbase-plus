@@ -59,7 +59,7 @@
           </span>
           </div>
         </div>
-        <v-btn @click="incrementPercentBidCount">+</v-btn>
+        <v-btn @click="incrementPercentBidCount"> + </v-btn>
       </div>
 
     </v-form>
