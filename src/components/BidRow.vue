@@ -28,6 +28,7 @@
 
     <v-form @submit.prevent="dummySubmit" class="playerBidForm mt-5 mb-4">
       <div class="d-sm-flex d-block">
+        <v-btn @click="decrementPercentBidCount">-</v-btn>
         <div class="bid-input-container mr-5">
           <vue-numeric-input
               :initialNumber="bidValue"
@@ -58,6 +59,7 @@
           </span>
           </div>
         </div>
+        <v-btn @click="incrementPercentBidCount">+</v-btn>
       </div>
 
     </v-form>
@@ -179,6 +181,7 @@ export default {
       toggledExpiryDate: false,
       expiryAsDateTime: false,
       expiryTimer: null,
+      percentBidCount: 0,
       bidButtons: [
         0,
         -0.9,
@@ -399,6 +402,13 @@ export default {
     },
   },
   methods: {
+    incrementPercentBidCount(){
+      this.percentBidCount++;
+      this.sendPercentageBid(this.percentBidCount * 0.1);
+    },
+    decrementPercentBidCount(){
+      this.percentBidCount--;
+    },
     toggleExpiryAsDateTime() {
       this.toggledExpiryDate = true
       this.expiryAsDateTime = !this.expiryAsDateTime
