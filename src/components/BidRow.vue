@@ -62,7 +62,7 @@
         <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
         </v-btn>
          <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
-				 <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
+         <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
       </div>
     </div>
 
