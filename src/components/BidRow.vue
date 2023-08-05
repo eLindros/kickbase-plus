@@ -60,9 +60,9 @@
       <div class="bids-button-row">
         <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
         <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
-          <span v-html="getButtonLabel(percent)"></span>
         </v-btn>
-        <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
+         <v-btn color="error" dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
+				 <v-btn color="primary" dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
       </div>
     </div>
 
@@ -164,10 +164,7 @@ export default {
       expiryTimer: null,
       bidButtons: [
         -0.9,
-        -0.5,
         0,
-        0.5,
-        1.0,
       ]
     }
   },
@@ -381,7 +378,11 @@ export default {
     },
   },
   methods: {
-    incrementPercentBidCount() {
+    incrementPercentBidCountBig() {
+      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1 : 1
+      this.sendPercentageBid(percent);
+			},
+		incrementPercentBidCount() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
       this.sendPercentageBid(percent);
     },
