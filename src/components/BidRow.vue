@@ -496,7 +496,7 @@ export default {
         mvA = '+' + percent + '%'
       }
 
-      return `<strong>MV${mvA}</strong>: ${value}`
+      return `<strong>MV${mvA}</strong>`
     }
   }
 }

@@ -46,9 +46,6 @@
 
   button {
     margin: 0 10px 10px 0;
-    @include breakpoint(xs) {
-      width: 100%;
-    }
   }
 }
 
@@ -57,7 +54,6 @@
     order: 5
   }
 }
-
 
 
 .bid-input-container {
