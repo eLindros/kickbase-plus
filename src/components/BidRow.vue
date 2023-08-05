@@ -489,7 +489,6 @@ export default {
     },
     getButtonLabel(percent) {
       let mvA = ''
-      const value = this.getPercentMVValueRepresentation(percent)
       if (percent < 0) {
         mvA = percent + '%'
       } else if (percent > 0) {
