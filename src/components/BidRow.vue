@@ -49,12 +49,6 @@
       </div>
 
     </v-form>
-    <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
-      revoke own bid ({{ getComputedBid }})
-    </v-btn>
-    <!--
-    TODO: re-introduce with settings options
-        -->
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
@@ -66,7 +60,14 @@
          <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
       </div>
     </div>
-
+    
+    <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
+      revoke own bid ({{ getComputedBid }})
+    </v-btn>
+    <!--
+    TODO: re-introduce with settings options
+        -->
+        
     <template v-slot:extra-expansion-panel
       v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
       <v-expansion-panel>
