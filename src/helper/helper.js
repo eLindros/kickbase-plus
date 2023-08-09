@@ -30,16 +30,16 @@ const getPositionWording = (positionId) => {
     let position = ''
     switch (positionId) {
         case 1:
-            position = 'TW'
+            position = 'goalkeeper'
             break;
         case 2:
-            position = 'ABW'
+            position = 'defender'
             break;
         case 3:
-            position = 'MF'
+            position = 'midfielder'
             break;
         case 4:
-            position = 'ANG'
+            position = 'forward'
             break;
     }
     return position
