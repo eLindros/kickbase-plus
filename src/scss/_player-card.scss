@@ -271,7 +271,7 @@ $defaultBorder: 10px solid #dadada !important;
 
   @include breakpoint(xs) {
     .v-btn {
-      width: 100%;
+     min-width: 100%;
       white-space: normal;
       display: block;
     }
