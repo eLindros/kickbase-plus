@@ -39,23 +39,25 @@
       </div>
 
     </v-form>
+    <div class="mb-5">
+      <h3 class="text-subtitle-1">Bid-Buttons:</h3>
+      <div class="bids-button-row">
+        <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
+        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
+        <span v-html="getButtonLabel(percent)"></span>
+        </v-btn>
+         <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
+         <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
+      </div>
+    </div>
+    
     <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
       revoke own bid ({{ getComputedBid }})
     </v-btn>
     <!--
     TODO: re-introduce with settings options
         -->
-    <div class="mb-5">
-      <h3 class="text-subtitle-1">Bid-Buttons:</h3>
-      <div class="bids-button-row">
-        <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
-        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
-          <span v-html="getButtonLabel(percent)"></span>
-        </v-btn>
-        <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
-      </div>
-    </div>
-
+        
     <template v-slot:extra-expansion-panel
       v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
       <v-expansion-panel>
@@ -154,10 +156,7 @@ export default {
       expiryTimer: null,
       bidButtons: [
         -0.9,
-        -0.5,
         0,
-        0.5,
-        1.0,
       ]
     }
   },
@@ -371,7 +370,11 @@ export default {
     },
   },
   methods: {
-    incrementPercentBidCount() {
+    incrementPercentBidCountBig() {
+      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1 : 1
+      this.sendPercentageBid(percent);
+			},
+		incrementPercentBidCount() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
       this.sendPercentageBid(percent);
     },
@@ -477,14 +480,13 @@ export default {
     },
     getButtonLabel(percent) {
       let mvA = ''
-      const value = this.getPercentMVValueRepresentation(percent)
       if (percent < 0) {
         mvA = percent + '%'
       } else if (percent > 0) {
         mvA = '+' + percent + '%'
       }
 
-      return `<strong>MV${mvA}</strong>: ${value}`
+      return `<strong>MV${mvA}</strong>`
     }
   }
 }

@@ -43,12 +43,11 @@
 .bids-button-row {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
 
-  button {
+  .v-btn {
     margin: 0 10px 10px 0;
-    @include breakpoint(xs) {
-      width: 100%;
-    }
+    padding: 0 4px;
   }
 }
 
@@ -57,7 +56,6 @@
     order: 5
   }
 }
-
 
 
 .bid-input-container {
