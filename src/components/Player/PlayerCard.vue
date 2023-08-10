@@ -1,162 +1,49 @@
 <template>
-  <div>
-    <v-card outlined>
-      <v-container class="pa-0">
-        <v-row no-gutters justify="start">
-          <v-col cols="3">
-            <PlayerImage :player="this.player" />
-          </v-col >
-          <v-col cols="9" class="mt-2">
-            <span class="grey px-2 mr-1">{{ player.number }}</span>
-            <span class="grey px-2 mr-1">{{ getPosition }}</span>
-            <span class="px-2 mr-1" :class="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
-            {{ getStatus.status }}</span>
-            <v-card-title class="text-no-wrap pa-0">
-              <ExternalInfo :src="getLigainsiderLink">
-                <span v-if="player.knownName">{{ player.knownName }}</span>
-                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-              </ExternalInfo>
-            </v-card-title>
-            <v-card-subtitle>
-                {{ getComputedPrice }} (MV)
-            </v-card-subtitle>
-            <v-card-content :color="getGrowthColor">
-              {{
-                getDiffMV | numeral('0,0 $')
-              }}
-            </v-card-content>
-          </v-col>
+  <v-card outlined>
+    <v-container class="pa-0 ma-0">
+      <v-row no-gutters justify="start">
+        <v-col class="flex-grow-1 flex-shrink-0">
+          <PlayerImage :player="this.player" />
+        </v-col>
+        <v-col class="d-flex flex-column justify-start align-start">
+          <v-chip-group class="pa-0 ma-0">
+            <v-chip x-small label class="mr-1">{{ player.number }}</v-chip>
+            <v-chip x-small label class="mr-1">{{ getPosition }}</v-chip>
+            <v-chip x-small label :color="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
+            </v-chip>
+          </v-chip-group>
+          <v-card-title class="text-no-wrap overflow-hidden ma-0 pa-0">
+            <ExternalInfo :src="getLigainsiderLink">
+              <span v-if="player.knownName">{{ player.knownName }}</span>
+              <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+            </ExternalInfo>
+          </v-card-title>
+          <v-card-subtitle class="pa-0 ma-0">
+            {{ getComputedPrice }} (MV)
+          </v-card-subtitle>
+          <v-card-text :color="getGrowthColor" class="pa-0 ma-0">
+            {{
+              getDiffMV | numeral('0,0 $')
+            }}
+          </v-card-text>
+        </v-col>
 
-        </v-row>
-      </v-container>
-    </v-card>
-    <v-card class="elevation-6 pa-4 mt-5 player-card">
-      <div v-if="hasPreHeadSlot" class="player-card__pre-head">
-        <div class="player-card__pre-head__content">
-          <slot name="pre-head"></slot>
-        </div>
-      </div>
-      <div class="player-card-content-wrapper">
-        <div class="player-card-meta" v-if="hideMeta === false" :style="{ width: playerMetaWidth }">
-          <div class="player-card-meta__content">
-            <slot name="pre-meta"></slot>
-            <PlayerImage :player="this.player" />
-            <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
-              <status-pill :player="player"></status-pill>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fourth" v-if="hidePlayerMarketValue === false">
-              <v-alert type="info" dense text icon="fa-euro-sign" class="mb-0">
-                {{ getComputedPrice }} (MV)
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-third">
-              <v-alert :color="getGrowthColor" dense text :icon="getGrowthIcon" class="mt-0">{{
-                getDiffMV | numeral('0,0 $')
-              }}
-                <span v-if="getDiffMV > 0">(growth)</span>
-                <span v-if="getDiffMV < 0">(shrinkage)</span>
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
-              <v-alert :color="genericInfoFieldColor" dense text icon="fa-poll">
-                ⌀ {{ player.averagePoints }} / {{ player.totalPoints }}
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
-              <v-alert :color="getPricePerPointColor" dense text icon="fa-bullseye">
-                {{ getComputedPricePerPoint }} KpP
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth"
-              v-if="nextMatchComputed && nextMatchComputed.img">
-              <v-alert :color="nextGameColor" dense text icon="fa-beer">
-                <div class="d-flex align-center text-left ">
-                  <span class="mr-2">VS</span>
-                  <v-img height="24" width="24" class="flex-grow-0 mr-1" contain aspect-ratio="1"
-                    :src="nextMatchComputed.img"></v-img>
-                  <span class="text-caption">{{ nextMatchComputed.abbr }}</span>
-                </div>
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPosition === false">
-              <v-alert :color="genericInfoFieldColor" dense text icon="fa-futbol">{{ getPosition }}</v-alert>
-            </div>
-          </div>
-        </div>
-
-        <div class="player-card-slot" ref="playerCardContent">
-          <div class="player-card-head">
-            <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
-              <ExternalInfo :src="getLigainsiderLink">
-                <span v-if="player.knownName">{{ player.knownName }}</span>
-                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-                <span class="hidden-xs-only caption">(#{{ player.id }})</span>
-              </ExternalInfo>
-            </h2>
-          </div>
-          <slot></slot>
-
-          <div :class="statsCssClass">
-            <v-expansion-panels v-model="accordion" accordion focusable class="elevation-1 player-card-accordion">
-              <v-expansion-panel>
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="yellow darken-2">fa-medal</v-icon>
-                  season statistics and points
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <player-points-statistic :player="player" v-if="accordion === 0"></player-points-statistic>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel v-if="showPurchaseStatistic">
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="teal darken-2">fa-search-dollar</v-icon>
-                  purchase statistics
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-data-table :headers="getPlayerStatistics.headers" :items="getPlayerStatistics.values"
-                    :hide-default-footer="true" class="elevation-1"></v-data-table>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-chart-line</v-icon>
-                  market value trend
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <player-market-value-trend :player="player"></player-market-value-trend>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <slot name="extra-expansion-panel"></slot>
-            </v-expansion-panels>
-          </div>
-          <v-btn @click="toggleStatistics" class="hidden-sm-and-up">
-            <span v-if="statsCssClass === initStatsCssClass">show</span>
-            <span v-else>hide</span>
-            &nbsp;statistics
-          </v-btn>
-        </div>
-      </div>
-    </v-card>
-  </div>
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
 
-import StatusPill from "../StatusPill";
 import ExternalInfo from "../Generic/ExternalInfo";
 import PlayerImage from "./PlayerImage";
 import numeral from "numeral";
-import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 import { getMarketValueGrowth, getBundesligaClubImageUrlById, nextMatch, getPositionWording } from "@/helper/helper"
-import PlayerPointsStatistic from "@/components/Player/PlayerPointsStatistic";
 
 export default {
   name: "PlayerCard",
   components: {
-    PlayerPointsStatistic,
-    StatusPill,
-    PlayerMarketValueTrend,
     ExternalInfo,
     PlayerImage,
   },
@@ -376,7 +263,7 @@ export default {
     getStatus() {
       let status = {
         icon: "fa-thumbs-up",
-        color: "green",
+        color: "success",
         status: "fit",
       };
       switch (this.player.status) {

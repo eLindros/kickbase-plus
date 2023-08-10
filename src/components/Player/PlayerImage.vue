@@ -1,6 +1,6 @@
 <template>
     <ExternalInfo :src="getLigainsiderLink">
-        <v-img :src="getPlayerImage" aspect-ratio="1">
+        <v-img :src="getPlayerImage" aspect-ratio="1" height="150px">
             <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" justify="center">
                     <v-icon size="200">
