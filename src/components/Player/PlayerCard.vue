@@ -13,10 +13,18 @@
             {{ getStatus.status }}</span>
             <v-card-title class="text-no-wrap pa-0">
               <ExternalInfo :src="getLigainsiderLink">
-                <h2 v-if="player.knownName">{{ player.knownName }}</h2>
-                <h2 v-else>{{ player.firstName }} {{ player.lastName }}</h2>
+                <span v-if="player.knownName">{{ player.knownName }}</span>
+                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
               </ExternalInfo>
             </v-card-title>
+            <v-card-subtitle>
+                {{ getComputedPrice }} (MV)
+            </v-card-subtitle>
+            <v-card-content :color="getGrowthColor">
+              {{
+                getDiffMV | numeral('0,0 $')
+              }}
+            </v-card-content>
           </v-col>
 
         </v-row>
