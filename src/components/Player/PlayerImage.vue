@@ -1,18 +1,16 @@
 <template>
-    <ExternalInfo :src="getLigainsiderLink">
-        <v-img :src="getPlayerImage" aspect-ratio="1" height="150px">
-            <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" justify="center">
-                    <v-icon size="200">
-                        fa-user-alt
-                    </v-icon>
-                </v-row>
-            </template>
-            <ExternalInfo v-if="getLigainsiderTeamLink" :src="getLigainsiderTeamLink">
-                <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image"/>
-            </ExternalInfo>
-        </v-img>
-    </ExternalInfo>
+    <div>
+        <ExternalInfo :src="getLigainsiderLink">
+            <v-img :src="getPlayerImage" aspect-ratio="1" class="player-card__player-image">
+                <template v-slot:placeholder>
+            <v-img :src="getPlayerDummy" aspect-ratio="1" class="player-card__player-image"/>
+                </template>
+            </v-img>
+        </ExternalInfo>
+        <ExternalInfo v-if="getLigainsiderTeamLink" :src="getLigainsiderTeamLink">
+            <v-img :src="teamImage" aspect-ratio="1" class="player-card__team-image" />
+        </ExternalInfo>
+    </div>
 </template>
 
 <script>
@@ -39,6 +37,9 @@ export default {
         ]),
         getPlayerImage() {
             return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`
+        },
+        getPlayerDummy() {
+            return `https://kickbase.b-cdn.net/pool/teamsdummies/${this.player.teamId}.png`;
         },
         teamImage() {
             return getBundesligaClubImageUrlById(this.player.teamId)

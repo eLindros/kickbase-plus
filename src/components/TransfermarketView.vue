@@ -4,73 +4,35 @@
     <options-bar info-button-title="your defaults">
       <template v-slot:content>
         <reload-button :loading="loading" v-on:click.native="load" color="transparent"
-                       extra-classes="desktop"></reload-button>
+          extra-classes="desktop"></reload-button>
         <div v-if="loading === false">
-          <v-text-field
-              label="Search for player at current market"
-              v-model="search"
-              prepend-icon="fa-search"
-          ></v-text-field>
+          <v-text-field label="Search for player at current market" v-model="search"
+            prepend-icon="fa-search"></v-text-field>
 
-          <v-select
-              :items="positions"
-              label="Position filter"
-              dense
-              outlined
-              v-model="selectedFilteredPosition"
-              hide-details="true"
-          ></v-select>
+          <v-select :items="positions" label="Position filter" dense outlined v-model="selectedFilteredPosition"
+            hide-details="true"></v-select>
 
-          <v-select
-              class="mt-2"
-              v-model="expertFilters"
-              :items="expertFiltersOptions"
-              :menu-props="{ maxHeight: '500' }"
-              label="Expert filters"
-              outlined
-              multiple
-              chips
-              hint="Select one or more expert filters to limit the list"
-              persistent-hint
-          ></v-select>
+          <v-select class="mt-2" v-model="expertFilters" :items="expertFiltersOptions" :menu-props="{ maxHeight: '500' }"
+            label="Expert filters" outlined multiple chips hint="Select one or more expert filters to limit the list"
+            persistent-hint></v-select>
 
-          <v-select
-              class="mt-2"
-              v-model="filteredTeams"
-              :items="getTeams"
-              :menu-props="{ maxHeight: '400' }"
-              label="Bundesliga Club"
-              outlined
-              multiple
-              chips
-              hint="Select one or more clubs"
-              persistent-hint
-              return-object
-              :item-value="'i'"
-          >
+          <v-select class="mt-2" v-model="filteredTeams" :items="getTeams" :menu-props="{ maxHeight: '400' }"
+            label="Bundesliga Club" outlined multiple chips hint="Select one or more clubs" persistent-hint return-object
+            :item-value="'i'">
             <template v-slot:selection="{ item }">
-              <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)"/>
+              <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)" />
               {{ item.n }}
             </template>
             <template v-slot:item="{ item }">
-              <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)"/>
+              <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)" />
               {{ item.n }}
             </template>
           </v-select>
 
-          <v-switch
-              v-model="showOtherUsersPlayer"
-              label="Show all player (of all league members)"
-          ></v-switch>
+          <v-switch v-model="showOtherUsersPlayer" label="Show all player (of all league members)"></v-switch>
 
-          <v-divider class="mt-3 mb-6"/>
-          <v-select
-              :items="orderOptions"
-              label="Sort order"
-              v-model="order"
-              outlined
-              :hide-details=true
-          ></v-select>
+          <v-divider class="mt-3 mb-6" />
+          <v-select :items="orderOptions" label="Sort order" v-model="order" outlined :hide-details=true></v-select>
         </div>
       </template>
       <template v-slot:other-buttons>
@@ -80,12 +42,7 @@
     </options-bar>
 
     <div class="flex-grow-1 options-bar__sibling" v-if="loading === false">
-      <v-alert
-          :color="alertColor"
-          dark
-          text
-          class="mb-5 text-body-2"
-      >
+      <v-alert :color="alertColor" dark text class="mb-5 text-body-2">
         <strong class="text-h6 font-weight-black">{{ playersLeft }}</strong> free spots in your team
         /
         {{ getFilteredPlayers.length }} players match your criteria (out of a total of {{ getComputedBids.length }}
@@ -93,27 +50,13 @@
 
       </v-alert>
 
-        <v-alert
-            v-if="hasActiveFilters"
-            style="cursor: pointer"
-            type="info"
-            dark
-            text
-            @click="resetFilters"
-        >
-          you have active filters. <u>reset filters</u>
-        </v-alert>
-      <v-text-field
-          label="Search for player at current market"
-          v-model="search"
-          prepend-icon="fa-search"
-          class="hidden-md-and-up"
-      ></v-text-field>
-      <div v-if="getFilteredPlayers.length">
-        <bid-row
-            v-for="player in getFilteredPlayers"
-            :key="player.id"
-            :player="player"/>
+      <v-alert v-if="hasActiveFilters" style="cursor: pointer" type="info" dark text @click="resetFilters">
+        you have active filters. <u>reset filters</u>
+      </v-alert>
+      <v-text-field label="Search for player at current market" v-model="search" prepend-icon="fa-search"
+        class="hidden-md-and-up"></v-text-field>
+      <div v-if="getFilteredPlayers.length" class="d-flex flex-wrap">
+        <bid-row v-for="player in getFilteredPlayers" :key="player.id" :player="player" />
       </div>
       <v-alert v-else type="info" text>
         no player matched your criteria. please check your filters
@@ -124,20 +67,19 @@
       <loading-spinner></loading-spinner>
     </div>
   </div>
-
 </template>
 
 <script>
 import moment from "moment"
 import api from '../api/api'
-import {mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import BidRow from './BidRow'
 import OptionsBar from './Generic/OptionsBar'
 import ReloadButton from './Generic/ReloadButton'
 import LoadingSpinner from "@/components/Spinner"
 
-import {getMarketValueGrowth, getBundesligaClubImageUrlById} from "@/helper/helper"
+import { getMarketValueGrowth, getBundesligaClubImageUrlById } from "@/helper/helper"
 
 export default {
   name: 'transfermarket-view',
@@ -219,8 +161,8 @@ export default {
     playersLeft() {
       if (this.getSelectedLeague && this.getSelectedLeague.pl) {
         return (this.getUsersDetails && this.getUsersDetails.players && this.getSelectedLeague)
-            ? this.getSelectedLeague.pl - this.getUsersDetails.players.length
-            : 0
+          ? this.getSelectedLeague.pl - this.getUsersDetails.players.length
+          : 0
       } else {
         return 'unlimited'
       }

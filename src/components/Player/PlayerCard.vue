@@ -1,31 +1,34 @@
 <template>
-  <v-card outlined>
+  <v-card outlined max-width="400" min-width="350" class="ml-5">
     <v-container class="pa-0 ma-0">
       <v-row no-gutters justify="start">
-        <v-col class="flex-grow-1 flex-shrink-0">
+        <v-col class="flex-grow-1 flex-shrink-0" cols="4">
           <PlayerImage :player="this.player" />
         </v-col>
-        <v-col class="d-flex flex-column justify-start align-start">
+        <v-col class="d-flex flex-column justify-start align-start" cols="8" width="120px">
           <v-chip-group class="pa-0 ma-0">
             <v-chip x-small label class="mr-1">{{ player.number }}</v-chip>
             <v-chip x-small label class="mr-1">{{ getPosition }}</v-chip>
             <v-chip x-small label :color="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
             </v-chip>
           </v-chip-group>
-          <v-card-title class="text-no-wrap overflow-hidden ma-0 pa-0">
-            <ExternalInfo :src="getLigainsiderLink">
-              <span v-if="player.knownName">{{ player.knownName }}</span>
-              <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-            </ExternalInfo>
-          </v-card-title>
-          <v-card-subtitle class="pa-0 ma-0">
-            {{ getComputedPrice }} (MV)
-          </v-card-subtitle>
-          <v-card-text :color="getGrowthColor" class="pa-0 ma-0">
-            {{
-              getDiffMV | numeral('0,0 $')
-            }}
-          </v-card-text>
+          <div class="d-flex flex-column align-end align-self-end pr-5">
+            <div class="text-no-wrap overflow-hidden ma-0 pa-0 text-h5">
+              <ExternalInfo :src="getLigainsiderLink">
+                <span v-if="player.knownName">{{ player.knownName }}</span>
+                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+              </ExternalInfo>
+            </div>
+            <div class="pa-0 ma-0 text-body-1">
+              {{ getComputedPrice }} (MV)
+            </div>
+            <div :style="'color:' + getGrowthColor" class="pa-0 ma-0 text-caption">
+              {{
+                getDiffMV | numeral('0,0 $')
+              }}
+            </div>
+
+          </div>
         </v-col>
 
       </v-row>

@@ -134,11 +134,16 @@ $defaultBorder: 10px solid #dadada !important;
 
   &__team-image {
     position: absolute;
-    max-width: 128px;
-    min-width: 44px;
+    width: 30px;
     bottom: 0;
-    right: 1rem;
+    left: 0;
     z-index: 2;
+    object-position: right bottom;
+  }
+
+  &__player-image {
+    height: 140px;
+    object-position: right bottom;
   }
 
   &.own-bid {
