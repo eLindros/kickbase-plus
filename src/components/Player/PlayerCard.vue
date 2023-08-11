@@ -1,38 +1,108 @@
 <template>
-  <v-card outlined max-width="400" min-width="350" class="ml-5">
+  <v-card max-width="400" min-width="350" class="mr-3 mb-3">
     <v-container class="pa-0 ma-0">
       <v-row no-gutters justify="start">
-        <v-col class="flex-grow-1 flex-shrink-0" cols="4">
+        <v-col cols="4">
           <PlayerImage :player="this.player" />
         </v-col>
-        <v-col class="d-flex flex-column justify-start align-start" cols="8" width="120px">
+        <v-col class="justify-start align-start" cols="8">
           <v-chip-group class="pa-0 ma-0">
             <v-chip x-small label class="mr-1">{{ player.number }}</v-chip>
             <v-chip x-small label class="mr-1">{{ getPosition }}</v-chip>
             <v-chip x-small label :color="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
             </v-chip>
+            <v-spacer></v-spacer>
+            <v-chip color="white" x-small label v-if="nextMatchComputed && nextMatchComputed.img">
+              <span class="mr-2">VS</span>
+              <v-img height="24" width="24" class="flex-grow-0" contain aspect-ratio="1"
+                :src="nextMatchComputed.img"></v-img>
+            </v-chip>
           </v-chip-group>
-          <div class="d-flex flex-column align-end align-self-end pr-5">
-            <div class="text-no-wrap overflow-hidden ma-0 pa-0 text-h5">
+          <v-row class="d-flex flex-column align-start">
+            <div class="text-no-wrap overflow-hidden ma-0 pa-0 text-h6 font-weight-black text-uppercase">
               <ExternalInfo :src="getLigainsiderLink">
                 <span v-if="player.knownName">{{ player.knownName }}</span>
-                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
+                <span v-else>{{ player.lastName }}</span>
               </ExternalInfo>
             </div>
-            <div class="pa-0 ma-0 text-body-1">
-              {{ getComputedPrice }} (MV)
-            </div>
-            <div :style="'color:' + getGrowthColor" class="pa-0 ma-0 text-caption">
-              {{
-                getDiffMV | numeral('0,0 $')
-              }}
-            </div>
-
-          </div>
+            <v-row class="justify-start" style="width:100%">
+              <v-col class="pa-0 mr-2">
+                <v-row class="text-body-2 font-weight-bold">
+                  {{ player.totalPoints | numeral('0,0') }}
+                </v-row>
+                <v-row class="grey--text mt-0" style="font-size: xx-small;">
+                  Pkt.
+                </v-row>
+              </v-col>
+              <v-col class="pa-0">
+                <v-row class="text-body-2 font-weight-bold">
+                  {{ player.averagePoints }}
+                </v-row>
+                <v-row class="grey--text mt-0" style="font-size: xx-small;">
+                  ⌀&nbsp;Pkt.
+                </v-row>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="7" class="pa-0 pr-5">
+                <div class="text-body-2 font-weight-bold text-right">
+                  {{ getComputedPrice }}
+                </div>
+                <div class="mt-0 text-right" :style="'font-size: xx-small;color:' + getGrowthColor">
+                  <v-icon :color="getGrowthColor" dense x-small>{{ getGrowthIcon }}</v-icon>
+                  Marktwert
+                </div>
+                <div :style="'font-size: xx-small;color:' + getGrowthColor" class="mt-0 text-right">
+                  {{
+                    getDiffMV | numeral('0,0$')
+                  }}
+                </div>
+              </v-col>
+            </v-row>
+          </v-row>
         </v-col>
-
       </v-row>
     </v-container>
+    <v-divider />
+    <slot></slot>
+    <v-divider />
+    <div :class="statsCssClass">
+      <v-expansion-panels v-model="accordion" accordion focusable class="elevation-1 player-card-accordion">
+        <v-expansion-panel>
+          <v-expansion-panel-header class="elevation-0">
+            <v-icon class="mr-2 player-card-accordion__icon" color="yellow darken-2">fa-medal</v-icon>
+            season statistics and points
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <player-points-statistic :player="player" v-if="accordion === 0"></player-points-statistic>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel v-if="showPurchaseStatistic">
+          <v-expansion-panel-header class="elevation-0">
+            <v-icon class="mr-2 player-card-accordion__icon" color="teal darken-2">fa-search-dollar</v-icon>
+            purchase statistics
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-data-table :headers="getPlayerStatistics.headers" :items="getPlayerStatistics.values"
+              :hide-default-footer="true" class="elevation-1"></v-data-table>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header class="elevation-0">
+            <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-chart-line</v-icon>
+            market value trend
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <player-market-value-trend :player="player"></player-market-value-trend>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <slot name="extra-expansion-panel"></slot>
+      </v-expansion-panels>
+    </div>
+    <v-btn @click="toggleStatistics" class="hidden-sm-and-up">
+      <span v-if="statsCssClass === initStatsCssClass">show</span>
+      <span v-else>hide</span>
+      &nbsp;statistics
+    </v-btn>
   </v-card>
 </template>
 
@@ -111,7 +181,7 @@ export default {
       return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`
     },
     getComputedPrice() {
-      return numeral(this.player.price).format('0,0')
+      return numeral(this.player.price).format('0,0$')
     },
     getGrowthColor() {
       let positive = '#2a5b2a'
@@ -120,7 +190,7 @@ export default {
         positive = '#afd3af'
         negative = '#e6b6b6'
       }
-      let color = 'fa-caret-right'
+      let color = 'fa-angle-right'
       if (this.getDiffMV > 0) {
         color = positive
       } else if (this.getDiffMV < 0) {
@@ -129,11 +199,11 @@ export default {
       return color
     },
     getGrowthIcon() {
-      let icon = 'fa-caret-right'
+      let icon = 'fa-angle-right'
       if (this.getDiffMV > 0) {
-        icon = 'fa-caret-up'
+        icon = 'fa-angle-up'
       } else if (this.getDiffMV < 0) {
-        icon = 'fa-caret-down'
+        icon = 'fa-angle-down'
       }
       return icon
     },

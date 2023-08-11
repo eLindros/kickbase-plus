@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position: relative;">
         <ExternalInfo :src="getLigainsiderLink">
             <v-img :src="getPlayerImage" aspect-ratio="1" class="player-card__player-image">
                 <template v-slot:placeholder>

@@ -1,39 +1,33 @@
 <template>
-  <player-card
-      :class="{'own-bid':player.hasOwnBid, 'no-bid':player.hasNoBid, 'only':player.hasOnlySelfBid}"
-      class="bid-row"
-      :player="player"
-      :show-purchase-statistic=false
-  >
-    <template v-slot:pre-meta>
-      <v-alert
-          text
-          :color="(isDarkTheme) ? 'deep-purple lighten-3': 'deep-purple darken-4'"
-          icon="fa-clock"
-          class="expiry-info"
-          style="cursor: pointer"
-          @click="toggleExpiryAsDateTime"
-      >
-        <transition name="fade">
-          <span v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</span>
-        </transition>
-        <transition name="fade">
-          <span v-if="expiryAsDateTime === false">{{ expiryDate }}</span>
-        </transition>
-
-        <div class="expiry-info__shadow-info" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
-        <div class="expiry-info__shadow-info" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
-      </v-alert>
-    </template>
-
-    <v-form @submit.prevent="dummySubmit" class="playerBidForm mt-5 mb-4">
-      <div class="d-sm-flex d-block">
-        <div class="bid-input-container mr-5">
-          <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall" :min="1"
-            align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
-            v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
-          <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
-        </div>
+  <player-card :class="{ 'own-bid': player.hasOwnBid, 'no-bid': player.hasNoBid, 'only': player.hasOnlySelfBid }"
+    class="bid-row" :player="player" :show-purchase-statistic=false>
+    <v-container>
+      <v-row>
+        <v-alert text width="100%" dense class="pa-0 px-2"
+          :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'" style="cursor: pointer"
+          @click="toggleExpiryAsDateTime">
+          <div style="font-size: x-small;" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
+          <div style="font-size: x-small;" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
+        </v-alert>
+      </v-row>
+      <v-row justify="space-between" align="center" no-gutters>
+        <v-col cols="2"><v-avatar size="30">
+            <v-img v-if="player.userProfile" :src="player.userProfile" aspect-ratio="1"></v-img>
+            <v-img v-else src="/assets/img/kickbase.png" aspect-ratio="1"></v-img>
+          </v-avatar></v-col>
+        <v-col cols="8">
+          <v-form @submit.prevent="dummySubmit">
+            <div class="bid-input-container">
+              <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall"
+                :min="1" align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
+                v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
+              <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
+            </div>
+          </v-form>
+        </v-col>
+        <v-col></v-col>
+      </v-row>
+      <v-row>
         <div class="bid-input-container">
           <div class="text-caption">
             <span v-if="getComputedBid !== 'no bid'">
@@ -46,28 +40,28 @@
             </span>
           </div>
         </div>
-      </div>
 
-    </v-form>
+      </v-row>
+    </v-container>
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
         <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
         <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
-        <span v-html="getButtonLabel(percent)"></span>
+          <span v-html="getButtonLabel(percent)"></span>
         </v-btn>
-         <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
-         <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
+        <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
+        <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
       </div>
     </div>
-    
+
     <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
       revoke own bid ({{ getComputedBid }})
     </v-btn>
     <!--
     TODO: re-introduce with settings options
         -->
-        
+
     <template v-slot:extra-expansion-panel
       v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
       <v-expansion-panel>
@@ -383,8 +377,8 @@ export default {
     incrementPercentBidCountBig() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1 : 1
       this.sendPercentageBid(percent);
-			},
-		incrementPercentBidCount() {
+    },
+    incrementPercentBidCount() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
       this.sendPercentageBid(percent);
     },
