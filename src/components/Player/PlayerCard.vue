@@ -25,7 +25,7 @@
                 <span v-else>{{ player.lastName }}</span>
               </ExternalInfo>
             </div>
-            <v-row class="justify-start" style="width:100%">
+            <v-row class="justify-start ma-0" style="width:100%">
               <v-col class="pa-0 mr-2">
                 <v-row class="text-body-2 font-weight-bold">
                   {{ player.totalPoints | numeral('0,0') }}
