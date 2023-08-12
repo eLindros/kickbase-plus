@@ -27,7 +27,7 @@
             </div>
             <v-row class="justify-start ma-0" style="width:100%">
               <v-col class="pa-0 mr-2">
-                <v-row class="text-body-2 font-weight-bold">
+                <v-row class="text-body-2 font-weight-bold ma-0">
                   {{ player.totalPoints | numeral('0,0') }}
                 </v-row>
                 <v-row class="grey--text mt-0" style="font-size: xx-small;">
@@ -35,7 +35,7 @@
                 </v-row>
               </v-col>
               <v-col class="pa-0">
-                <v-row class="text-body-2 font-weight-bold">
+                <v-row class="text-body-2 font-weight-bold ma-0">
                   {{ player.averagePoints }}
                 </v-row>
                 <v-row class="grey--text mt-0" style="font-size: xx-small;">
