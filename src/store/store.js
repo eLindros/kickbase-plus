@@ -19,84 +19,84 @@ const store = new Vuex.Store({
     ligainsiderTeams: {
       8: {
         name: 'FC Schalke 04',
-        ligainsiderUrl: '/fc-schalke-04/13/'
+        ligainsiderUrl: '/fc-schalke-04/13/',
       },
       3: {
         name: 'Borussia Dortmund',
-        ligainsiderUrl: '/borussia-dortmund/14/'
+        ligainsiderUrl: '/borussia-dortmund/14/',
       },
       40: {
         name: '1. FC Union Berlin',
-        ligainsiderUrl: '/1-fc-union-berlin/1246/'
+        ligainsiderUrl: '/1-fc-union-berlin/1246/',
       },
       4: {
         name: 'Eintracht Frankfurt',
-        ligainsiderUrl: '/eintracht-frankfurt/3/'
+        ligainsiderUrl: '/eintracht-frankfurt/3/',
       },
       2: {
         name: 'FC Bayern München',
-        ligainsiderUrl: '/fc-bayern-muenchen/1/'
+        ligainsiderUrl: '/fc-bayern-muenchen/1/',
       },
       5: {
         name: 'SC Freiburg',
-        ligainsiderUrl: '/sc-freiburg/18/'
+        ligainsiderUrl: '/sc-freiburg/18/',
       },
       7: {
         name: 'Bayer 04 Leverkusen',
-        ligainsiderUrl: '/bayer-04-leverkusen/4/'
+        ligainsiderUrl: '/bayer-04-leverkusen/4/',
       },
       9: {
         name: 'VfB Stuttgart',
-        ligainsiderUrl: '/vfb-stuttgart/12/'
+        ligainsiderUrl: '/vfb-stuttgart/12/',
       },
       10: {
         name: 'SV Werder Bremen',
-        ligainsiderUrl: '/sv-werder-bremen/2/'
+        ligainsiderUrl: '/sv-werder-bremen/2/',
       },
       11: {
         name: 'Vfl Wolfsburg',
-        ligainsiderUrl: '/vfl-wolfsburg/16/'
+        ligainsiderUrl: '/vfl-wolfsburg/16/',
       },
       13: {
         name: 'FC Augsburg',
-        ligainsiderUrl: '/fc-augsburg/21/'
+        ligainsiderUrl: '/fc-augsburg/21/',
       },
       14: {
         name: 'TSG Hoffenheim',
-        ligainsiderUrl: '/tsg-hoffenheim/10/'
+        ligainsiderUrl: '/tsg-hoffenheim/10/',
       },
       15: {
         name: 'Borussia Mönchengladbach',
-        ligainsiderUrl: '/borussia-moenchengladbach/5/'
+        ligainsiderUrl: '/borussia-moenchengladbach/5/',
       },
       18: {
         name: '1. FSV Mainz 05',
-        ligainsiderUrl: '/1-fsv-mainz-05/17/'
+        ligainsiderUrl: '/1-fsv-mainz-05/17/',
       },
       20: {
         name: 'Hertha BSC Berlin',
-        ligainsiderUrl: '/hertha-bsc/6/'
+        ligainsiderUrl: '/hertha-bsc/6/',
       },
       24: {
         name: 'Vfl Bochum',
-        ligainsiderUrl: '/vfl-bochum/11/'
-      }, 
+        ligainsiderUrl: '/vfl-bochum/11/',
+      },
       28: {
         name: '1. FC Köln',
-        ligainsiderUrl: '/1-fc-koeln/15/'
+        ligainsiderUrl: '/1-fc-koeln/15/',
       },
       43: {
         name: 'RB Leipzig',
-        ligainsiderUrl: '/rb-leipzig/1311/'
-      },         
+        ligainsiderUrl: '/rb-leipzig/1311/',
+      },
       50: {
         name: '1. FC Heidenheim',
-        ligainsiderUrl: '/1-fc-heidenheim/1259/'
-      },         
+        ligainsiderUrl: '/1-fc-heidenheim/1259/',
+      },
       42: {
         name: 'SV Darmstadt 98',
-        ligainsiderUrl: '/sv-darmstadt-98/1267/'
-      },         
+        ligainsiderUrl: '/sv-darmstadt-98/1267/',
+      },
     },
     bids: [],
     players: {},
@@ -119,7 +119,7 @@ const store = new Vuex.Store({
     ranking: null,
     marketValueComparisonPlayer: null,
     defaults: {
-      offerThreshold: .6,
+      offerThreshold: 0.6,
       offerOrder: 'newest',
       generalPlayerCardShowAlwaysAllDetails: false,
       offerOpenPlayerNotOnMarketPanel: true,
@@ -129,7 +129,7 @@ const store = new Vuex.Store({
       transfermarketExpiryDisplayType: 'relative',
       offerOrders: {
         oldest: 'oldest first',
-        newest: 'newest first'
+        newest: 'newest first',
       },
     },
     offerThreshold: null,

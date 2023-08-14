@@ -1,19 +1,13 @@
 <template>
-  <div
-      :class="[
-      'vue-numeric-input',
-      size,
-      controlsType === 'updown' ? 'updown' : ''
-    ]"
-  >
+  <div :class="['vue-numeric-input', size, controlsType === 'updown' ? 'updown' : '']">
     <formatted-number-input
-        :value="newValue"
-        :nullValue="initialNumber"
-        decimal=","
-        separator="."
-        class="numeric-input"
-        v-on:change="submit"
-        v-on:input="emitPreview"
+      :value="newValue"
+      :null-value="initialNumber"
+      decimal=","
+      separator="."
+      class="numeric-input"
+      @change="submit"
+      @input="emitPreview"
     >
     </formatted-number-input>
     <!--
@@ -54,13 +48,13 @@ numeral.locale('deff')
  * credits to: JayeshLab
  * url: https://github.com/JayeshLab/vue-numeric-input
  */
-const timeInterval = 100;
-import debounce from "lodash.debounce"
+const timeInterval = 100
+import debounce from 'lodash.debounce'
 
 export default {
-  name: "vue-numeric-input",
+  name: 'VueNumericInput',
   components: {
-    FormattedNumberInput
+    FormattedNumberInput,
   },
   props: {
     name: String,
@@ -68,67 +62,67 @@ export default {
     placeholder: String,
     min: {
       type: Number,
-      default: Number.MIN_SAFE_INTEGER
+      default: Number.MIN_SAFE_INTEGER,
     },
     max: {
       type: Number,
-      default: Number.MAX_SAFE_INTEGER
+      default: Number.MAX_SAFE_INTEGER,
     },
     step: {
       type: Number,
-      default: 1
+      default: 1,
     },
     align: {
       type: String,
-      default: "left"
+      default: 'left',
     },
     width: {
-      type: String
+      type: String,
     },
     size: {
       type: String,
-      default: "normal",
-      validator: value => {
-        return ["small", "normal", "large"].includes(value);
-      }
+      default: 'normal',
+      validator: (value) => {
+        return ['small', 'normal', 'large'].includes(value)
+      },
     },
     precision: {
       type: Number,
       validator(val) {
-        return val >= 0 && Number.isInteger(val);
-      }
+        return val >= 0 && Number.isInteger(val)
+      },
     },
     autofocus: {
       type: Boolean,
-      default: false
+      default: false,
     },
     readonly: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     controls: {
       type: Boolean,
-      default: true
+      default: true,
     },
     controlsType: {
       type: String,
-      default: "plusminus"
+      default: 'plusminus',
     },
     mousewheel: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isInput: {
       type: Boolean,
-      default: true
+      default: true,
     },
     className: {
       type: String,
-      default: null
+      default: null,
     },
     initialNumber: {
       type: Number,
@@ -149,7 +143,7 @@ export default {
       type: Function,
       default: null,
       required: false,
-    }
+    },
   },
   data() {
     return {
@@ -166,7 +160,42 @@ export default {
       hasFocus: false,
       stepsCounterIncrease: 0,
       stepsCounterDecrease: 0,
-    };
+    }
+  },
+  computed: {
+    computedValue: {
+      get() {
+        return this.newValue ?? null
+      },
+      set(value) {
+        if (this.newValue && value !== null) {
+          if (
+            this.initialNumber &&
+            (this.newValue === 0 || this.newValue === undefined) &&
+            this.initialized === false
+          ) {
+            this.initialized = true
+            this.valueBeforeChange = this.newValue
+          }
+          this.newValue = value
+          this.$emit('input', { value: this.newValue, focus: this.hasFocus })
+          this.debouncedCallback(() => {
+            this.valueBeforeChange = this.newValue
+            this.temporaryStep = this.step
+            this.stepsCounterIncrease = 0
+            this.stepsCounterDecrease = 0
+          })
+        }
+      },
+    },
+    numValuePrecision() {
+      const stepPrecision = this.getPrecision(this.step)
+      if (this.precision !== undefined) {
+        return this.precision
+      } else {
+        return Math.max(this.getPrecision(this.computedValue || 0), stepPrecision)
+      }
+    },
   },
   watch: {
     resetCall(newValue) {
@@ -215,12 +244,12 @@ export default {
       }
     },
     initialNumber(newValue, oldValue) {
-      if (newValue > 0 && (oldValue !== undefined)) {
+      if (newValue > 0 && oldValue !== undefined) {
         const values = this.getNewValues(this.initialNumber)
         this.newValue = values.newValue
         // this.valueBeforeChange = values.valueBeforeChange
       }
-    }
+    },
   },
   mounted() {
     this.temporaryStep = this.step
@@ -228,7 +257,13 @@ export default {
       if (typeof args[0] === 'function') {
         args[0]()
       }
-    }, 1000);
+    }, 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
+    this.interval = null
+    this.handler = null
+    this.startTime = null
   },
   methods: {
     emitPreview(newValue) {
@@ -236,7 +271,11 @@ export default {
     },
     submit(newValue) {
       this.newValue = newValue
-      this.$emit('submit', {value: newValue, focus: false, triggeredByEnterKey: true})
+      this.$emit('submit', {
+        value: newValue,
+        focus: false,
+        triggeredByEnterKey: true,
+      })
     },
     getNewValues(value) {
       let tmpValue = value + ''
@@ -254,8 +293,8 @@ export default {
      * @returns {number | Number}
      */
     toNumber(val) {
-      var n = parseFloat(val);
-      return isNaN(n) ? val : n;
+      var n = parseFloat(val)
+      return isNaN(n) ? val : n
     },
     /**
      * Function to return fixed decimal precision of input val
@@ -264,10 +303,8 @@ export default {
      * @returns {number | Number}
      */
     toPrecision(val, precision) {
-      if (precision === undefined) precision = this.numPrecision;
-      return parseFloat(
-          Math.round(val * Math.pow(10, precision)) / Math.pow(10, precision)
-      );
+      if (precision === undefined) precision = this.numPrecision
+      return parseFloat(Math.round(val * Math.pow(10, precision)) / Math.pow(10, precision))
     },
     /**
      * Function to get the precision of a v
@@ -275,21 +312,20 @@ export default {
      * @returns {number | Number}
      */
     getPrecision(value) {
-      if (value === undefined) return 0;
-      const valueString = value.toString();
-      const dotPosition = valueString.indexOf(".");
-      let precision = 0;
+      if (value === undefined) return 0
+      const valueString = value.toString()
+      const dotPosition = valueString.indexOf('.')
+      let precision = 0
       if (dotPosition !== -1) {
-        precision = valueString.length - dotPosition - 1;
+        precision = valueString.length - dotPosition - 1
       }
-      return precision;
+      return precision
     },
     /**
      * Increment the current numeric value
      */
     increment() {
       if (!this.readonly && !this.disabled) {
-
         if (this.stepsCounterIncrease > 71) {
           this.temporaryStep = 100000
         } else if (this.stepsCounterIncrease > 55) {
@@ -302,21 +338,20 @@ export default {
           this.temporaryStep = 10
         }
 
-        let val = 0;
+        let val = 0
         if (this.newValue) {
           val = this.newValue
         } else if (this.initialNumber) {
           val = this.initialNumber
         }
-        const precisionFactor = Math.pow(10, this.numValuePrecision);
+        const precisionFactor = Math.pow(10, this.numValuePrecision)
         const newVal =
-            Math.round(precisionFactor * val + precisionFactor * this.temporaryStep) /
-            precisionFactor;
+          Math.round(precisionFactor * val + precisionFactor * this.temporaryStep) / precisionFactor
         if (newVal <= this.max) {
-          this.minDisable = false;
-          this.newValue = newVal;
+          this.minDisable = false
+          this.newValue = newVal
         } else {
-          this.maxDisable = true;
+          this.maxDisable = true
         }
 
         this.stepsCounterIncrease++
@@ -327,7 +362,6 @@ export default {
      */
     decrement() {
       if (!this.readonly && !this.disabled) {
-
         if (this.stepsCounterDecrease > 71) {
           this.temporaryStep = 100000
         } else if (this.stepsCounterDecrease > 55) {
@@ -340,21 +374,20 @@ export default {
           this.temporaryStep = 10
         }
 
-        let val = 0;
+        let val = 0
         if (this.newValue) {
           val = this.newValue * 1
         } else if (this.initialNumber) {
           val = this.initialNumber * 1
         }
-        const precisionFactor = Math.pow(10, this.numValuePrecision);
+        const precisionFactor = Math.pow(10, this.numValuePrecision)
         const newVal =
-            Math.round(precisionFactor * val - precisionFactor * this.temporaryStep) /
-            precisionFactor;
+          Math.round(precisionFactor * val - precisionFactor * this.temporaryStep) / precisionFactor
         if (newVal >= this.min) {
-          this.maxDisable = false;
-          this.newValue = newVal;
+          this.maxDisable = false
+          this.newValue = newVal
         } else {
-          this.minDisable = true;
+          this.minDisable = true
         }
 
         this.stepsCounterDecrease++
@@ -365,78 +398,37 @@ export default {
      * @param handler - increment or decrement method
      */
     start(handler) {
-      document.addEventListener("mouseup", this.stop);
-      this.startTime = new Date();
-      this.handler = handler;
-      clearInterval(this.interval);
-      this.interval = setInterval(handler, timeInterval);
+      document.addEventListener('mouseup', this.stop)
+      this.startTime = new Date()
+      this.handler = handler
+      clearInterval(this.interval)
+      this.interval = setInterval(handler, timeInterval)
     },
     /**
      * clear interval on mouseup event and remove the listener
      * @param evt - event to be removed
      */
     stop(evt) {
-      document.removeEventListener(evt.type, this.stop);
+      document.removeEventListener(evt.type, this.stop)
       if (new Date() - this.startTime < timeInterval) {
-        this.handler();
+        this.handler()
       }
-      clearInterval(this.interval);
-      this.interval = null;
-      this.handler = null;
-      this.startTime = null;
-      if (this.value !== this.computedValue)
-        this.$emit("change", this.computedValue);
+      clearInterval(this.interval)
+      this.interval = null
+      this.handler = null
+      this.startTime = null
+      if (this.value !== this.computedValue) this.$emit('change', this.computedValue)
     },
     /**
      * focus method to set the focus on input
      */
     focus() {
       if (!this.disabled) {
-        this.$refs.input.focus();
+        this.$refs.input.focus()
       }
     },
   },
-  computed: {
-    computedValue: {
-      get() {
-        return this.newValue ?? null;
-      },
-      set(value) {
-        if (this.newValue && value !== null) {
-          if (this.initialNumber && (this.newValue === 0 || this.newValue === undefined) && this.initialized === false) {
-            this.initialized = true
-            this.valueBeforeChange = this.newValue
-          }
-          this.newValue = value;
-          this.$emit("input", {value: this.newValue, focus: this.hasFocus});
-          this.debouncedCallback(() => {
-            this.valueBeforeChange = this.newValue
-            this.temporaryStep = this.step
-            this.stepsCounterIncrease = 0
-            this.stepsCounterDecrease = 0
-          });
-        }
-      }
-    },
-    numValuePrecision() {
-      const stepPrecision = this.getPrecision(this.step);
-      if (this.precision !== undefined) {
-        return this.precision;
-      } else {
-        return Math.max(
-            this.getPrecision(this.computedValue || 0),
-            stepPrecision
-        );
-      }
-    },
-  },
-  beforeDestroy() {
-    clearInterval(this.interval);
-    this.interval = null;
-    this.handler = null;
-    this.startTime = null;
-  }
-};
+}
 </script>
 <style lang="scss">
 .vue-numeric-input {
@@ -483,7 +475,8 @@ export default {
   }
 }
 
-.numeric-input::-webkit-inner-spin-button, .numeric-input::-webkit-outer-spin-button {
+.numeric-input::-webkit-inner-spin-button,
+.numeric-input::-webkit-outer-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
@@ -554,7 +547,7 @@ export default {
 .vue-numeric-input .btn-increment .btn-icon:before {
   display: inline-block;
   visibility: visible;
-  content: "";
+  content: '';
   background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='CurrentColor' viewBox='0 0 16 16'><path d='M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z'/></svg>");
   background-repeat: no-repeat;
   background-size: 65% 65%;
@@ -570,7 +563,7 @@ export default {
 .vue-numeric-input .btn-increment .btn-icon:after {
   position: absolute;
   visibility: hidden;
-  content: "";
+  content: '';
 }
 
 .vue-numeric-input .btn-decrement {
@@ -592,7 +585,7 @@ export default {
 .vue-numeric-input .btn-decrement .btn-icon:before {
   display: inline-block;
   visibility: visible;
-  content: "";
+  content: '';
   background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 16 16'><path d='M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z'/></svg>");
   background-repeat: no-repeat;
   background-size: 65% 65%;
@@ -607,7 +600,7 @@ export default {
 
 .vue-numeric-input .btn-decrement .btn-icon:after {
   visibility: hidden;
-  content: "";
+  content: '';
   clear: both;
   height: 0;
 }
@@ -638,19 +631,19 @@ export default {
 .vue-numeric-input.updown .btn-increment .btn-icon::before {
   visibility: hidden;
   display: block;
-  content: "";
+  content: '';
   clear: both;
   height: 0;
 }
 
 .vue-numeric-input.updown .btn-decrement .btn-icon::before {
-  content: "";
+  content: '';
 }
 
 .vue-numeric-input.updown .btn-increment .btn-icon::after {
   visibility: hidden;
   display: block;
-  content: "";
+  content: '';
   clear: both;
   height: 0;
 }

@@ -1,72 +1,75 @@
 <template>
   <div class="lineup-container">
-    <div class="lineup-container__loading-spinner" v-if="loading">
+    <div v-if="loading" class="lineup-container__loading-spinner">
       <v-progress-circular indeterminate color="green" width="10" size="120"></v-progress-circular>
     </div>
     <v-container v-if="lineup && lineup.length">
       <div class="d-md-flex flex-wrap flex-md-nowrap align-center justify-space-between mb-5">
-        <div class="wid">
-          current formation: {{ formation }}
-        </div>
-        <saved-alert :is-text-style=false message="line-up changes saved" :value="showSavedMessage"></saved-alert>
+        <div class="wid">current formation: {{ formation }}</div>
+        <saved-alert
+          :is-text-style="false"
+          message="line-up changes saved"
+          :value="showSavedMessage"
+        ></saved-alert>
         <div>
           <v-select
-              :items="possibleFormations"
-              filled
-              label="change formation"
-              color="primary"
-              v-model="selectedFormation"
-              :hide-details=true
-              @change="changeFormation"
+            v-model="selectedFormation"
+            :items="possibleFormations"
+            filled
+            label="change formation"
+            color="primary"
+            :hide-details="true"
+            @change="changeFormation"
           ></v-select>
         </div>
       </div>
       <div class="field">
         <div class="position__container position--forwards">
           <lineup-item
-              v-for="forward in lineupBlocks.forwards"
-              :key="forward.id"
-              :item="forward"
-              :matches="getMatches"
-              v-on:openChangeDialog="openChangeDialog"
+            v-for="forward in lineupBlocks.forwards"
+            :key="forward.id"
+            :item="forward"
+            :matches="getMatches"
+            @openChangeDialog="openChangeDialog"
           ></lineup-item>
         </div>
         <div class="position__container position--midfielders">
           <lineup-item
-              v-for="midfielder in lineupBlocks.midfielders"
-              :key="midfielder.id"
-              :item="midfielder"
-              :matches="getMatches"
-              v-on:openChangeDialog="openChangeDialog"
+            v-for="midfielder in lineupBlocks.midfielders"
+            :key="midfielder.id"
+            :item="midfielder"
+            :matches="getMatches"
+            @openChangeDialog="openChangeDialog"
           ></lineup-item>
         </div>
         <div class="position__container position--defenders">
           <lineup-item
-              v-for="defender in lineupBlocks.defenders"
-              :key="defender.id"
-              :item="defender"
-              :matches="getMatches"
-              v-on:openChangeDialog="openChangeDialog"
+            v-for="defender in lineupBlocks.defenders"
+            :key="defender.id"
+            :item="defender"
+            :matches="getMatches"
+            @openChangeDialog="openChangeDialog"
           ></lineup-item>
         </div>
         <div class="position__container position--goalie">
           <lineup-item
-              v-for="goalie in lineupBlocks.goalie"
-              :key="goalie.id"
-              :item="goalie"
-              :matches="getMatches"
-              v-on:openChangeDialog="openChangeDialog"
+            v-for="goalie in lineupBlocks.goalie"
+            :key="goalie.id"
+            :item="goalie"
+            :matches="getMatches"
+            @openChangeDialog="openChangeDialog"
           ></lineup-item>
         </div>
-      <div class="ligainsider-plus-link">
+        <div class="ligainsider-plus-link">
           <a href="https://www.ligainsider.de/ligainsider-plus/kickbase/" target="_blank">
-            <v-img 
+            <v-img
               alt="LigaInsider Logo"
               max-width="100"
-              src="https://cdn.ligainsider.de/images/menu/ligainsider-logo-white.png">
+              src="https://cdn.ligainsider.de/images/menu/ligainsider-logo-white.png"
+            >
             </v-img>
           </a>
-      </div>
+        </div>
       </div>
       <div class="h4 mt-4">Goalies</div>
       <lineup-table :items="goalies"></lineup-table>
@@ -77,88 +80,89 @@
       <div class="h4 mt-4">Forwards</div>
       <lineup-table :items="forwards"></lineup-table>
 
-      <v-dialog
-          v-model="lineUpDialog.show"
-          width="75%"
-      >
+      <v-dialog v-model="lineUpDialog.show" width="75%">
         <v-card>
           <v-card-title class="headline black white--text">
             change&nbsp;
-            <strong v-if="lineUpDialog.player && lineUpDialog.player.id">{{ playerName(lineUpDialog.player) }}</strong>
+            <strong v-if="lineUpDialog.player && lineUpDialog.player.id">{{
+              playerName(lineUpDialog.player)
+            }}</strong>
           </v-card-title>
 
           <v-card-text>
-
-
             <h3>
               other {{ positionName(lineUpDialog.position) }} player
               <small>(not already in line-up)</small>
             </h3>
 
             <div
-                class="change-line-up__other-player align-center"
-                v-for="otherPlayer in otherPlayer(lineUpDialog.player)"
-                :key="otherPlayer.id"
+              v-for="otherPlayer in otherPlayer(lineUpDialog.player)"
+              :key="otherPlayer.id"
+              class="change-line-up__other-player align-center"
             >
               <v-btn
-                  block
-                  color="deep-purple darken-3 white--text line-up__option-button"
-                  x-large
-                  @click="saveLineup(lineUpDialog.player, otherPlayer)"
-                  class="kp-button"
+                block
+                color="deep-purple darken-3 white--text line-up__option-button"
+                x-large
+                class="kp-button"
+                @click="saveLineup(lineUpDialog.player, otherPlayer)"
               >
                 <div class="d-block d-sm-flex flex-wrap flex-sm-nowrap">
                   <div class="d-flex align-center">
                     {{ playerName(otherPlayer) }}
-                    <img :src="playerTeamImg(otherPlayer)" v-if="playerTeamImg(otherPlayer)"/>
+                    <img v-if="playerTeamImg(otherPlayer)" :src="playerTeamImg(otherPlayer)" />
                   </div>
                   <div class="d-flex align-center">
                     <status-pill :player="otherPlayer"></status-pill>
                     <span v-if="playerVs(otherPlayer)" class="vsInfo">
-                        vs: <img :src="playerVs(otherPlayer).img" class="vsTeam"/> {{ playerVs(otherPlayer).abbr }}
+                      vs:
+                      <img :src="playerVs(otherPlayer).img" class="vsTeam" />
+                      {{ playerVs(otherPlayer).abbr }}
                     </span>
                   </div>
                 </div>
               </v-btn>
             </div>
-            <v-btn v-if="lineUpDialog.player && lineUpDialog.player.id" block color="red darken-3 white--text"
-                   x-large @click="saveLineup(lineUpDialog.player, {position:lineUpDialog.player.position})">
+            <v-btn
+              v-if="lineUpDialog.player && lineUpDialog.player.id"
+              block
+              color="red darken-3 white--text"
+              x-large
+              @click="
+                saveLineup(lineUpDialog.player, {
+                  position: lineUpDialog.player.position,
+                })
+              "
+            >
               reset position
             </v-btn>
-
           </v-card-text>
 
           <v-divider></v-divider>
 
           <v-card-actions>
-            <v-btn
-                color="secondary"
-                @click="closeChangeDialog"
-            >
-              cancel
-            </v-btn>
+            <v-btn color="secondary" @click="closeChangeDialog"> cancel </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-container>
     <spinner v-else></spinner>
   </div>
-
 </template>
 
 <script>
 import api from '../api/api'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 import StatusPill from './StatusPill'
 import Spinner from './Spinner'
 import LineupItem from './LineupItem'
 import LineupTable from './LineupTable'
-import {getBundesligaClubImageUrlById, nextMatch} from '@/helper/helper'
-import SavedAlert from "@/components/Generic/SavedAlert";
+import { getBundesligaClubImageUrlById, nextMatch } from '@/helper/helper'
+import SavedAlert from '@/components/Generic/SavedAlert'
 
 export default {
-  name: 'lineup-component',
+  name: 'LineupComponent',
   components: {
     SavedAlert,
     LineupTable,
@@ -188,28 +192,23 @@ export default {
       goalie: [],
       defenders: [],
       midfielders: [],
-      forwards: []
+      forwards: [],
     },
     players: [],
     positions: {
       goalie: 1,
       defenders: 0,
       midfielders: 0,
-      forwards: 0
+      forwards: 0,
     },
     lineUpDialog: {
       show: false,
       position: '',
       player: null,
     },
-
   }),
   computed: {
-    ...mapGetters([
-      'getLeague',
-      'getSelf',
-      'getMatches',
-    ]),
+    ...mapGetters(['getLeague', 'getSelf', 'getMatches']),
     goalies() {
       let goalies = []
       if (this.players.length) {
@@ -243,18 +242,18 @@ export default {
       if (this.goalies.length) {
         if (this.lineup.length) {
           this.lineup.forEach((id) => {
-            this.goalies.forEach(player => {
+            this.goalies.forEach((player) => {
               if (id === player.id) {
                 players.push(player)
               }
-            });
+            })
           })
         }
       }
       const oLength = players.length
       if (oLength < this.positions.goalie) {
         for (let x = 0; x < this.positions.goalie - oLength; x++) {
-          players.push({position: 1})
+          players.push({ position: 1 })
         }
       }
       return players
@@ -264,18 +263,18 @@ export default {
       if (this.defenders.length) {
         if (this.lineup.length) {
           this.lineup.forEach((id) => {
-            this.defenders.forEach(player => {
+            this.defenders.forEach((player) => {
               if (id === player.id && players.length < this.positions.defenders) {
                 players.push(player)
               }
-            });
+            })
           })
         }
       }
       const oLength = players.length
       if (oLength < this.positions.defenders) {
         for (let x = 0; x < this.positions.defenders - oLength; x++) {
-          players.push({position: 2})
+          players.push({ position: 2 })
         }
       }
       return players
@@ -285,18 +284,18 @@ export default {
       if (this.midfielders.length) {
         if (this.lineup.length) {
           this.lineup.forEach((id) => {
-            this.midfielders.forEach(player => {
+            this.midfielders.forEach((player) => {
               if (id === player.id && players.length < this.positions.midfielders) {
                 players.push(player)
               }
-            });
+            })
           })
         }
       }
       const oLength = players.length
       if (oLength < this.positions.midfielders) {
         for (let x = 0; x < this.positions.midfielders - oLength; x++) {
-          players.push({position: 3})
+          players.push({ position: 3 })
         }
       }
       return players
@@ -306,18 +305,18 @@ export default {
       if (this.forwards.length) {
         if (this.lineup.length) {
           this.lineup.forEach((id) => {
-            this.forwards.forEach(player => {
+            this.forwards.forEach((player) => {
               if (id === player.id && players.length < this.positions.forwards) {
                 players.push(player)
               }
-            });
+            })
           })
         }
       }
       const oLength = players.length
       if (oLength < this.positions.forwards) {
         for (let x = 0; x < this.positions.forwards - oLength; x++) {
-          players.push({position: 4})
+          players.push({ position: 4 })
         }
       }
       return players
@@ -342,7 +341,7 @@ export default {
     parseLineup(data) {
       if (data.type === undefined) {
         this.formation = '3-5-2'
-        const dummy = {position: 'dummy'}
+        const dummy = { position: 'dummy' }
         this.lineupBlocks.goalie = [null]
         this.lineupBlocks.defenders = [null, null, null]
         this.lineupBlocks.midfielders = [null, null, null, null, null]
@@ -368,12 +367,12 @@ export default {
     },
     sort(a, b) {
       if (a.totalPoints < b.totalPoints) {
-        return 1;
+        return 1
       }
       if (a.totalPoints > b.totalPoints) {
-        return -1;
+        return -1
       }
-      return 0;
+      return 0
     },
     openChangeDialog(data) {
       this.lineUpDialog.show = true
@@ -387,49 +386,63 @@ export default {
     },
     changeFormation() {
       this.formation = this.selectedFormation
-      this.saveLineup({}, {position: 'dummy'})
+      this.saveLineup({}, { position: 'dummy' })
     },
     saveLineup(oldPlayer, newPlayer) {
-
       this.loading = true
       this.lineUpDialog.show = false
 
-      const goalieBlock = this.lineupBlocks.goalie.map((obj) => (obj && obj.id) ? obj.id : null)
-      const defendersBlock = this.lineupBlocks.defenders.map((obj) => (obj && obj.id) ? obj.id : null)
-      const midfieldersBlock = this.lineupBlocks.midfielders.map((obj) => (obj && obj.id) ? obj.id : null)
-      const forwardsBlock = this.lineupBlocks.forwards.map((obj) => (obj && obj.id) ? obj.id : null)
+      const goalieBlock = this.lineupBlocks.goalie.map((obj) => (obj && obj.id ? obj.id : null))
+      const defendersBlock = this.lineupBlocks.defenders.map((obj) =>
+        obj && obj.id ? obj.id : null
+      )
+      const midfieldersBlock = this.lineupBlocks.midfielders.map((obj) =>
+        obj && obj.id ? obj.id : null
+      )
+      const forwardsBlock = this.lineupBlocks.forwards.map((obj) => (obj && obj.id ? obj.id : null))
 
-      const goalie = (newPlayer.position === 1) ? this.changeBlockLineup(goalieBlock, oldPlayer, newPlayer) : goalieBlock
-      const defenders = (newPlayer.position === 2) ? this.changeBlockLineup(defendersBlock, oldPlayer, newPlayer) : defendersBlock
-      const midfielders = (newPlayer.position === 3) ? this.changeBlockLineup(midfieldersBlock, oldPlayer, newPlayer) : midfieldersBlock
-      const forwards = (newPlayer.position === 4) ? this.changeBlockLineup(forwardsBlock, oldPlayer, newPlayer) : forwardsBlock
+      const goalie =
+        newPlayer.position === 1
+          ? this.changeBlockLineup(goalieBlock, oldPlayer, newPlayer)
+          : goalieBlock
+      const defenders =
+        newPlayer.position === 2
+          ? this.changeBlockLineup(defendersBlock, oldPlayer, newPlayer)
+          : defendersBlock
+      const midfielders =
+        newPlayer.position === 3
+          ? this.changeBlockLineup(midfieldersBlock, oldPlayer, newPlayer)
+          : midfieldersBlock
+      const forwards =
+        newPlayer.position === 4
+          ? this.changeBlockLineup(forwardsBlock, oldPlayer, newPlayer)
+          : forwardsBlock
 
       const newLineup = [...goalie, ...defenders, ...midfielders, ...forwards]
 
       api.saveLineup(
-          {
-            type: this.formation,
-            id: this.getLeague,
-            actionId: 'LU' + this.getLeague,
-            players: newLineup
-          },
-          () => {
-            this.loadLineup()
-            this.loading = false
-            this.showSavedMessage = true
-            window.setTimeout(() => {
-              this.showSavedMessage = false
-            }, 2000)
-          },
-          () => {
-            this.loading = false
-          }
+        {
+          type: this.formation,
+          id: this.getLeague,
+          actionId: 'LU' + this.getLeague,
+          players: newLineup,
+        },
+        () => {
+          this.loadLineup()
+          this.loading = false
+          this.showSavedMessage = true
+          window.setTimeout(() => {
+            this.showSavedMessage = false
+          }, 2000)
+        },
+        () => {
+          this.loading = false
+        }
       )
     },
     changeBlockLineup(block, oldPlayer, newPlayer) {
-
-      const newPlayerValue = (newPlayer && newPlayer.id) ? newPlayer.id : null
-      const oldPlayerValue = (oldPlayer && oldPlayer.id) ? oldPlayer.id : null
+      const newPlayerValue = newPlayer && newPlayer.id ? newPlayer.id : null
+      const oldPlayerValue = oldPlayer && oldPlayer.id ? oldPlayer.id : null
       const newBlock = []
       let added = false
 
@@ -504,7 +517,7 @@ export default {
     },
     playerVs(player) {
       return nextMatch(this.getMatches, player)
-    }
-  }
-};
+    },
+  },
+}
 </script>

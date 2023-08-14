@@ -1,54 +1,68 @@
 <template>
-  <div class="player-points" ref="seasons">
-    <div class="player-points__season" v-for="season in seasons" :key="season.i">
+  <div ref="seasons" class="player-points">
+    <div v-for="season in seasons" :key="season.i" class="player-points__season">
       <div class="player-points__title">
         <span>{{ season.t }}</span>
       </div>
       <div class="player-points__matches">
-        <div class="player-points__match" v-for="match in season.m" :key="season.i + '-' + match.d">
+        <div v-for="match in season.m" :key="season.i + '-' + match.d" class="player-points__match">
           <div class="player-points__match__day">
-            <strong>{{ match.d }}.</strong><br>matchday
+            <strong>{{ match.d }}.</strong><br />matchday
           </div>
           <template v-if="match.missed">
-            <div class="player-points__match__missed_bar ">
+            <div class="player-points__match__missed_bar">
               <v-icon color="red" class="mt-1" size="16">fa-ban</v-icon>
-              <span>
-                  did not play
-                </span>
+              <span> did not play </span>
             </div>
             <template v-if="match.details && match.details.i">
-              <div class="player-points__match__points">
-                0
-              </div>
+              <div class="player-points__match__points">0</div>
               <div class="player-points__match__game-details">
                 <div class="player-points__match__game-details__logos">
-                  <v-img :src="getTeamImageById(match.details.t1.i)" max-width="24" max-height="24"></v-img>
-                  <v-img :src="getTeamImageById(match.details.t2.i)" max-width="24" max-height="24"></v-img>
+                  <v-img
+                    :src="getTeamImageById(match.details.t1.i)"
+                    max-width="24"
+                    max-height="24"
+                  ></v-img>
+                  <v-img
+                    :src="getTeamImageById(match.details.t2.i)"
+                    max-width="24"
+                    max-height="24"
+                  ></v-img>
                 </div>
                 <div class="player-points__match__game-details__result">
                   {{ match.details.t1.g }}:{{ match.details.t2.g }}
                 </div>
-                <div class="player-points__match__minutes">
-                  0'
-                </div>
+                <div class="player-points__match__minutes">0'</div>
               </div>
             </template>
           </template>
           <template v-else>
-            <div
-                class="player-points__match__bar"
-            >
+            <div class="player-points__match__bar">
               <div
-                  :style="{height:calculateBarIndicatorHeight(match.p, season.highestPoints)}"
-                  class="player-points__match__bar__indicator"
-                  :class="[getIndicatorCssClass(match.p)]"
+                :style="{
+                  height: calculateBarIndicatorHeight(match.p, season.highestPoints),
+                }"
+                class="player-points__match__bar__indicator"
+                :class="[getIndicatorCssClass(match.p)]"
               >
                 <template v-if="match.g > 0">
-                  <v-icon class="mb-1" size="16" color="white" v-for="g in match.g" :key="'goal-' + g">fa-futbol
+                  <v-icon
+                    v-for="g in match.g"
+                    :key="'goal-' + g"
+                    class="mb-1"
+                    size="16"
+                    color="white"
+                    >fa-futbol
                   </v-icon>
                 </template>
                 <template v-if="match.a > 0">
-                  <v-icon class="mb-1" size="16" color="white" v-for="a in match.a" :key="'assist-' + a">fa-star
+                  <v-icon
+                    v-for="a in match.a"
+                    :key="'assist-' + a"
+                    class="mb-1"
+                    size="16"
+                    color="white"
+                    >fa-star
                   </v-icon>
                 </template>
               </div>
@@ -67,16 +81,12 @@
             </div>
 
             <div class="player-points__match__minutes">
-              <span v-if="match.sp > 0">
-              {{ match.sp / 60 | numeral }}'
-              </span>
-              <span v-else>
-                0'
-              </span>
+              <span v-if="match.sp > 0"> {{ (match.sp / 60) | numeral }}' </span>
+              <span v-else> 0' </span>
             </div>
           </template>
         </div>
-        <div class="player-points__season__summary" v-if="!season.hideSummary">
+        <div v-if="!season.hideSummary" class="player-points__season__summary">
           <v-icon size="32">fa-star</v-icon>
           <div class="player-points__season__summary__part">
             <strong>{{ season.t }}</strong>
@@ -105,15 +115,15 @@
 </template>
 
 <script>
-import {getBundesligaClubImageUrlById} from "@/helper/helper";
+import { getBundesligaClubImageUrlById } from '@/helper/helper'
 
 export default {
-  name: "PlayerPointsSeasons",
+  name: 'PlayerPointsSeasons',
   props: {
     seasons: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     this.$refs.seasons.scrollLeft = this.$refs.seasons.scrollWidth
@@ -124,14 +134,14 @@ export default {
     },
     calculatePointsPercentage(points, highestPoints) {
       if (!points || points === 0) {
-        return 0;
+        return 0
       }
       return Math.floor((points / highestPoints) * 100)
     },
     calculateBarIndicatorHeight(points, highestPoints) {
       const p = this.calculatePointsPercentage(points, highestPoints)
-      const sub = (p > 95) ? 10 : 0;
-      return (p - sub) + '%'
+      const sub = p > 95 ? 10 : 0
+      return p - sub + '%'
     },
     getIndicatorCssClass(points) {
       if (points > 100) {
@@ -140,11 +150,9 @@ export default {
         return 'player-points__match__bar__indicator--yellow'
       }*/
       return 'player-points__match__bar__indicator--red'
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "contributorsPerLine": 4,
   "contributorsSortAlphabetically": false,
@@ -16,52 +14,40 @@
   },
   "skipCi": "true",
   "contributors": [
-
     {
       "login": "fabfischer",
       "name": "fabfischer",
       "avatar_url": "https://avatars.githubusercontent.com/u/1053032?v=4",
       "profile": "https://github.com/fabfischer",
-      "contributions": [
-        "code"
-      ]
+      "contributions": ["code"]
     },
     {
       "login": "ismailoezcan",
       "name": "ismailoezcan",
       "avatar_url": "https://avatars.githubusercontent.com/u/32710563?v=4",
       "profile": "https://github.com/ismailoezcan",
-      "contributions": [
-        "ideas"
-      ]
+      "contributions": ["ideas"]
     },
     {
       "login": "eLindros",
       "name": "Ronny Klein",
       "avatar_url": "https://avatars.githubusercontent.com/u/4130049?v=4",
       "profile": "https://github.com/eLindros",
-      "contributions": [
-        "ideas",
-        "code"
-      ]
+      "contributions": ["ideas", "code"]
     },
     {
       "login": "Quotic",
       "name": "Bastian",
       "avatar_url": "https://avatars.githubusercontent.com/u/1618550?v=4",
       "profile": "https://github.com/Quotic",
-      "contributions": [
-        "ideas"
-      ]
+      "contributions": ["ideas"]
     },
     {
       "login": "FelixSchuSi",
       "name": "Felix Schulze Sindern",
       "avatar_url": "https://avatars.githubusercontent.com/u/47390169?v=4",
       "profile": "https://github.com/FelixSchuSi",
-      "contributions": [
-        "ideas"
-      ]
+      "contributions": ["ideas"]
     }
   ],
   "commitConvention": "angular",

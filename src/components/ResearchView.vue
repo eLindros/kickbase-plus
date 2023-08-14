@@ -18,12 +18,12 @@
       hide-default-footer
       class="elevation-1"
     >
-      <template v-slot:[`item.name`]="{ item }">
+      <template #[`item.name`]="{ item }">
         <a :href="`https://www.ligainsider.de${item.url}`" target="_blank">
           {{ item.name }}
         </a>
       </template>
-      <template v-slot:[`item.team`]="{ item }">
+      <template #[`item.team`]="{ item }">
         <a :href="`https://www.ligainsider.de${item.teamURL}`" target="_blank">
           {{ item.team }}
         </a>
@@ -33,83 +33,81 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import numeral from "numeral";
+import { mapGetters } from 'vuex'
+import numeral from 'numeral'
 
 const KpP = (K, P) => {
-  const Kn = numeral(K);
-  const Pn = numeral(P);
+  const Kn = numeral(K)
+  const Pn = numeral(P)
 
   if (Pn.value() === 0) {
-    return 0;
+    return 0
   } else {
-    return numeral(Kn.value() / 1000 / Pn.value()).format("0,0");
+    return numeral(Kn.value() / 1000 / Pn.value()).format('0,0')
   }
-};
+}
 
-const sortNumeral = (a, b) => numeral(a).value() - numeral(b).value();
+const sortNumeral = (a, b) => numeral(a).value() - numeral(b).value()
 
 export default {
-  name: "research-view",
+  name: 'ResearchView',
   data: () => ({
-    search: "",
+    search: '',
     headers: [
-      { text: "Name", value: "name" },
-      { text: "Team", value: "team" },
-      { text: "Position", value: "position" },
+      { text: 'Name', value: 'name' },
+      { text: 'Team', value: 'team' },
+      { text: 'Position', value: 'position' },
       {
-        text: "Points",
-        value: "totalPoints",
+        text: 'Points',
+        value: 'totalPoints',
         sort: (a, b) => sortNumeral(a, b),
       },
       {
-        text: "Games Played",
-        value: "gamesPlayed",
+        text: 'Games Played',
+        value: 'gamesPlayed',
         sort: (a, b) => sortNumeral(a, b),
       },
       {
-        text: "Avg. Points",
-        value: "averagePoints",
+        text: 'Avg. Points',
+        value: 'averagePoints',
         sort: (a, b) => sortNumeral(a, b),
       },
       {
-        text: "Market Value",
-        value: "marketValue",
+        text: 'Market Value',
+        value: 'marketValue',
         sort: (a, b) => sortNumeral(a, b),
       },
       {
-        text: "K per Avg. Point",
-        value: "kpAvPts",
+        text: 'K per Avg. Point',
+        value: 'kpAvPts',
         sort: (a, b) => {
           if (numeral(a).value() <= 0) {
-            return 1;
+            return 1
           }
           if (numeral(b).value() <= 0) {
-            return -1;
+            return -1
           } else {
-            return sortNumeral(a, b);
+            return sortNumeral(a, b)
           }
         },
       },
     ],
   }),
   computed: {
-    ...mapGetters(["getSelf", "getLigainsiderPlayers"]),
+    ...mapGetters(['getSelf', 'getLigainsiderPlayers']),
     getLigainsiderPlayersWithLinks() {
       if (this.getLigainsiderPlayers && this.getLigainsiderPlayers.length) {
         return this.getLigainsiderPlayers.map((player) => {
           return {
             ...player,
-            averagePoints: numeral(
-              numeral(player.averagePoints).value()
-            ).format("0,0"),
+            averagePoints: numeral(numeral(player.averagePoints).value()).format('0,0'),
             kpAvPts: KpP(player.marketValue, player.averagePoints),
-          };
-        });
+          }
+        })
       } else {
-        return [];
+        return []
       }
     },
   },
-};
+}
 </script>

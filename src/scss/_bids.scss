@@ -1,11 +1,10 @@
 .bid-row {
-  
   margin: 0 0 10px 0;
-  
+
   .head {
     background: #212121;
     padding: 2px 10px;
-    transition: all .5s;
+    transition: all 0.5s;
 
     padding-left: 60px;
     background-position: 0 0;
@@ -16,16 +15,14 @@
       background-size: 60px;
     }
   }
-  
+
   .higher-than-comp-value {
     color: red;
   }
-  
+
   .lower-than-comp-value {
     color: green;
   }
-  
-  
 }
 
 .bids-button-row {
@@ -40,11 +37,10 @@
 }
 
 .players-name {
-  @media (max-width: 640px){
-    order: 5
+  @media (max-width: 640px) {
+    order: 5;
   }
 }
-
 
 .bid-input-container {
   width: 50%;
@@ -65,10 +61,11 @@
     width: 100%;
 
     &:before {
-      opacity: .75 !important;
+      opacity: 0.75 !important;
     }
 
-    .v-alert__content, .v-icon {
+    .v-alert__content,
+    .v-icon {
       color: #fff !important;
       caret-color: #fff !important;
       position: relative;

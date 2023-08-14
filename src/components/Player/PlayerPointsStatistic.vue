@@ -2,44 +2,53 @@
   <div>
     <div v-if="loaded">
       <div v-if="seasonStats.length">
-
         <player-points-seasons :seasons="seasonStats"></player-points-seasons>
 
         <h3 class="mt-2">Season {{ latestSeasonStats.season }}</h3>
         <v-simple-table v-if="latestSeasonStats">
-          <template v-slot:default>
+          <template #default>
             <tbody>
-            <tr>
-              <th>Matches</th>
-              <td>
-                <strong>{{ latestSeasonStats.matches }}</strong><span v-if="pastMatchDays">of {{ pastMatchDays }}</span>
-                ({{ latestSeasonStats.startMatches }} from the start)
-              </td>
-            </tr>
-            <tr>
-              <th>Minutes played</th>
-              <td>
-                <strong>{{ latestSeasonStats.secondsPlayed / 60 | numeral }}</strong>minutes
-                (<strong class="font-italic">⌀ {{
-                  latestSeasonStats.secondsPlayed / 60 / latestSeasonStats.matches | numeral
-                }}</strong>mins per game)
-              </td>
-            </tr>
-            <tr>
-              <th>Goals</th>
-              <td>
-                <strong>{{ latestSeasonStats.goals }}</strong>
-                (⌀ {{ (latestSeasonStats.goals / latestSeasonStats.matches) | numeral('0.[00]') }} per game,
-                on average scores a goal every <strong
-                  class="font-italic">{{ latestSeasonStats.secondsPerGoal / 60 | numeral }}</strong>minutes)
-              </td>
-            </tr>
-            <tr>
-              <th>Assists</th>
-              <td>
-                <strong>{{ latestSeasonStats.assists }}</strong>
-              </td>
-            </tr>
+              <tr>
+                <th>Matches</th>
+                <td>
+                  <strong>{{ latestSeasonStats.matches }}</strong
+                  ><span v-if="pastMatchDays">of {{ pastMatchDays }}</span> ({{
+                    latestSeasonStats.startMatches
+                  }}
+                  from the start)
+                </td>
+              </tr>
+              <tr>
+                <th>Minutes played</th>
+                <td>
+                  <strong>{{ (latestSeasonStats.secondsPlayed / 60) | numeral }}</strong
+                  >minutes (<strong class="font-italic"
+                    >⌀
+                    {{
+                      (latestSeasonStats.secondsPlayed / 60 / latestSeasonStats.matches) | numeral
+                    }}</strong
+                  >mins per game)
+                </td>
+              </tr>
+              <tr>
+                <th>Goals</th>
+                <td>
+                  <strong>{{ latestSeasonStats.goals }}</strong>
+                  (⌀
+                  {{ (latestSeasonStats.goals / latestSeasonStats.matches) | numeral('0.[00]') }}
+                  per game, on average scores a goal every
+                  <strong class="font-italic">{{
+                    (latestSeasonStats.secondsPerGoal / 60) | numeral
+                  }}</strong
+                  >minutes)
+                </td>
+              </tr>
+              <tr>
+                <th>Assists</th>
+                <td>
+                  <strong>{{ latestSeasonStats.assists }}</strong>
+                </td>
+              </tr>
             </tbody>
           </template>
         </v-simple-table>
@@ -49,30 +58,26 @@
       </div>
     </div>
     <div v-else class="player-points-loader">
-      <v-progress-circular
-          :width="3"
-          color="primary"
-          indeterminate
-      ></v-progress-circular>
+      <v-progress-circular :width="3" color="primary" indeterminate></v-progress-circular>
       <span class="player-points-loader__info">Loading</span>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import api from "@/api/api";
-import PlayerPointsSeasons from "@/components/Player/PlayerPoints/PlayerPointsSeasons";
-import numeral from "numeral";
+import { mapGetters } from 'vuex'
+import api from '@/api/api'
+import PlayerPointsSeasons from '@/components/Player/PlayerPoints/PlayerPointsSeasons'
+import numeral from 'numeral'
 
 export default {
-  name: "PlayerPointsStatistic",
-  components: {PlayerPointsSeasons},
+  name: 'PlayerPointsStatistic',
+  components: { PlayerPointsSeasons },
   props: {
     player: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -81,12 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'getPlayers',
-      'getMatches',
-      'getMatchDays',
-      'getNextThreeMatchDays',
-    ]),
+    ...mapGetters(['getPlayers', 'getMatches', 'getMatchDays', 'getNextThreeMatchDays']),
     pastMatchDays() {
       let playedMatches = null
       if (this.getMatches.length) {
@@ -122,7 +122,7 @@ export default {
           let startingFormation = 0
           const playedSeasonGameDays = []
 
-          season.isCurrent = (sLength - 1 === index)
+          season.isCurrent = sLength - 1 === index
           if (season.m && season.m.length) {
             season.m.forEach((match) => {
               playedSeasonGameDays.push(match.d)
@@ -141,27 +141,32 @@ export default {
             season.average = numeral(seasonPoints / matches).format('0')
             season.startingFormation = startingFormation
 
-            const missingGameDays = [];
+            const missingGameDays = []
             for (let i = 1; i <= 34; i++) {
               if (playedSeasonGameDays.indexOf(i) === -1) {
-                if ((index + 1) === sLength && i >= this.pastMatchDays) {
-                  continue;
+                if (index + 1 === sLength && i >= this.pastMatchDays) {
+                  continue
                 }
-                missingGameDays.push(i);
+                missingGameDays.push(i)
               }
             }
 
             missingGameDays.forEach((matchday) => {
               let details = {}
-              if (season.isCurrent && this.getMatchDays[matchday] && this.getMatchDays[matchday].e && this.getMatchDays[matchday].e.length) {
-                this.getMatchDays[matchday].e.forEach(game => {
+              if (
+                season.isCurrent &&
+                this.getMatchDays[matchday] &&
+                this.getMatchDays[matchday].e &&
+                this.getMatchDays[matchday].e.length
+              ) {
+                this.getMatchDays[matchday].e.forEach((game) => {
                   if (game.t1.i === this.player.teamId || game.t2.i === this.player.teamId) {
                     details = game
                   }
                 })
                 // details = this.getMatchDays[matchday].e
               }
-              season.m.push({d: matchday, missed: true, details})
+              season.m.push({ d: matchday, missed: true, details })
             })
 
             season.m.sort((a, b) => {
@@ -174,14 +179,13 @@ export default {
           }
         })
 
-
         seasons.forEach((season) => {
           season.highestPoints = highestPoints
         })
 
         // add next matchdays as a season. hack way, but the easiest/fastest one
         if (this.getNextThreeMatchDays && this.getNextThreeMatchDays.length) {
-          const matches = [];
+          const matches = []
 
           this.getNextThreeMatchDays.forEach((matchDay) => {
             const match = this.findGameByTeamId(matchDay)
@@ -195,7 +199,7 @@ export default {
             const dummySeason = {
               m: matches,
               t: 'next matchdays',
-              hideSummary: true
+              hideSummary: true,
             }
             seasons.push(dummySeason)
           }
@@ -205,8 +209,7 @@ export default {
       } else {
         return []
       }
-
-    }
+    },
   },
   mounted() {
     this.init()
@@ -221,10 +224,10 @@ export default {
 
       if (matchDay.m && matchDay.m.length) {
         matchDay.m.forEach((match) => {
-          const t1Id = (typeof match.t1 === 'object') ? match.t1.i : match.t1i
-          const t2Id = (typeof match.t2 === 'object') ? match.t2.i : match.t2i
-          const t1Score = (typeof match.t2 === 'object') ? match.t1.g : match.t1s
-          const t2Score = (typeof match.t2 === 'object') ? match.t2.g : match.t2s
+          const t1Id = typeof match.t1 === 'object' ? match.t1.i : match.t1i
+          const t2Id = typeof match.t2 === 'object' ? match.t2.i : match.t2i
+          const t1Score = typeof match.t2 === 'object' ? match.t1.g : match.t1s
+          const t2Score = typeof match.t2 === 'object' ? match.t2.g : match.t2s
 
           if (t1Id * 1 === this.player.teamId * 1 || t2Id * 1 === this.player.teamId * 1) {
             match.d = matchDay.md
@@ -238,11 +241,9 @@ export default {
         })
       }
       return v
-    }
+    },
   },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

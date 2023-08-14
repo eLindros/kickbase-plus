@@ -6,54 +6,93 @@
       </div>
     </div>
     <div class="player-card-content-wrapper">
-      <div class="player-card-meta" v-if="hideMeta === false" :style="{ width: playerMetaWidth }">
+      <div
+        v-if="hideMeta === false"
+        class="player-card-meta"
+        :style="{ width: playerMetaWidth }"
+      >
         <div class="player-card-meta__content">
           <slot name="pre-meta"></slot>
-          <PlayerImage :player="this.player" />
-          <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
+          <PlayerImage :player="player" />
+          <div v-if="hidePlayerStatus === false" class="player-card-meta__item">
             <status-pill :player="player"></status-pill>
           </div>
-          <div class="player-card-meta__item player-card-meta__item--sm-fourth" v-if="hidePlayerMarketValue === false">
+          <div
+            v-if="hidePlayerMarketValue === false"
+            class="player-card-meta__item player-card-meta__item--sm-fourth"
+          >
             <v-alert type="info" dense text icon="fa-euro-sign" class="mb-0">
               {{ getComputedPrice }} (MV)
             </v-alert>
           </div>
           <div class="player-card-meta__item player-card-meta__item--sm-third">
-            <v-alert :color="getGrowthColor" dense text :icon="getGrowthIcon" class="mt-0">{{
-              getDiffMV | numeral('0,0 $')
-            }}
+            <v-alert
+              :color="getGrowthColor"
+              dense
+              text
+              :icon="getGrowthIcon"
+              class="mt-0"
+              >{{ getDiffMV | numeral("0,0 $") }}
               <span v-if="getDiffMV > 0">(growth)</span>
               <span v-if="getDiffMV < 0">(shrinkage)</span>
             </v-alert>
           </div>
-          <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
+          <div
+            v-if="hidePlayerPoints === false"
+            class="player-card-meta__item player-card-meta__item--sm-fifth"
+          >
             <v-alert :color="genericInfoFieldColor" dense text icon="fa-poll">
               ⌀ {{ player.averagePoints }} / {{ player.totalPoints }}
             </v-alert>
           </div>
-          <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
-            <v-alert :color="getPricePerPointColor" dense text icon="fa-bullseye">
+          <div
+            v-if="hidePlayerPoints === false"
+            class="player-card-meta__item player-card-meta__item--sm-fifth"
+          >
+            <v-alert
+              :color="getPricePerPointColor"
+              dense
+              text
+              icon="fa-bullseye"
+            >
               {{ getComputedPricePerPoint }} KpP
             </v-alert>
           </div>
-          <div class="player-card-meta__item player-card-meta__item--sm-fifth"
-            v-if="nextMatchComputed && nextMatchComputed.img">
+          <div
+            v-if="nextMatchComputed && nextMatchComputed.img"
+            class="player-card-meta__item player-card-meta__item--sm-fifth"
+          >
             <v-alert :color="nextGameColor" dense text icon="fa-beer">
-              <div class="d-flex align-center text-left ">
+              <div class="d-flex align-center text-left">
                 <span class="mr-2">VS</span>
-                <v-img height="24" width="24" class="flex-grow-0 mr-1" contain aspect-ratio="1"
-                  :src="nextMatchComputed.img"></v-img>
+                <v-img
+                  height="24"
+                  width="24"
+                  class="flex-grow-0 mr-1"
+                  contain
+                  aspect-ratio="1"
+                  :src="nextMatchComputed.img"
+                ></v-img>
                 <span class="text-caption">{{ nextMatchComputed.abbr }}</span>
               </div>
             </v-alert>
           </div>
-          <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPosition === false">
-            <v-alert :color="genericInfoFieldColor" dense text icon="fa-futbol">{{ getPosition }}</v-alert>
+          <div
+            v-if="hidePlayerPosition === false"
+            class="player-card-meta__item player-card-meta__item--sm-fifth"
+          >
+            <v-alert
+              :color="genericInfoFieldColor"
+              dense
+              text
+              icon="fa-futbol"
+              >{{ getPosition }}</v-alert
+            >
           </div>
         </div>
       </div>
 
-      <div class="player-card-slot" ref="playerCardContent">
+      <div ref="playerCardContent" class="player-card-slot">
         <div class="player-card-head">
           <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
             <ExternalInfo :src="getLigainsiderLink">
@@ -66,39 +105,65 @@
         <slot></slot>
 
         <div :class="statsCssClass">
-          <v-expansion-panels v-model="accordion" accordion focusable class="elevation-1 player-card-accordion">
+          <v-expansion-panels
+            v-model="accordion"
+            accordion
+            focusable
+            class="elevation-1 player-card-accordion"
+          >
             <v-expansion-panel>
               <v-expansion-panel-header class="elevation-0">
-                <v-icon class="mr-2 player-card-accordion__icon" color="yellow darken-2">fa-medal</v-icon>
+                <v-icon
+                  class="mr-2 player-card-accordion__icon"
+                  color="yellow darken-2"
+                  >fa-medal</v-icon
+                >
                 season statistics and points
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <player-points-statistic :player="player" v-if="accordion === 0"></player-points-statistic>
+                <player-points-statistic
+                  v-if="accordion === 0"
+                  :player="player"
+                ></player-points-statistic>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel v-if="showPurchaseStatistic">
               <v-expansion-panel-header class="elevation-0">
-                <v-icon class="mr-2 player-card-accordion__icon" color="teal darken-2">fa-search-dollar</v-icon>
+                <v-icon
+                  class="mr-2 player-card-accordion__icon"
+                  color="teal darken-2"
+                  >fa-search-dollar</v-icon
+                >
                 purchase statistics
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-data-table :headers="getPlayerStatistics.headers" :items="getPlayerStatistics.values"
-                  :hide-default-footer="true" class="elevation-1"></v-data-table>
+                <v-data-table
+                  :headers="getPlayerStatistics.headers"
+                  :items="getPlayerStatistics.values"
+                  :hide-default-footer="true"
+                  class="elevation-1"
+                ></v-data-table>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <v-expansion-panel>
               <v-expansion-panel-header class="elevation-0">
-                <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-chart-line</v-icon>
+                <v-icon
+                  class="mr-2 player-card-accordion__icon"
+                  color="blue lighten-2"
+                  >fa-chart-line</v-icon
+                >
                 market value trend
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <player-market-value-trend :player="player"></player-market-value-trend>
+                <player-market-value-trend
+                  :player="player"
+                ></player-market-value-trend>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <slot name="extra-expansion-panel"></slot>
           </v-expansion-panels>
         </div>
-        <v-btn @click="toggleStatistics" class="hidden-sm-and-up">
+        <v-btn class="hidden-sm-and-up" @click="toggleStatistics">
           <span v-if="statsCssClass === initStatsCssClass">show</span>
           <span v-else>hide</span>
           &nbsp;statistics
@@ -116,7 +181,12 @@ import ExternalInfo from "../Generic/ExternalInfo";
 import PlayerImage from "./PlayerImage";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
-import { getMarketValueGrowth, getBundesligaClubImageUrlById, nextMatch, getPositionWording } from "@/helper/helper"
+import {
+  getMarketValueGrowth,
+  getBundesligaClubImageUrlById,
+  nextMatch,
+  getPositionWording,
+} from "@/helper/helper";
 import PlayerPointsStatistic from "@/components/Player/PlayerPointsStatistic";
 
 export default {
@@ -131,7 +201,7 @@ export default {
   props: {
     player: {
       required: true,
-      type: Object
+      type: Object,
     },
     hideMeta: {
       type: Boolean,
@@ -162,58 +232,54 @@ export default {
       type: Boolean,
       required: false,
       default: true,
-    }
+    },
   },
   data() {
     return {
       accordion: null,
-      statsCssClass: 'hidden-xs-only',
+      statsCssClass: "hidden-xs-only",
       initStatsCssClass: null,
       playerMetaWidth: null,
-    }
+    };
   },
   mounted() {
-    this.initStatsCssClass = this.statsCssClass
-    this.determinePlayerMetaWidth()
+    this.initStatsCssClass = this.statsCssClass;
+    this.determinePlayerMetaWidth();
   },
   computed: {
-    ...mapGetters([
-      'getPlayers',
-      'getMatches',
-      'getLigainsiderTeams',
-    ]),
+    ...mapGetters(["getPlayers", "getMatches", "getLigainsiderTeams"]),
     hasPreHeadSlot() {
-      return !!this.$slots['pre-head']
+      return !!this.$slots["pre-head"];
     },
     getPlayerImage() {
-      return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`
+      return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`;
     },
     getComputedPrice() {
-      return numeral(this.player.price).format('0,0')
+      return numeral(this.player.price).format("0,0");
     },
     getGrowthColor() {
-      let positive = '#2a5b2a'
-      let negative = '#682828'
+      let positive = "#2a5b2a";
+      let negative = "#682828";
       if (this.$vuetify.theme.dark) {
-        positive = '#afd3af'
-        negative = '#e6b6b6'
+        positive = "#afd3af";
+        negative = "#e6b6b6";
       }
-      let color = 'fa-caret-right'
+      let color = "fa-caret-right";
       if (this.getDiffMV > 0) {
-        color = positive
+        color = positive;
       } else if (this.getDiffMV < 0) {
-        color = negative
+        color = negative;
       }
-      return color
+      return color;
     },
     getGrowthIcon() {
-      let icon = 'fa-caret-right'
+      let icon = "fa-caret-right";
       if (this.getDiffMV > 0) {
-        icon = 'fa-caret-up'
+        icon = "fa-caret-up";
       } else if (this.getDiffMV < 0) {
-        icon = 'fa-caret-down'
+        icon = "fa-caret-down";
       }
-      return icon
+      return icon;
     },
     getPricePerPoint() {
       return (this.player.marketValue / 1000 / this.player.averagePoints) | 0;
@@ -236,90 +302,105 @@ export default {
       return {
         headers: [
           {
-            'text': 'Stat',
-            'value': 'stat',
-            'sortable': false,
+            text: "Stat",
+            value: "stat",
+            sortable: false,
           },
           {
-            'text': '',
-            'value': 'value',
-            'sortable': false,
+            text: "",
+            value: "value",
+            sortable: false,
           },
         ],
         values: [
           {
-            'stat': 'Profit',
-            'value': numeral(this.getDiffPurchasePrice).format('0,0')
+            stat: "Profit",
+            value: numeral(this.getDiffPurchasePrice).format("0,0"),
           },
           {
-            'stat': 'Growth to today',
-            'value': numeral(this.getDiffMV).format('0,0')
+            stat: "Growth to today",
+            value: numeral(this.getDiffMV).format("0,0"),
           },
           {
-            'stat': 'Current market value',
-            'value': numeral(this.player.marketValue).format('0,0')
+            stat: "Current market value",
+            value: numeral(this.player.marketValue).format("0,0"),
           },
           {
-            'stat': 'Last market value',
-            'value': numeral(this.getYesterdaysMV).format('0,0')
+            stat: "Last market value",
+            value: numeral(this.getYesterdaysMV).format("0,0"),
           },
           {
-            'stat': 'Purchase price',
-            'value': numeral(this.getPlayersPurchaseSum).format('0,0')
+            stat: "Purchase price",
+            value: numeral(this.getPlayersPurchaseSum).format("0,0"),
           },
           {
-            'stat': 'Market value change since purchase',
-            'value': numeral(this.getPlayersMarketValueChange).format('0,0')
+            stat: "Market value change since purchase",
+            value: numeral(this.getPlayersMarketValueChange).format("0,0"),
           },
-        ]
-      }
+        ],
+      };
     },
     getPosition() {
-      return getPositionWording(this.player.position)
+      return getPositionWording(this.player.position);
     },
     teamImage() {
-      return getBundesligaClubImageUrlById(this.player.teamId)
+      return getBundesligaClubImageUrlById(this.player.teamId);
     },
     getYesterdaysMV() {
       if (
-        this.getPlayers[this.player.id]
-        && this.getPlayers[this.player.id].marketValues
-        && this.getPlayers[this.player.id].marketValues.length
-        && this.getPlayers[this.player.id].marketValues.length > 3
+        this.getPlayers[this.player.id] &&
+        this.getPlayers[this.player.id].marketValues &&
+        this.getPlayers[this.player.id].marketValues.length &&
+        this.getPlayers[this.player.id].marketValues.length > 3
       ) {
-        return this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2].m
+        return this.getPlayers[this.player.id].marketValues[
+          this.getPlayers[this.player.id].marketValues.length - 2
+        ].m;
       }
-      return null
+      return null;
     },
     getDiffMV() {
-      return getMarketValueGrowth(this.player.id)
+      return getMarketValueGrowth(this.player.id);
     },
     getDiffPurchasePrice() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer && this.player.offers) {
-        return this.player.offers[0].price - this.getPlayers[this.player.id].leaguePlayer.buyPrice
+      if (
+        this.getPlayers[this.player.id] &&
+        this.getPlayers[this.player.id].leaguePlayer &&
+        this.player.offers
+      ) {
+        return (
+          this.player.offers[0].price -
+          this.getPlayers[this.player.id].leaguePlayer.buyPrice
+        );
       }
-      return null
+      return null;
     },
     getPlayersMarketValueChange() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer) {
-        return this.getPlayers[this.player.id].leaguePlayer.marketValueChange
+      if (
+        this.getPlayers[this.player.id] &&
+        this.getPlayers[this.player.id].leaguePlayer
+      ) {
+        return this.getPlayers[this.player.id].leaguePlayer.marketValueChange;
       }
-      return null
+      return null;
     },
     getPlayersPurchaseSum() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer) {
-        return this.getPlayers[this.player.id].leaguePlayer.buyPrice
+      if (
+        this.getPlayers[this.player.id] &&
+        this.getPlayers[this.player.id].leaguePlayer
+      ) {
+        return this.getPlayers[this.player.id].leaguePlayer.buyPrice;
       }
-      return null
+      return null;
     },
     genericInfoFieldColor() {
-      return (this.$vuetify.theme.dark) ? '#ccc' : '#2A3B4D'
+      return this.$vuetify.theme.dark ? "#ccc" : "#2A3B4D";
     },
     nextGameColor() {
-      return (this.$vuetify.theme.dark) ? '#9b30ff' : '#5500a9'
+      return this.$vuetify.theme.dark ? "#9b30ff" : "#5500a9";
     },
     nextMatchComputed() {
-      return nextMatch(this.getMatches, this.player)
+      return nextMatch(this.getMatches, this.player);
     },
     getLigainsiderLink() {
       if (this.getPlayers[this.player.id]) {
@@ -327,7 +408,9 @@ export default {
           this.addPlayerLigainsiderId(this.player.id);
         }
         if (this.getPlayers[this.player.id].ligainsiderId) {
-          return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
+          return `https://www.ligainsider.de${
+            this.getPlayers[this.player.id].ligainsiderId
+          }`;
         }
       }
       return undefined;
@@ -343,21 +426,19 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([
-      "addPlayerLigainsiderId",
-    ]),
+    ...mapMutations(["addPlayerLigainsiderId"]),
     toggleStatistics() {
       if (this.statsCssClass === this.initStatsCssClass) {
-        this.statsCssClass = null
+        this.statsCssClass = null;
       } else {
-        this.statsCssClass = this.initStatsCssClass
+        this.statsCssClass = this.initStatsCssClass;
       }
     },
     determinePlayerMetaWidth() {
       if (this.$refs.playerCardContent) {
-        this.playerMetaWidth = this.$refs.playerCardContent.offsetWidth
+        this.playerMetaWidth = this.$refs.playerCardContent.offsetWidth;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

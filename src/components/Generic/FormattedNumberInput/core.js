@@ -18,7 +18,7 @@ export function FacadeInputEvent() {
   return new CustomEvent('input', {
     bubbles: true,
     cancelable: true,
-    detail: { facade: true }
+    detail: { facade: true },
   })
 }
 
@@ -30,7 +30,7 @@ export function FacadeChangeEvent() {
   return new CustomEvent('change', {
     bubbles: true,
     cancelable: true,
-    detail: { facade: true }
+    detail: { facade: true },
   })
 }
 
@@ -57,7 +57,9 @@ export function getInputElement(el) {
  * @param {Number} position
  */
 export function updateCursor(el, position) {
-  const setSelectionRange = () => { el.setSelectionRange(position, position) }
+  const setSelectionRange = () => {
+    el.setSelectionRange(position, position)
+  }
   setSelectionRange()
   // Android Fix
   setTimeout(setSelectionRange(), 1)

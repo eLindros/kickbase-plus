@@ -1,7 +1,7 @@
 function setAppIsInitialized(context) {
-    context.commit('setInitialized', true)
+  context.commit('setInitialized', true)
 }
 
 export default {
-    setAsInitialized: setAppIsInitialized,
+  setAsInitialized: setAppIsInitialized,
 }

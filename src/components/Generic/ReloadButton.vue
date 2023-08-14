@@ -1,23 +1,21 @@
 <template>
   <v-btn
-      :loading="loading"
-      :disabled="loading"
-      fab
-      :x-large="xLarge"
-      :large="large"
-      :color="color"
-      class="reload-button elevation-0"
-      :class="extraClasses"
+    :loading="loading"
+    :disabled="loading"
+    fab
+    :x-large="xLarge"
+    :large="large"
+    :color="color"
+    class="reload-button elevation-0"
+    :class="extraClasses"
   >
-    <v-icon>
-      fa-redo
-    </v-icon>
+    <v-icon> fa-redo </v-icon>
   </v-btn>
 </template>
 
 <script>
 export default {
-  name: "ReloadButton",
+  name: 'ReloadButton',
   props: {
     loading: {
       type: Boolean,
@@ -43,7 +41,7 @@ export default {
       type: String,
       required: false,
       default: '',
-    }
-  }
+    },
+  },
 }
 </script>

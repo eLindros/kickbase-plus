@@ -1,47 +1,34 @@
 <template>
-
-
-  <v-app id="inspire" class="app" :class="{loading: !hasUser}">
-
+  <v-app id="inspire" class="app" :class="{ loading: !hasUser }">
     <v-overlay class="app-loading-overlay" :value="getLoading" z-index="99999" opacity=".9">
-      <v-progress-linear
-          indeterminate
-          color="yellow darken-2"
-      ></v-progress-linear>
+      <v-progress-linear indeterminate color="yellow darken-2"></v-progress-linear>
       <v-container>
         <p
-            v-for="(message, mkey) in getLoadingMessages"
-            :key="mkey"
-            class="title"
-            :class="{'red':message.error}"
+          v-for="(message, mkey) in getLoadingMessages"
+          :key="mkey"
+          class="title"
+          :class="{ red: message.error }"
         >
-          <v-progress-circular v-if="mkey === (getLoadingMessages.length - 1)" indeterminate color="yellow" size="24"
-                               class="mr-2"></v-progress-circular>
-          <v-icon color="green" v-else class="mr-2">fa-check</v-icon>
+          <v-progress-circular
+            v-if="mkey === getLoadingMessages.length - 1"
+            indeterminate
+            color="yellow"
+            size="24"
+            class="mr-2"
+          ></v-progress-circular>
+          <v-icon v-else color="green" class="mr-2">fa-check</v-icon>
           {{ message.message }}
         </p>
       </v-container>
     </v-overlay>
 
-    <v-snackbar
-        color="error"
-        v-model="showSnack"
-        :timeout="4000"
-        :top="true"
-    >
+    <v-snackbar v-model="showSnack" color="error" :timeout="4000" :top="true">
       <p class="text-h4">{{ snackMessage }}</p>
     </v-snackbar>
 
     <div v-if="hasUser">
-
-      <v-navigation-drawer
-          v-model="drawer"
-          class="blue-grey darken-2"
-          dark
-          app
-      >
+      <v-navigation-drawer v-model="drawer" class="blue-grey darken-2" dark app>
         <v-list color="blue-grey darken-2">
-
           <v-list-item to="/home" color="white">
             <v-list-item-action>
               <v-icon>fa-home</v-icon>
@@ -135,7 +122,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="doLogout" color="white">
+          <v-list-item color="white" @click="doLogout">
             <v-list-item-action>
               <v-icon>fa-sign-out-alt</v-icon>
             </v-list-item-action>
@@ -155,63 +142,53 @@
               <v-list-item-title>version: {{ version }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
         </v-list>
       </v-navigation-drawer>
 
-      <v-app-bar
-          app
-          color="black"
-          dark
-      >
+      <v-app-bar app color="black" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title class="d-none d-sm-none d-md-flex" style="align-items:baseline;">
+        <v-toolbar-title class="d-none d-sm-none d-md-flex" style="align-items: baseline">
           KICKBASE<span class="yellow--text">+</span>
           <small v-if="leagueName">
             {{ leagueName }}
           </small>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <small style="font-size:11px;" v-html="getPlayersDetails"
-               v-if="getUsersDetails && getUsersDetails.budget"></small>
+        <small v-if="getUsersDetails && getUsersDetails.budget" style="font-size: 11px">{{
+          getPlayersDetails
+        }}</small>
         <v-progress-circular v-else indeterminate size="16"></v-progress-circular>
         <v-spacer></v-spacer>
-        <div style="font-size:11px;">
-          daily bonus:<br>
+        <div style="font-size: 11px">
+          daily bonus:<br />
           <span v-if="getFetchedGift === true">
             <v-icon color="green darken-2">fa-heart</v-icon>&nbsp;
-            <span><span v-if="getGiftBonus!==0">{{ getGiftBonus }} / </span>{{ getGiftLevel }}</span>
+            <span
+              ><span v-if="getGiftBonus !== 0">{{ getGiftBonus }} / </span>{{ getGiftLevel }}</span
+            >
           </span>
           <span v-else-if="getFetchedGift === false">
             <v-icon color="red">fa-sad-tear</v-icon>
           </span>
           <v-progress-circular v-else indeterminate size="16"></v-progress-circular>
         </div>
-
       </v-app-bar>
 
-      <v-main :class="this.$vuetify.theme.dark ? 'grey darken-4' : 'grey lighten-3'">
-        <v-container
-            fluid
-            fill-height
-        >
-          <v-layout
-              align-center
-              justify-center
-          >
-            <router-view
-            ></router-view>
+      <v-main :class="$vuetify.theme.dark ? 'grey darken-4' : 'grey lighten-3'">
+        <v-container fluid fill-height>
+          <v-layout align-center justify-center>
+            <router-view></router-view>
           </v-layout>
         </v-container>
       </v-main>
     </div>
 
-    <login-dialog v-else-if="!hasUser"/>
+    <login-dialog v-else-if="!hasUser" />
   </v-app>
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 import numeral from 'numeral'
@@ -228,33 +205,17 @@ export default {
     LoginDialog,
   },
   props: {
-    source: String,
+    source: {
+      type: String,
+      required: true,
+      default: '',
+    },
   },
   data: () => ({
     drawer: null,
     snackMessage: null,
     showSnack: false,
   }),
-  created: function () {
-    this.$store.watch(state => state.errorMessage, () => {
-      const msg = this.$store.state.errorMessage
-      if (msg !== '') {
-        this.showSnack = true
-        this.snackMessage = msg
-        this.setErrorMessage('')
-      }
-    })
-  },
-  mounted() {
-    if (localStorage.getItem('password')) {
-      localStorage.removeItem('password')
-    }
-
-    if (this.hasUser) {
-      this.initLoading()
-    }
-    this.initDarkMode();
-  },
   computed: {
     ...mapGetters([
       'getAuthData',
@@ -274,9 +235,10 @@ export default {
     ]),
     hasUser() {
       const now = moment()
-      if ((this.getAuthData.user)
-          || (localStorage.getItem('token')
-              && localStorage.getItem('tokenExp'))) {
+      if (
+        this.getAuthData.user ||
+        (localStorage.getItem('token') && localStorage.getItem('tokenExp'))
+      ) {
         const tokenExpMoment = moment(localStorage.getItem('tokenExp'))
         if (tokenExpMoment > now) {
           return true
@@ -287,13 +249,21 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-          if (this.getSelectedPlayersMarketValueSum == 0) {
-            details += 'Budget: ' + numeral(this.getUsersDetails.budget).format('0,0');
-            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue).format('0,0')
-          } else {
-            details += 'Budget: ' + numeral( this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
-            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0')
-          }
+        if (this.getSelectedPlayersMarketValueSum == 0) {
+          details += 'Budget: ' + numeral(this.getUsersDetails.budget).format('0,0')
+          details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue).format('0,0')
+        } else {
+          details +=
+            'Budget: ' +
+            numeral(this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format(
+              '0,0'
+            )
+          details +=
+            '&nbsp;/ Team: ' +
+            numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format(
+              '0,0'
+            )
+        }
       }
       if (this.getBids && this.getUsersDetails) {
         details += '<br>Bids: ' + numeral(this.getPlayerBidsSum).format('0,0')
@@ -302,12 +272,15 @@ export default {
       }
 
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-        details += '&nbsp;/ Transfers: ' + ((this.getUsersDetails.bought || 0) + (this.getUsersDetails.sold || 0))
+        details +=
+          '&nbsp;/ Transfers: ' +
+          ((this.getUsersDetails.bought || 0) + (this.getUsersDetails.sold || 0))
 
         if (this.getUsersDetails.players && this.getUsersDetails.players.length) {
-          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getUsersDetails.players.length
+          details +=
+            ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' +
+            this.getUsersDetails.players.length
         }
-
       }
       return details
     },
@@ -342,29 +315,44 @@ export default {
     },
     version() {
       return process.env.VUE_APP_VERSION ? process.env.VUE_APP_VERSION : 'unknown'
+    },
+  },
+  created: function () {
+    this.$store.watch(
+      (state) => state.errorMessage,
+      () => {
+        const msg = this.$store.state.errorMessage
+        if (msg !== '') {
+          this.showSnack = true
+          this.snackMessage = msg
+          this.setErrorMessage('')
+        }
+      }
+    )
+  },
+  mounted() {
+    if (localStorage.getItem('password')) {
+      localStorage.removeItem('password')
     }
+
+    if (this.hasUser) {
+      this.initLoading()
+    }
+    this.initDarkMode()
   },
   methods: {
-    ...mapMutations([
-      'setErrorMessage',
-      'setLoading',
-      'setOfferThreshold',
-    ]),
-    ...mapActions(
-        [
-          'setAsInitialized'
-        ]
-    ),
+    ...mapMutations(['setErrorMessage', 'setLoading', 'setOfferThreshold']),
+    ...mapActions(['setAsInitialized']),
     initDarkMode() {
-      const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
       darkMediaQuery.addEventListener('change', () => {
-        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      });
+        this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      })
 
       if (darkMediaQuery.matches) {
         // need to set 0 sec timeout to set the dark more after mounted event, due to some bug in the framework
-        setTimeout(() => this.$vuetify.theme.dark = true, 0);
+        setTimeout(() => (this.$vuetify.theme.dark = true), 0)
       }
     },
     doLogout() {
@@ -393,7 +381,7 @@ export default {
       await ligainsider.loadLigainsiderPlayers()
       this.setLoading(false)
       this.setAsInitialized()
-    }
+    },
   },
-};
+}
 </script>

@@ -1,6 +1,7 @@
 # Kickbase+
 
 ## About project
+
 this is a "quick and dirty" web client for KICKBASE, which provides all main features like:
 
 - switching between leagues
@@ -16,21 +17,23 @@ kickbase+ supports all devices - means it is responsive.
 ## Extended features
 
 it offers some additional features compared to the official mobile ~~and web app~~, such as:
+
 - no ads
 - automatic fetching of daily bonus
 - transfer market:
-	- market price trends of the last few days are directly visible
-	- dedicated buttons which let you send an offer with one click
-	- indication of how many more players you can buy (if your league has a player limit for teams)
-	- ~~see if other users bid on a player~~ (unfortunately no longer possible due to API changes)
+  - market price trends of the last few days are directly visible
+  - dedicated buttons which let you send an offer with one click
+  - indication of how many more players you can buy (if your league has a player limit for teams)
+  - ~~see if other users bid on a player~~ (unfortunately no longer possible due to API changes)
 - offers by Kickbase:
-	- accept or reject offers from Kickbase with just one click
+  - accept or reject offers from Kickbase with just one click
 - line-up:
-	- see which player is suspended or injured
-	- see which player will play against which team on the next matchday
+  - see which player is suspended or injured
+  - see which player will play against which team on the next matchday
 - live stats: you can see you current ranking of each matchday live
 
 ## Demo
+
 you can test the app here: [https://kickbaseplus.fabian-fischer.com/](https://kickbaseplus.fabian-fischer.com/)
 
 (no tracking, no storing of your credentials. after a successful login, the login token is stored in your browser via LocalStorage. this information is therefore saved ONLY LOCALLY in your browser!)
@@ -39,20 +42,19 @@ alternatively you can just check out these fancy gifs (which show an old version
 
 ![first demo of kickbase+](https://dev.fabian-fischer.com/github/kickbase+/demo-1.gif "first demo of kickbase+")
 
-
 ![second demo of kickbase+](https://dev.fabian-fischer.com/github/kickbase+/demo-2.gif "second demo of kickbase+")
 
 ## Download and usage
-just clone this project on your computer and follow the instructions below. 
+
+just clone this project on your computer and follow the instructions below.
 
 You can also download the compiled zip here:
 
 [https://github.com/fabfischer/kickbase-plus/releases](https://github.com/fabfischer/kickbase-plus/releases)
 
-
 ## project setup
-tested with node v14
 
+tested with node v14
 
 to install all dependencies just run:
 
@@ -61,7 +63,7 @@ npm install
 ```
 
 to compile the source code execute the following:
- 
+
 ```
 npm run build
 ```

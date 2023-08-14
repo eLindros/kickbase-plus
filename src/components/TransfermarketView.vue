@@ -1,67 +1,117 @@
 <template>
   <div class="full-width-container full-width-container--with-options-bar">
-
     <options-bar info-button-title="your defaults">
-      <template v-slot:content>
-        <reload-button :loading="loading" v-on:click.native="load" color="transparent"
-          extra-classes="desktop"></reload-button>
+      <template #content>
+        <reload-button
+          :loading="loading"
+          color="transparent"
+          extra-classes="desktop"
+          @click.native="load"
+        ></reload-button>
         <div v-if="loading === false">
-          <v-text-field label="Search for player at current market" v-model="search"
-            prepend-icon="fa-search"></v-text-field>
+          <v-text-field
+            v-model="search"
+            label="Search for player at current market"
+            prepend-icon="fa-search"
+          ></v-text-field>
 
-          <v-select :items="positions" label="Position filter" dense outlined v-model="selectedFilteredPosition"
-            hide-details="true"></v-select>
+          <v-select
+            v-model="selectedFilteredPosition"
+            :items="positions"
+            label="Position filter"
+            dense
+            outlined
+            hide-details="true"
+          ></v-select>
 
-          <v-select class="mt-2" v-model="expertFilters" :items="expertFiltersOptions" :menu-props="{ maxHeight: '500' }"
-            label="Expert filters" outlined multiple chips hint="Select one or more expert filters to limit the list"
-            persistent-hint></v-select>
+          <v-select
+            v-model="expertFilters"
+            class="mt-2"
+            :items="expertFiltersOptions"
+            :menu-props="{ maxHeight: '500' }"
+            label="Expert filters"
+            outlined
+            multiple
+            chips
+            hint="Select one or more expert filters to limit the list"
+            persistent-hint
+          ></v-select>
 
-          <v-select class="mt-2" v-model="filteredTeams" :items="getTeams" :menu-props="{ maxHeight: '400' }"
-            label="Bundesliga Club" outlined multiple chips hint="Select one or more clubs" persistent-hint return-object
-            :item-value="'i'">
-            <template v-slot:selection="{ item }">
+          <v-select
+            v-model="filteredTeams"
+            class="mt-2"
+            :items="getTeams"
+            :menu-props="{ maxHeight: '400' }"
+            label="Bundesliga Club"
+            outlined
+            multiple
+            chips
+            hint="Select one or more clubs"
+            persistent-hint
+            return-object
+            :item-value="'i'"
+          >
+            <template #selection="{ item }">
               <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)" />
               {{ item.n }}
             </template>
-            <template v-slot:item="{ item }">
+            <template #item="{ item }">
               <v-img class="mr-3" max-width="24" max-height="24" :src="clubImage(item.i)" />
               {{ item.n }}
             </template>
           </v-select>
 
-          <v-switch v-model="showOtherUsersPlayer" label="Show all player (of all league members)"></v-switch>
+          <v-switch
+            v-model="showOtherUsersPlayer"
+            label="Show all player (of all league members)"
+          ></v-switch>
 
           <v-divider class="mt-3 mb-6" />
-          <v-select :items="orderOptions" label="Sort order" v-model="order" outlined :hide-details=true></v-select>
+          <v-select
+            v-model="order"
+            :items="orderOptions"
+            label="Sort order"
+            outlined
+            :hide-details="true"
+          ></v-select>
         </div>
       </template>
-      <template v-slot:other-buttons>
-        <reload-button :loading="loading" v-on:click.native="load" :large=true></reload-button>
+      <template #other-buttons>
+        <reload-button :loading="loading" :large="true" @click.native="load"></reload-button>
       </template>
-
     </options-bar>
 
-    <div class="flex-grow-1 options-bar__sibling" v-if="loading === false">
+    <div v-if="loading === false" class="flex-grow-1 options-bar__sibling">
       <v-alert :color="alertColor" dark text class="mb-5 text-body-2">
-        <strong class="text-h6 font-weight-black">{{ playersLeft }}</strong> free spots in your team
-        /
-        {{ getFilteredPlayers.length }} players match your criteria (out of a total of {{ getComputedBids.length }}
+        <strong class="text-h6 font-weight-black">{{ playersLeft }}</strong>
+        free spots in your team / {{ getFilteredPlayers.length }} players match your criteria (out
+        of a total of
+        {{ getComputedBids.length }}
         players on the TM)
-
       </v-alert>
 
-      <v-alert v-if="hasActiveFilters" style="cursor: pointer" type="info" dark text @click="resetFilters">
+      <v-alert
+        v-if="hasActiveFilters"
+        style="cursor: pointer"
+        type="info"
+        dark
+        text
+        @click="resetFilters"
+      >
         you have active filters. <u>reset filters</u>
       </v-alert>
-      <v-text-field label="Search for player at current market" v-model="search" prepend-icon="fa-search"
-        class="hidden-md-and-up"></v-text-field>
+      <v-text-field
+        v-model="search"
+        label="Search for player at current market"
+        prepend-icon="fa-search"
+        class="hidden-md-and-up"
+      ></v-text-field>
       <div v-if="getFilteredPlayers.length" class="d-flex flex-wrap">
         <bid-row v-for="player in getFilteredPlayers" :key="player.id" :player="player" />
       </div>
       <v-alert v-else type="info" text>
         no player matched your criteria. please check your filters
       </v-alert>
-
     </div>
     <div v-else class="flex-grow-1 options-bar__sibling">
       <loading-spinner></loading-spinner>
@@ -70,19 +120,19 @@
 </template>
 
 <script>
-import moment from "moment"
+import moment from 'moment'
 import api from '../api/api'
 import { mapGetters, mapMutations } from 'vuex'
 
 import BidRow from './BidRow'
 import OptionsBar from './Generic/OptionsBar'
 import ReloadButton from './Generic/ReloadButton'
-import LoadingSpinner from "@/components/Spinner"
+import LoadingSpinner from '@/components/Spinner'
 
-import { getMarketValueGrowth, getBundesligaClubImageUrlById } from "@/helper/helper"
+import { getMarketValueGrowth, getBundesligaClubImageUrlById } from '@/helper/helper'
 
 export default {
-  name: 'transfermarket-view',
+  name: 'TransfermarketView',
   components: {
     LoadingSpinner,
     BidRow,
@@ -92,61 +142,51 @@ export default {
   data: () => ({
     search: null,
     showOtherUsersPlayer: false,
-    positions: [
-      'All',
-      'Goalkeeper',
-      'Defender',
-      'Midfielder',
-      'Forward',
-    ],
+    positions: ['All', 'Goalkeeper', 'Defender', 'Midfielder', 'Forward'],
     selectedFilteredPosition: null,
     loading: true,
     expertFilters: [],
     filteredTeams: [],
     order: null,
-    orderOptions: [
-      'order by date (default)',
-      'order by market value',
-      'order by growth',
-    ],
+    orderOptions: ['order by date (default)', 'order by market value', 'order by growth'],
     expertFiltersOptions: [
       {
         text: 'only players with growing market value',
-        value: 'growing'
+        value: 'growing',
       },
       {
         text: 'only players without any bids',
-        value: 'no-bids'
+        value: 'no-bids',
       },
       {
         text: 'only players without other bids',
-        value: 'no-foreign-bids'
+        value: 'no-foreign-bids',
       },
       {
         text: 'only players with own bid',
-        value: 'own-bid'
+        value: 'own-bid',
       },
       {
         text: 'only players without injuries',
-        value: 'no-injuries'
+        value: 'no-injuries',
       },
       {
         text: 'show players who are sold before next matchday',
-        value: 'sold-before-matchday'
+        value: 'sold-before-matchday',
       },
       {
         text: 'show players who are sold after next matchday',
-        value: 'sold-after-matchday'
+        value: 'sold-after-matchday',
       },
       {
         text: 'show players who are sold before next market value update (ca. 22:00)',
-        value: 'sold-before-market-value-update'
+        value: 'sold-before-market-value-update',
       },
       {
         text: 'show players who are sold after next market value update (ca. 22:00)',
-        value: 'sold-after-market-value-update'
+        value: 'sold-after-market-value-update',
       },
-    ]
+    ],
   }),
   computed: {
     ...mapGetters([
@@ -160,7 +200,7 @@ export default {
     ]),
     playersLeft() {
       if (this.getSelectedLeague && this.getSelectedLeague.pl) {
-        return (this.getUsersDetails && this.getUsersDetails.players && this.getSelectedLeague)
+        return this.getUsersDetails && this.getUsersDetails.players && this.getSelectedLeague
           ? this.getSelectedLeague.pl - this.getUsersDetails.players.length
           : 0
       } else {
@@ -192,7 +232,12 @@ export default {
       return players
     },
     hasActiveFilters() {
-      return (this.search || this.selectedFilteredPosition || this.filteredTeams.length || this.expertFilters.length)
+      return (
+        this.search ||
+        this.selectedFilteredPosition ||
+        this.filteredTeams.length ||
+        this.expertFilters.length
+      )
     },
     getFilteredPlayers() {
       const mvChangeDate = moment().hour(22).minute(0)
@@ -201,17 +246,17 @@ export default {
       let players = this.getComputedBids
       if (this.search) {
         const regex = new RegExp(this.search, 'i')
-        players = players.filter(player => player.lastName.match(regex))
+        players = players.filter((player) => player.lastName.match(regex))
       }
 
       if (this.selectedFilteredPosition) {
         let p = null
         switch (this.selectedFilteredPosition) {
           case 'All':
-            break;
+            break
           case 'Goalkeeper':
             p = 1
-            break;
+            break
           case 'Defender':
             p = 2
             break
@@ -220,14 +265,14 @@ export default {
             break
           case 'Forward':
             p = 4
-            break;
+            break
           default:
             p = null
-            break;
+            break
         }
 
         if (p) {
-          players = players.filter(player => player.position === p)
+          players = players.filter((player) => player.position === p)
         }
       }
 
@@ -236,72 +281,72 @@ export default {
         for (const club of this.filteredTeams) {
           clubIds.push(club.i * 1)
         }
-        players = players.filter(player => clubIds.indexOf(player.teamId * 1) !== -1)
+        players = players.filter((player) => clubIds.indexOf(player.teamId * 1) !== -1)
       }
 
       if (this.expertFilters.length) {
         for (const expertFilter of this.expertFilters) {
           if (expertFilter === 'no-injuries') {
-            players = players.filter(player => player.status !== 1)
+            players = players.filter((player) => player.status !== 1)
           }
           if (expertFilter === 'own-bid') {
-            players = players.filter(player => player.hasOwnBid === true)
+            players = players.filter((player) => player.hasOwnBid === true)
           }
           if (expertFilter === 'no-foreign-bids') {
-            players = players.filter(player => player.hasOnlySelfBid === true)
+            players = players.filter((player) => player.hasOnlySelfBid === true)
           }
           if (expertFilter === 'no-bids') {
-            players = players.filter(player => player.hasNoBid === true)
+            players = players.filter((player) => player.hasNoBid === true)
           }
           if (expertFilter === 'growing') {
-            players = players.filter(player => player.marketValueChange > 0)
+            players = players.filter((player) => player.marketValueChange > 0)
           }
           if (expertFilter === 'sold-before-matchday' && gameDayDate) {
-            players = players.filter(player => player.expiration.isBefore(gameDayDate))
+            players = players.filter((player) => player.expiration.isBefore(gameDayDate))
           }
           if (expertFilter === 'sold-after-matchday' && gameDayDate) {
-            players = players.filter(player => player.expiration.isAfter(gameDayDate))
+            players = players.filter((player) => player.expiration.isAfter(gameDayDate))
           }
           if (expertFilter === 'sold-before-market-value-update') {
-            players = players.filter(player => player.expiration.isBefore(mvChangeDate))
+            players = players.filter((player) => player.expiration.isBefore(mvChangeDate))
           }
           if (expertFilter === 'sold-after-market-value-update') {
-            players = players.filter(player => player.expiration.isAfter(mvChangeDate))
+            players = players.filter((player) => player.expiration.isAfter(mvChangeDate))
           }
         }
       }
 
       if (!this.showOtherUsersPlayer) {
-        players = players.filter(player => !player.userId)
+        players = players.filter((player) => !player.userId)
       }
 
       if (this.order) {
         if (this.order === 'order by market value') {
           players = players.sort((a, b) => {
             if (a.marketValue > b.marketValue) {
-              return -1;
+              return -1
             }
             if (a.marketValue < b.marketValue) {
-              return 1;
+              return 1
             }
-            return 0;
+            return 0
           })
         }
         if (this.order === 'order by growth') {
           players = players.sort((a, b) => {
             if (a.marketValueChange > b.marketValueChange) {
-              return -1;
+              return -1
             }
             if (a.marketValueChange < b.marketValueChange) {
-              return 1;
+              return 1
             }
-            return 0;
+            return 0
           })
         }
       }
 
       return players
-    }
+    },
   },
   mounted() {
     this.init()
@@ -336,11 +381,11 @@ export default {
       return hasOwnBid
     },
     hasOnlySelfBid(player) {
-      return (player.offers && player.offers.length === 1 && this.hasOwnBid(player))
+      return player.offers && player.offers.length === 1 && this.hasOwnBid(player)
     },
     hasNoBid(player) {
       const offers = player.offers
-      return (offers && offers.length === 0 || !offers)
+      return (offers && offers.length === 0) || !offers
     },
     clubImage(id) {
       return getBundesligaClubImageUrlById(id)
@@ -352,5 +397,5 @@ export default {
       this.filteredTeams = []
     },
   },
-};
+}
 </script>

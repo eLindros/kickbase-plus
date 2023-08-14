@@ -2,14 +2,13 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [master, develop]
   pull_request:
-    branches: [ master, develop ]
+    branches: [master, develop]
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +16,7 @@ jobs:
       - name: Use Node.js '16'
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - name: npm install and build
         run: |
           npm install

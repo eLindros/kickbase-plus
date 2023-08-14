@@ -1,42 +1,26 @@
 <template>
   <div class="full-width-container">
     <div v-if="getRanking && ranks && ranks.length && getSelf">
-      <v-tabs
-          v-model="tabMain"
-          background-color="blue-grey darken-2"
-          dark
-          grow
-      >
-        <v-tab>
-          League
-        </v-tab>
-        <v-tab>
-          Detailed Ranking
-        </v-tab>
-        <v-tab>
-          Progression Graphs
-        </v-tab>
+      <v-tabs v-model="tabMain" background-color="blue-grey darken-2" dark grow>
+        <v-tab> League </v-tab>
+        <v-tab> Detailed Ranking </v-tab>
+        <v-tab> Progression Graphs </v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tabMain">
         <v-tab-item>
           <v-expansion-panels multiple accordion class="elevation-2">
-            <v-expansion-panel
-                v-for="(item) in ranks"
-                :key="item.userId"
-                class="elevation-4"
-            >
+            <v-expansion-panel v-for="item in ranks" :key="item.userId" class="elevation-4">
               <v-expansion-panel-header>
                 <template>
                   <div class="d-flex text-h5 text-lg-h4" style="align-items: center">
                     <div>
-                      <strong class="">{{ item.points }}</strong><br/>
+                      <strong class="">{{ item.points }}</strong
+                      ><br />
                       <small class="d-block text-center text--disabled text-caption">Points</small>
                     </div>
                     <v-avatar v-if="item.user.profile" class="my-2 ma-3">
-                      <img
-                          :src="item.user.profile"
-                      >
+                      <img :src="item.user.profile" />
                     </v-avatar>
                     <v-avatar v-else class="my-2 ma-3"></v-avatar>
                     {{ item.user.name }}
@@ -44,14 +28,18 @@
                 </template>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-
-                <v-expansion-panels multiple accordion class="elevation-2" v-if="item.user.model && item.user.model.lineup">
+                <v-expansion-panels
+                  v-if="item.user.model && item.user.model.lineup"
+                  multiple
+                  accordion
+                  class="elevation-2"
+                >
                   <v-expansion-panel>
                     <v-expansion-panel-header>
                       Lineup ({{ item.user.model.lineup.type }})
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
-                      {{ item.user.model.lineup.type }}: <br>
+                      {{ item.user.model.lineup.type }}: <br />
                       {{ item.user.computedLineup }}
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -68,22 +56,19 @@
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <v-expansion-panel>
-                    <v-expansion-panel-header>
-                      Players per Team
-                    </v-expansion-panel-header>
+                    <v-expansion-panel-header> Players per Team </v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <table class="kp-table">
-                        <tr v-for="(team, n) in item.user.playerPerTeamList"
-                            :key="team.teamId">
+                        <tr v-for="(team, n) in item.user.playerPerTeamList" :key="team.teamId">
                           <th style="width: 20px">
                             {{ n + 1 }}.
-                            <br>
+                            <br />
                             <v-img
-                                :src="getTeamImageById(team.teamId)"
-                                width="36"
-                                height="36"
-                                aspect-ratio="1"
-                                contain
+                              :src="getTeamImageById(team.teamId)"
+                              width="36"
+                              height="36"
+                              aspect-ratio="1"
+                              contain
                             ></v-img>
                           </th>
                           <td>
@@ -91,8 +76,7 @@
                               <strong>{{ team.teamName }}: {{ team.players.length }}</strong>
                             </div>
                             <ol>
-                              <li v-for="player in team.players"
-                                  :key="player.name">
+                              <li v-for="player in team.players" :key="player.name">
                                 {{ player.name }}
                               </li>
                             </ol>
@@ -108,84 +92,57 @@
         </v-tab-item>
         <v-tab-item>
           <v-simple-table class="mb-6">
-            <template v-slot:default>
+            <template #default>
               <thead>
-              <tr>
-                <th class="text-left">
-                  #
-                </th>
-                <th class="text-left d-none d-sm-table-cell">
-                </th>
-                <th class="text-left">
-                  Name
-                </th>
-                <th class="text-left">
-                  total points
-                </th>
-                <th class="text-left">
-                  average points
-                </th>
-                <th class="text-left">
-                  advantage to next rank
-                </th>
-                <th class="text-left">
-                  points to 1st place
-                </th>
-              </tr>
+                <tr>
+                  <th class="text-left">#</th>
+                  <th class="text-left d-none d-sm-table-cell"></th>
+                  <th class="text-left">Name</th>
+                  <th class="text-left">total points</th>
+                  <th class="text-left">average points</th>
+                  <th class="text-left">advantage to next rank</th>
+                  <th class="text-left">points to 1st place</th>
+                </tr>
               </thead>
               <tbody>
-              <tr
+                <tr
                   v-for="(item, r) in ranks"
                   :key="item.userId"
-                  :class="{'light-blue lighten-4':(item.userId==getSelf)}"
-              >
-                <td>{{ r + 1 }}.</td>
-                <td class="d-none d-sm-table-cell">
-                  <v-avatar v-if="item.user.profile" class="my-2">
-                    <img
-                        :src="item.user.profile"
-                    >
-                  </v-avatar>
-                </td>
-                <td>{{ item.user.name }}</td>
-                <td>{{ item.points }}</td>
-                <td>{{ item.average }}</td>
-                <td>{{ item.advantage }}</td>
-                <td>{{ item.r1Advantage }}</td>
-              </tr>
+                  :class="{ 'light-blue lighten-4': item.userId == getSelf }"
+                >
+                  <td>{{ r + 1 }}.</td>
+                  <td class="d-none d-sm-table-cell">
+                    <v-avatar v-if="item.user.profile" class="my-2">
+                      <img :src="item.user.profile" />
+                    </v-avatar>
+                  </td>
+                  <td>{{ item.user.name }}</td>
+                  <td>{{ item.points }}</td>
+                  <td>{{ item.average }}</td>
+                  <td>{{ item.advantage }}</td>
+                  <td>{{ item.r1Advantage }}</td>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>
         </v-tab-item>
         <v-tab-item>
-          <v-tabs
-              v-model="tabPG"
-              align-with-title
-              background-color="blue-grey darken-3"
-              dark
-              grow
-          >
+          <v-tabs v-model="tabPG" align-with-title background-color="blue-grey darken-3" dark grow>
             <v-tabs-slider></v-tabs-slider>
 
-            <v-tab
-                v-for="item in trends"
-                :key="item"
-            >
+            <v-tab v-for="item in trends" :key="item">
               {{ item }}
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tabPG">
-            <v-tab-item
-                v-for="item in trends"
-                :key="item"
-            >
-              <v-card flat style="height: 500px; position: relative;">
-                <div style="height: 500px; position: relative;">
+            <v-tab-item v-for="item in trends" :key="item">
+              <v-card flat style="height: 500px; position: relative">
+                <div style="height: 500px; position: relative">
                   <ranking-line-chart
-                      :height=500
-                      :width=1000
-                      :chartdata="getChartDetailsByKey(item)"
-                      :options="getChartOptionsByKey(item)"
+                    :height="500"
+                    :width="1000"
+                    :chartdata="getChartDetailsByKey(item)"
+                    :options="getChartOptionsByKey(item)"
                   >
                   </ranking-line-chart>
                 </div>
@@ -197,18 +154,17 @@
     </div>
     <spinner v-else></spinner>
   </div>
-
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import api from '../api/api'
 import Spinner from './Spinner'
 import RankingLineChart from './RankingLineChart'
-import {getBundesligaClubImageUrlById} from "@/helper/helper";
+import { getBundesligaClubImageUrlById } from '@/helper/helper'
 
 export default {
-  name: 'ranking-view',
+  name: 'RankingView',
   components: {
     Spinner,
     RankingLineChart,
@@ -216,55 +172,51 @@ export default {
   data: () => ({
     tabMain: 0,
     tabPG: 0,
-    trends: [
-      'placement',
-      'dayPoints',
-      'dayPlacement',
-      'points',
-      'teamValue',
-    ],
+    trends: ['placement', 'dayPoints', 'dayPlacement', 'points', 'teamValue'],
     trendOptions: {
       placement: {
-        rankOrder: true
-      }
+        rankOrder: true,
+      },
     },
     chartOptions: {
       default: {
         responsive: false,
         scales: {
-          yAxes: [{
-            ticks: {
-              precision: 0,
-            }
-          }]
-        }
+          yAxes: [
+            {
+              ticks: {
+                precision: 0,
+              },
+            },
+          ],
+        },
       },
       reverse: {
         responsive: false,
         scales: {
-          yAxes: [{
-            ticks: {
-              precision: 0,
-              reverse: true
-            }
-          }]
-        }
+          yAxes: [
+            {
+              ticks: {
+                precision: 0,
+                reverse: true,
+              },
+            },
+          ],
+        },
       },
-
-    }
+    },
   }),
   computed: {
-    ...mapGetters([
-      'getSelf',
-      'getRanking',
-      'getUsers',
-    ]),
+    ...mapGetters(['getSelf', 'getRanking', 'getUsers']),
     ranks() {
       let table = []
 
-      if (this.getRanking
-          && this.getRanking.users && this.getRanking.users.length
-          && this.getRanking.matchDays && this.getRanking.matchDays.length
+      if (
+        this.getRanking &&
+        this.getRanking.users &&
+        this.getRanking.users.length &&
+        this.getRanking.matchDays &&
+        this.getRanking.matchDays.length
       ) {
         const l = this.getRanking.matchDays.length - 1
         const cM = this.getRanking.matchDays[l].users
@@ -273,8 +225,7 @@ export default {
           cM[i].average = Math.round(element.points / l)
           const user = this.getRanking.users.filter((user) => user.id === element.userId)
           if (user.length === 1) {
-
-            const cUser = {...user[0]}
+            const cUser = { ...user[0] }
             cUser.model = this.getUsers[element.userId]
             cUser.computedLineup = this.getComputedLineupForUser(cUser.model)
             cUser.playerList = this.getComputedPlayerListForUser(cUser.model)
@@ -300,8 +251,7 @@ export default {
                 const mdUser = md.users.filter((user) => user.userId === element.userId)
                 if (mdUser.length) {
                   this.trends.forEach((trend) => {
-                    if (mdUser[0][trend])
-                      element.trends[trend].push(mdUser[0][trend])
+                    if (mdUser[0][trend]) element.trends[trend].push(mdUser[0][trend])
                   })
                 }
               }
@@ -309,7 +259,7 @@ export default {
 
             element.user = cUser
           }
-        });
+        })
         table = cM
       }
 
@@ -337,12 +287,12 @@ export default {
     },
     sort(a, b) {
       if (a.points < b.points) {
-        return 1;
+        return 1
       }
       if (a.points > b.points) {
-        return -1;
+        return -1
       }
-      return 0;
+      return 0
     },
     getChartOptionsByKey(key) {
       if (key === 'dayPlacement' || key === 'placement') {
@@ -352,12 +302,14 @@ export default {
     },
     getComputedLineupForUser(userModel) {
       const returnValStack = []
-      if (userModel
-          && userModel.players
-          && userModel.players.length
-          && userModel.lineup
-          && userModel.lineup.players
-          && userModel.lineup.players.length) {
+      if (
+        userModel &&
+        userModel.players &&
+        userModel.players.length &&
+        userModel.lineup &&
+        userModel.lineup.players &&
+        userModel.lineup.players.length
+      ) {
         userModel.lineup.players.forEach((playerId) => {
           userModel.players.forEach((player) => {
             if (player.id === playerId) {
@@ -382,7 +334,7 @@ export default {
           teams[player.teamId] = {
             teamId: player.teamId,
             teamName: player.teamName,
-            players: [player]
+            players: [player],
           }
         }
       })
@@ -406,9 +358,7 @@ export default {
     getComputedPlayerListForUser(userModel) {
       const returnValStack = []
 
-      if (userModel
-          && userModel.players
-          && userModel.players.length) {
+      if (userModel && userModel.players && userModel.players.length) {
         const players = userModel.players
         players.sort(function (a, b) {
           if (a.position > b.position) {
@@ -422,16 +372,19 @@ export default {
 
         players.forEach((player) => {
           if (player.knownName) {
-            returnValStack.push({name: player.knownName, teamId: player.teamId, teamName: player.teamName})
+            returnValStack.push({
+              name: player.knownName,
+              teamId: player.teamId,
+              teamName: player.teamName,
+            })
           } else {
             returnValStack.push({
-              name: player.firstName + " " + player.lastName,
+              name: player.firstName + ' ' + player.lastName,
               teamId: player.teamId,
-              teamName: player.teamName
+              teamName: player.teamName,
             })
           }
         })
-
       }
 
       return returnValStack
@@ -465,47 +418,47 @@ export default {
       })
       return {
         labels,
-        datasets
+        datasets,
       }
     },
     // kudos: https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
     stringToColor(str) {
       var colors = [
-        "#e51c23",
-        "#e91e63",
-        "#791335",
-        "#9c27b0",
-        "#2c0835",
-        "#673ab7",
-        "#3f51b5",
-        "#5677fc",
-        "#03a9f4",
-        "#00bcd4",
-        "#009688",
-        "#259b24",
-        "#99d798",
-        "#12ff12",
-        "#8bc34a",
-        "#afb42b",
-        "#ff9800",
-        "#ff5722",
-        "#9d2f0c",
-        "#795548",
-        "#ee00ff",
-        "#607d8b",
-        "#0988c5",
-        "#132127",
+        '#e51c23',
+        '#e91e63',
+        '#791335',
+        '#9c27b0',
+        '#2c0835',
+        '#673ab7',
+        '#3f51b5',
+        '#5677fc',
+        '#03a9f4',
+        '#00bcd4',
+        '#009688',
+        '#259b24',
+        '#99d798',
+        '#12ff12',
+        '#8bc34a',
+        '#afb42b',
+        '#ff9800',
+        '#ff5722',
+        '#9d2f0c',
+        '#795548',
+        '#ee00ff',
+        '#607d8b',
+        '#0988c5',
+        '#132127',
       ]
 
-      var hash = 0;
-      if (str.length === 0) return hash;
+      var hash = 0
+      if (str.length === 0) return hash
       for (var i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        hash = hash & hash;
+        hash = str.charCodeAt(i) + ((hash << 5) - hash)
+        hash = hash & hash
       }
-      hash = ((hash % colors.length) + colors.length) % colors.length;
-      return colors[hash];
-    }
-  }
-};
+      hash = ((hash % colors.length) + colors.length) % colors.length
+      return colors[hash]
+    },
+  },
+}
 </script>

@@ -1,6 +1,6 @@
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .8s ease;
+  transition: opacity 0.8s ease;
 }
 
 .fade-enter-from,
@@ -12,7 +12,7 @@
   .table {
     a {
       color: #000 !important;
-      transition: all .5s;
+      transition: all 0.5s;
       padding: 4px 10px;
 
       &:hover {
@@ -25,7 +25,8 @@
 
 .app {
   &.loading {
-    background: url(../assets/img/loading.gif) transparent no-repeat center center;
+    background: url(../assets/img/loading.gif) transparent no-repeat center
+      center;
   }
 }
 
@@ -36,7 +37,7 @@
     flex-direction: column-reverse;
 
     &::before {
-      content: '';
+      content: "";
       background: linear-gradient(transparent 150px, #455a64);
       width: 100%;
       height: 100%;
@@ -53,7 +54,6 @@
     }
   }
 }
-
 
 .text {
   &--white {
@@ -141,7 +141,8 @@ fieldset {
     font-size: 130%;
   }
 
-  th, td {
+  th,
+  td {
     padding: 4px;
     vertical-align: top;
     border: none;
@@ -178,17 +179,17 @@ fieldset {
   cursor: pointer;
 }
 
-.iframe_container{
-    position: relative;
-    padding-bottom: 168%;
-    height: 0;
-    overflow: hidden;
+.iframe_container {
+  position: relative;
+  padding-bottom: 168%;
+  height: 0;
+  overflow: hidden;
 }
 
 .iframe_container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

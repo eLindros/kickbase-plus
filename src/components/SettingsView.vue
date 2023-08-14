@@ -13,16 +13,20 @@
 
             <div class="setting__fieldset">
               <p class="text-h6 text--primary">Show always all details of a player card</p>
-              <p class="text-body-1">In some contexts a player card doesn't display all details of a player. You can
-                change this behaviour
-                and force all details to be displayed with this setting. You can see an example of a changed behaviour
-                below.
-                <br>Default is: <span class="setting__default-value">{{
-                    getPlayerCardShowAlwaysAllDetailsInfo(this.getDefaults.generalPlayerCardShowAlwaysAllDetails)
-                  }}</span></p>
+              <p class="text-body-1">
+                In some contexts a player card doesn't display all details of a player. You can
+                change this behaviour and force all details to be displayed with this setting. You
+                can see an example of a changed behaviour below. <br />Default is:
+                <span class="setting__default-value">{{
+                  getPlayerCardShowAlwaysAllDetailsInfo(
+                    getDefaults.generalPlayerCardShowAlwaysAllDetails
+                  )
+                }}</span>
+              </p>
 
-              <p class="text-body-1">A simplified view of the player card is currently used in the following
-                situations:</p>
+              <p class="text-body-1">
+                A simplified view of the player card is currently used in the following situations:
+              </p>
               <ul class="mb-2 text-body-1">
                 <li>
                   <router-link to="/sell">Offers / Sell</router-link>
@@ -30,30 +34,32 @@
                 </li>
               </ul>
 
-              <p class="text-body-1">
-
-              </p>
+              <p class="text-body-1"></p>
               <v-switch
-                  v-model="generalPlayerCardShowAlwaysAllDetailsSetting"
-                  inset
-                  :label="showAlwaysAllDetailsOfAPlayerCardPanelSettingLabel"
+                v-model="generalPlayerCardShowAlwaysAllDetailsSetting"
+                inset
+                :label="showAlwaysAllDetailsOfAPlayerCardPanelSettingLabel"
               ></v-switch>
-              <saved-alert :value="showAlerts.generalPlayerCardShowAlwaysAllDetailsSetting"></saved-alert>
+              <saved-alert
+                :value="showAlerts.generalPlayerCardShowAlwaysAllDetailsSetting"
+              ></saved-alert>
 
               <v-expansion-panels class="elevation-1 player-card-accordion">
-                <v-expansion-panel
-                >
+                <v-expansion-panel>
                   <v-expansion-panel-header class="elevation-0">
-                    <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-user</v-icon>
+                    <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2"
+                      >fa-user</v-icon
+                    >
                     live example (click to open)
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <player-card :player="dummyPlayer"
-                                 :hide-meta="!generalPlayerCardShowAlwaysAllDetailsSetting"></player-card>
+                    <player-card
+                      :player="dummyPlayer"
+                      :hide-meta="!generalPlayerCardShowAlwaysAllDetailsSetting"
+                    ></player-card>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
-
             </div>
           </div>
         </div>
@@ -67,38 +73,50 @@
         <div class="setting">
           <h4 class="text-h5 setting__headline text--primary">display of "expiry date"</h4>
           <div class="setting__description">
-            <p class="text-body-1">Here you can specify whether the display of the expiration date of transfer market
+            <p class="text-body-1">
+              Here you can specify whether the display of the expiration date of transfer market
               offers should be "relative" or whether the exact time should be displayed by default.
-              Furthermore, you can define whether the two displays should alternate (with a fade-in/fade-out
-              effect).</p>
+              Furthermore, you can define whether the two displays should alternate (with a
+              fade-in/fade-out effect).
+            </p>
             <div class="setting__fieldset">
               <p class="text-h6 text--primary">Display type:</p>
               <p class="text-body-1">
-                Default is: <span class="setting__default-value">{{
-                  transfermarketExpiryDateDisplayTypeWording(this.getDefaults.transfermarketExpiryDisplayType)
+                Default is:
+                <span class="setting__default-value">{{
+                  transfermarketExpiryDateDisplayTypeWording(
+                    getDefaults.transfermarketExpiryDisplayType
+                  )
                 }}</span>
               </p>
               <v-switch
-                  v-model="transfermarketExpiryDateDisplayTypeSetting"
-                  inset
-                  value="timestamp"
-                  :label="transfermarketExpiryDateDisplayTypeSettingLabel"
+                v-model="transfermarketExpiryDateDisplayTypeSetting"
+                inset
+                value="timestamp"
+                :label="transfermarketExpiryDateDisplayTypeSettingLabel"
               ></v-switch>
-              <saved-alert :value="showAlerts.transfermarketExpiryDateDisplayTypeSetting"></saved-alert>
+              <saved-alert
+                :value="showAlerts.transfermarketExpiryDateDisplayTypeSetting"
+              ></saved-alert>
             </div>
             <div class="setting__fieldset">
               <p class="text-h6 text--primary">Use fade-in/fade-out effect:</p>
               <p class="text-body-1">
-                Default is: <span class="setting__default-value">{{
-                  transfermarketExpiryDateFadeEffectSettingWording(this.getDefaults.transfermarketExpiryDateFadeEffect)
+                Default is:
+                <span class="setting__default-value">{{
+                  transfermarketExpiryDateFadeEffectSettingWording(
+                    getDefaults.transfermarketExpiryDateFadeEffect
+                  )
                 }}</span>
               </p>
               <v-switch
-                  v-model="transfermarketExpiryDateFadeEffectSetting"
-                  inset
-                  :label="transfermarketExpiryDateFadeEffectSettingLabel"
+                v-model="transfermarketExpiryDateFadeEffectSetting"
+                inset
+                :label="transfermarketExpiryDateFadeEffectSettingLabel"
               ></v-switch>
-              <saved-alert :value="showAlerts.transfermarketExpiryDateFadeEffectSetting"></saved-alert>
+              <saved-alert
+                :value="showAlerts.transfermarketExpiryDateFadeEffectSetting"
+              ></saved-alert>
             </div>
           </div>
         </div>
@@ -118,9 +136,9 @@
               <li>Buttons: "Decline and add again"</li>
             </ul>
             <p class="text-body-1">
-
-              This setting specifies the threshold at which an offer is considered to be "too low".<br>The specification
-              is in percent. Default is: <span class="setting__default-value">{{ getDefaults.offerThreshold }}</span>
+              This setting specifies the threshold at which an offer is considered to be "too
+              low".<br />The specification is in percent. Default is:
+              <span class="setting__default-value">{{ getDefaults.offerThreshold }}</span>
             </p>
 
             <p>
@@ -129,30 +147,36 @@
               .
             </p>
 
-            <v-alert
-                type="info"
-                outlined
-            >
+            <v-alert type="info" outlined>
               <p>Good to know:</p>
-              <p>Kickbase will give you an offer that will be between -1% and +1% of that player's market value each
-                time.</p>
+              <p>
+                Kickbase will give you an offer that will be between -1% and +1% of that player's
+                market value each time.
+              </p>
               <p class="text-caption">
-                Example:<br>
-                Your player has a market value of <em>1.000.000</em> and Kickbase offered you a bid, which will be
-                between -100.000 € (lowest bid) and 100.000 € (highest bid).
-                <br>
-                If you click the "Decline all bids that are too low" button, the offer will be rejected if the bid is
-                not at least "<strong>{{ rejectAllExampleValue | numeral('0,0 $') }}</strong>" high (based on your
-                current setting). If an offer was rejected,
-                the player will
+                Example:<br />
+                Your player has a market value of <em>1.000.000</em> and Kickbase offered you a bid,
+                which will be between -100.000 € (lowest bid) and 100.000 € (highest bid).
+                <br />
+                If you click the "Decline all bids that are too low" button, the offer will be
+                rejected if the bid is not at least "<strong>{{
+                  rejectAllExampleValue | numeral('0,0 $')
+                }}</strong
+                >" high (based on your current setting). If an offer was rejected, the player will
                 be automatically put back on the transfer market.
               </p>
             </v-alert>
-
           </div>
           <div class="setting__input">
             <p class="mb-0 text-caption">Percentage:</p>
-            <number-input controls :step="0.05" inline :max=.95 :min=.05 v-model="offerThresholdSetting"></number-input>
+            <number-input
+              v-model="offerThresholdSetting"
+              controls
+              :step="0.05"
+              inline
+              :max="0.95"
+              :min="0.05"
+            ></number-input>
             <saved-alert :value="showAlerts.offerThresholdSetting"></saved-alert>
           </div>
         </div>
@@ -161,16 +185,21 @@
           <h4 class="text-h5 setting__headline text--primary">Order by</h4>
           <div class="setting__description">
             <p class="text-body-1">
-              With this setting you can define how the order should be right after loading all offers.
+              With this setting you can define how the order should be right after loading all
+              offers.
             </p>
 
-            <p class="text-body-1">Changing the order within the offer list is only temporary and will be reset as soon
-              as you leave the page</p>
+            <p class="text-body-1">
+              Changing the order within the offer list is only temporary and will be reset as soon
+              as you leave the page
+            </p>
 
             <p class="text-body-1">
-              Default is: <span class="setting__default-value">"order by &nbsp;<em>{{
-                offerOrderDefaultLabel
-              }}</em>"</span>
+              Default is:
+              <span class="setting__default-value"
+                >"order by &nbsp;<em>{{ offerOrderDefaultLabel }}</em
+                >"</span
+              >
             </p>
 
             <p>
@@ -178,10 +207,12 @@
               <router-link to="/sell">Offers / Sell</router-link>
               .
             </p>
-
           </div>
           <div class="setting__input">
-            <sell-view-order :is-temporary=false :callback="offerOrderSaveBubble"></sell-view-order>
+            <sell-view-order
+              :is-temporary="false"
+              :callback="offerOrderSaveBubble"
+            ></sell-view-order>
             <saved-alert :value="showAlerts.offerOrder"></saved-alert>
           </div>
         </div>
@@ -190,8 +221,8 @@
           <h4 class="text-h5 setting__headline text--primary">Expand panels</h4>
           <div class="setting__description">
             <p class="text-body-1">
-              These settings control which panels should be opened automatically as soon as there are players in the
-              respective category.
+              These settings control which panels should be opened automatically as soon as there
+              are players in the respective category.
             </p>
 
             <p>
@@ -200,32 +231,36 @@
               .
             </p>
             <div class="setting__fieldset">
-              <p class="text-h6 text--primary">Player not on market: </p>
+              <p class="text-h6 text--primary">Player not on market:</p>
               <p class="text-body-1">
-                Default is: <span class="setting__default-value">{{
-                  getPanelWording(this.getDefaults.offerOpenPlayerNotOnMarketPanel)
+                Default is:
+                <span class="setting__default-value">{{
+                  getPanelWording(getDefaults.offerOpenPlayerNotOnMarketPanel)
                 }}</span>
               </p>
               <v-switch
-                  v-model="offerOpenPlayerNotOnMarketPanelSetting"
-                  inset
-                  :label="offerOpenPlayerNotOnMarketPanelSettingLabel"
+                v-model="offerOpenPlayerNotOnMarketPanelSetting"
+                inset
+                :label="offerOpenPlayerNotOnMarketPanelSettingLabel"
               ></v-switch>
               <saved-alert :value="showAlerts.offerOpenPlayerNotOnMarketPanelSetting"></saved-alert>
             </div>
             <div class="setting__fieldset">
-              <p class="text-h6 text--primary">Player without any offer: </p>
+              <p class="text-h6 text--primary">Player without any offer:</p>
               <p class="text-body-1">
-                Default is: <span class="setting__default-value">{{
-                  getPanelWording(this.getDefaults.offerOpenPlayerWithoutAnyOfferPanel)
+                Default is:
+                <span class="setting__default-value">{{
+                  getPanelWording(getDefaults.offerOpenPlayerWithoutAnyOfferPanel)
                 }}</span>
               </p>
               <v-switch
-                  v-model="offerOpenPlayerWithoutAnyOfferPanelSetting"
-                  inset
-                  :label="offerOpenPlayerWithoutAnyOfferPanelSettingLabel"
+                v-model="offerOpenPlayerWithoutAnyOfferPanelSetting"
+                inset
+                :label="offerOpenPlayerWithoutAnyOfferPanelSettingLabel"
               ></v-switch>
-              <saved-alert :value="showAlerts.offerOpenPlayerWithoutAnyOfferPanelSetting"></saved-alert>
+              <saved-alert
+                :value="showAlerts.offerOpenPlayerWithoutAnyOfferPanelSetting"
+              ></saved-alert>
             </div>
           </div>
         </div>
@@ -234,16 +269,20 @@
           <h4 class="text-h5 setting__headline text--primary">Show only too low offers</h4>
           <div class="setting__description">
             <p class="text-body-1">
-              If this checkbox is set, only offers that are too low will be shown directly after loading the page (see
-              option "Offer Threshold" above)
+              If this checkbox is set, only offers that are too low will be shown directly after
+              loading the page (see option "Offer Threshold" above)
             </p>
 
-            <p class="text-body-1">Changing the checkbox within the offer list is only temporary and will be reset as
-              soon
-              as you leave the page.</p>
+            <p class="text-body-1">
+              Changing the checkbox within the offer list is only temporary and will be reset as
+              soon as you leave the page.
+            </p>
 
             <p class="text-body-1">
-              Default is: <span class="setting__default-value">{{ getDefaults.offerShowTooLowOffersOnly }}</span>
+              Default is:
+              <span class="setting__default-value">{{
+                getDefaults.offerShowTooLowOffersOnly
+              }}</span>
             </p>
 
             <p>
@@ -251,29 +290,26 @@
               <router-link to="/sell">Offers / Sell</router-link>
               .
             </p>
-
           </div>
           <div class="setting__input">
             <v-checkbox
-                v-model="offerShowTooLowOffersOnlySetting"
-                label="show only too low offers"
+              v-model="offerShowTooLowOffersOnlySetting"
+              label="show only too low offers"
             ></v-checkbox>
             <saved-alert :value="showAlerts.offerShowTooLowOffersOnlySetting"></saved-alert>
           </div>
         </div>
-
-
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import {mapGetters, mapMutations} from "vuex"
-import debounce from "lodash.debounce"
-import SellViewOrder from "./Sell/OrderSelect";
-import SavedAlert from "./Generic/SavedAlert";
-import PlayerCard from "@/components/Player/PlayerCard";
+import { mapGetters, mapMutations } from 'vuex'
+import debounce from 'lodash.debounce'
+import SellViewOrder from './Sell/OrderSelect'
+import SavedAlert from './Generic/SavedAlert'
+import PlayerCard from '@/components/Player/PlayerCard'
 
 const openAutomaticallyWording = 'Open panel automatically'
 const keepClosedWording = 'Keep panel closed'
@@ -282,14 +318,14 @@ const showAlwaysAllDetailsInPlayerCard = 'Show always all details'
 const hideDetailsInSomePlayerCardContexts = 'Hide details in some contexts'
 
 const expiryDateUseFadeInFadeoutEffect = 'use fade-in/fade-out effect'
-const expiryDateDontUseFadeInFadeoutEffect = 'don\'t use fade-in/fade-out effect'
+const expiryDateDontUseFadeInFadeoutEffect = "don't use fade-in/fade-out effect"
 
 const expiryDateDisplayTypeTimestamp = 'show complete timestamp, like "10:15 am"'
 const expiryDateDisplayTypeRelative = 'show "relative" expression, like "in an hour"'
 
 export default {
-  name: "SettingsView",
-  components: {PlayerCard, SavedAlert, SellViewOrder},
+  name: 'SettingsView',
+  components: { PlayerCard, SavedAlert, SellViewOrder },
   data() {
     return {
       initialized: false,
@@ -312,49 +348,33 @@ export default {
         transfermarketExpiryDateDisplayTypeSetting: false,
       },
       dummyPlayer: {
-        "id": "23",
-        "teamId": "9",
-        "userId": "123456789",
-        "userProfile": "https://kickbase.b-cdn.net/user/76d32515d3e3459386352033b1412ae0.jpeg",
-        "username": "Dummy",
-        "firstName": "John",
-        "lastName": "Doe",
-        "profile": null,
-        "status": 0,
-        "position": 3,
-        "number": 6,
-        "totalPoints": 1814,
-        "averagePoints": 181,
-        "marketValue": 48059668,
-        "price": 48059668,
-        "date": "2022-10-17T13:18:04Z",
-        "expiry": 2580336,
-        "offers": [],
-        "lus": 1,
-        "marketValueTrend": 2,
-        "hasHighOffer": false,
-        "hasLowOffer": false,
-        "hasExpiredOffers": false,
-        "hasKickbaseOffersOnly": false,
-        "displayName": "John Dow"
-      }
+        id: '23',
+        teamId: '9',
+        userId: '123456789',
+        userProfile: 'https://kickbase.b-cdn.net/user/76d32515d3e3459386352033b1412ae0.jpeg',
+        username: 'Dummy',
+        firstName: 'John',
+        lastName: 'Doe',
+        profile: null,
+        status: 0,
+        position: 3,
+        number: 6,
+        totalPoints: 1814,
+        averagePoints: 181,
+        marketValue: 48059668,
+        price: 48059668,
+        date: '2022-10-17T13:18:04Z',
+        expiry: 2580336,
+        offers: [],
+        lus: 1,
+        marketValueTrend: 2,
+        hasHighOffer: false,
+        hasLowOffer: false,
+        hasExpiredOffers: false,
+        hasKickbaseOffersOnly: false,
+        displayName: 'John Dow',
+      },
     }
-  },
-  created() {
-    this.debouncedCallback = debounce((...args) => {
-      if (typeof args[0] === 'function') {
-        args[0]()
-      }
-    }, 1000);
-  },
-  mounted() {
-    this.offerThresholdSetting = this.getOfferThreshold
-    this.offerOpenPlayerNotOnMarketPanelSetting = this.getOfferOpenPlayerNotOnMarketPanel
-    this.offerOpenPlayerWithoutAnyOfferPanelSetting = this.getOfferOpenPlayerWithoutAnyOfferPanel
-    this.offerShowTooLowOffersOnlySetting = this.getOfferShowTooLowOffersOnly
-    this.generalPlayerCardShowAlwaysAllDetailsSetting = this.getGeneralPlayerCardShowAlwaysAllDetails
-    this.transfermarketExpiryDateFadeEffectSetting = this.getTransfermarketExpiryDateFadeEffect
-    this.transfermarketExpiryDateDisplayTypeSetting = this.getTransfermarketExpiryDisplayType
   },
   watch: {
     offerThresholdSetting(newValue) {
@@ -364,7 +384,7 @@ export default {
           this.flashSaveMessage('offerThresholdSetting')
         }
         this.initialized = true
-      });
+      })
     },
     offerShowTooLowOffersOnlySetting(newValue) {
       this.debouncedCallback(() => {
@@ -373,7 +393,7 @@ export default {
           this.flashSaveMessage('offerShowTooLowOffersOnlySetting')
         }
         this.initialized = true
-      });
+      })
     },
     offerOpenPlayerNotOnMarketPanelSetting(newValue) {
       this.debouncedCallback(() => {
@@ -382,7 +402,7 @@ export default {
           this.flashSaveMessage('offerOpenPlayerNotOnMarketPanelSetting')
         }
         this.initialized = true
-      });
+      })
     },
     offerOpenPlayerWithoutAnyOfferPanelSetting(newValue) {
       this.debouncedCallback(() => {
@@ -391,7 +411,7 @@ export default {
           this.flashSaveMessage('offerOpenPlayerWithoutAnyOfferPanelSetting')
         }
         this.initialized = true
-      });
+      })
     },
     generalPlayerCardShowAlwaysAllDetailsSetting(newValue) {
       this.debouncedCallback(() => {
@@ -400,7 +420,7 @@ export default {
           this.flashSaveMessage('generalPlayerCardShowAlwaysAllDetailsSetting')
         }
         this.initialized = true
-      });
+      })
     },
     transfermarketExpiryDateFadeEffectSetting(newValue) {
       this.debouncedCallback(() => {
@@ -409,18 +429,35 @@ export default {
           this.flashSaveMessage('transfermarketExpiryDateFadeEffectSetting')
         }
         this.initialized = true
-      });
+      })
     },
     transfermarketExpiryDateDisplayTypeSetting(newValue) {
       this.debouncedCallback(() => {
         if (newValue === this.transfermarketExpiryDateDisplayTypeSetting && this.initialized) {
-          const v = newValue !== "timestamp" ? "relative" : "timestamp"
+          const v = newValue !== 'timestamp' ? 'relative' : 'timestamp'
           this.setTransfermarketExpiryDisplayType(v)
           this.flashSaveMessage('transfermarketExpiryDateDisplayTypeSetting')
         }
         this.initialized = true
-      });
+      })
     },
+  },
+  created() {
+    this.debouncedCallback = debounce((...args) => {
+      if (typeof args[0] === 'function') {
+        args[0]()
+      }
+    }, 1000)
+  },
+  mounted() {
+    this.offerThresholdSetting = this.getOfferThreshold
+    this.offerOpenPlayerNotOnMarketPanelSetting = this.getOfferOpenPlayerNotOnMarketPanel
+    this.offerOpenPlayerWithoutAnyOfferPanelSetting = this.getOfferOpenPlayerWithoutAnyOfferPanel
+    this.offerShowTooLowOffersOnlySetting = this.getOfferShowTooLowOffersOnly
+    this.generalPlayerCardShowAlwaysAllDetailsSetting =
+      this.getGeneralPlayerCardShowAlwaysAllDetails
+    this.transfermarketExpiryDateFadeEffectSetting = this.getTransfermarketExpiryDateFadeEffect
+    this.transfermarketExpiryDateDisplayTypeSetting = this.getTransfermarketExpiryDisplayType
   },
   computed: {
     ...mapGetters([
@@ -440,22 +477,30 @@ export default {
       return this.getDefaults.offerOrders[this.getDefaults.offerOrder]
     },
     offerOpenPlayerWithoutAnyOfferPanelSettingLabel() {
-      return (this.offerOpenPlayerWithoutAnyOfferPanelSetting) ? openAutomaticallyWording : keepClosedWording
+      return this.offerOpenPlayerWithoutAnyOfferPanelSetting
+        ? openAutomaticallyWording
+        : keepClosedWording
     },
     offerOpenPlayerNotOnMarketPanelSettingLabel() {
-      return (this.offerOpenPlayerNotOnMarketPanelSetting) ? openAutomaticallyWording : keepClosedWording
+      return this.offerOpenPlayerNotOnMarketPanelSetting
+        ? openAutomaticallyWording
+        : keepClosedWording
     },
     transfermarketExpiryDateFadeEffectSettingLabel() {
-      return (this.transfermarketExpiryDateFadeEffectSetting) ? expiryDateUseFadeInFadeoutEffect : expiryDateDontUseFadeInFadeoutEffect
+      return this.transfermarketExpiryDateFadeEffectSetting
+        ? expiryDateUseFadeInFadeoutEffect
+        : expiryDateDontUseFadeInFadeoutEffect
     },
     transfermarketExpiryDateDisplayTypeSettingLabel() {
-      return (this.transfermarketExpiryDateDisplayTypeSetting === 'timestamp') ? expiryDateDisplayTypeTimestamp : expiryDateDisplayTypeRelative
+      return this.transfermarketExpiryDateDisplayTypeSetting === 'timestamp'
+        ? expiryDateDisplayTypeTimestamp
+        : expiryDateDisplayTypeRelative
     },
     showAlwaysAllDetailsOfAPlayerCardPanelSettingLabel() {
-      return (this.generalPlayerCardShowAlwaysAllDetailsSetting)
-          ? showAlwaysAllDetailsInPlayerCard
-          : hideDetailsInSomePlayerCardContexts
-    }
+      return this.generalPlayerCardShowAlwaysAllDetailsSetting
+        ? showAlwaysAllDetailsInPlayerCard
+        : hideDetailsInSomePlayerCardContexts
+    },
   },
   methods: {
     ...mapMutations([
@@ -479,17 +524,17 @@ export default {
       }
     },
     getPanelWording(value) {
-      return (value) ? openAutomaticallyWording : keepClosedWording
+      return value ? openAutomaticallyWording : keepClosedWording
     },
     transfermarketExpiryDateFadeEffectSettingWording(value) {
-      return (value) ? expiryDateUseFadeInFadeoutEffect : expiryDateDontUseFadeInFadeoutEffect
+      return value ? expiryDateUseFadeInFadeoutEffect : expiryDateDontUseFadeInFadeoutEffect
     },
     transfermarketExpiryDateDisplayTypeWording(value) {
-      return (value === 'timestamp') ? expiryDateDisplayTypeTimestamp : expiryDateDisplayTypeRelative
+      return value === 'timestamp' ? expiryDateDisplayTypeTimestamp : expiryDateDisplayTypeRelative
     },
     getPlayerCardShowAlwaysAllDetailsInfo(value) {
-      return (value) ? showAlwaysAllDetailsInPlayerCard : hideDetailsInSomePlayerCardContexts
-    }
-  }
+      return value ? showAlwaysAllDetailsInPlayerCard : hideDetailsInSomePlayerCardContexts
+    },
+  },
 }
 </script>

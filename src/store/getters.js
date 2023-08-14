@@ -82,15 +82,13 @@ function getNextMatchDay(state) {
 }
 
 function getUsersDetails(state) {
-  return (state.self && state.users[state.self]) ?
-    state.users[state.self] :
-    null
+  return state.self && state.users[state.self] ? state.users[state.self] : null
 }
 
 function getPlayersOfUser(state) {
-  return (state.self && state.users[state.self] && state.users[state.self].players) ?
-      state.users[state.self].players :
-      []
+  return state.self && state.users[state.self] && state.users[state.self].players
+    ? state.users[state.self].players
+    : []
 }
 
 function getLoading(state) {
@@ -180,7 +178,7 @@ export default {
   getBids,
   getPlayers,
   getSelectedPlayers,
-	getSelectedPlayersMarketValueSum,
+  getSelectedPlayersMarketValueSum,
   getUsers,
   getBearerToken,
   getSelf,

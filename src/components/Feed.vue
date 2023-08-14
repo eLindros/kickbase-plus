@@ -2,72 +2,60 @@
   <div class="full-width-container">
     <div class="d-flex flex-wrap flex-sm-nowrap justify-space-between align-center">
       <h2 class="text-h4 text-sm-h3 mb-5">News Feed</h2>
-      <reload-button :loading="loading" v-on:click.native="loadFeed"></reload-button>
+      <reload-button :loading="loading" @click.native="loadFeed"></reload-button>
     </div>
     <v-container v-if="items && items.length">
-      
-      <v-card style="margin-bottom: 20px;" v-for="item in items" :key="item.id">
+      <v-card v-for="item in items" :key="item.id" style="margin-bottom: 20px">
         <div class="d-flex flex-no-wrap justify-space-between">
-        <v-avatar
-          v-if="getPlayerImage(item)"
-          tile
-          size="125"
-        >
-          <v-img :src="getPlayerImage(item)" aspect-ratio="1"></v-img>
-        </v-avatar>
-        <v-list-item three-line>
-          <v-list-item-content>
-          <div class="overline">
-            {{ item.age | age }}
-          </div>
-          <v-list-item-title class="headline mb-1 wrap-title">
-            <span class="news-details" v-html="getCardsText(item)"></span>
-          </v-list-item-title>
+          <v-avatar v-if="getPlayerImage(item)" tile size="125">
+            <v-img :src="getPlayerImage(item)" aspect-ratio="1"></v-img>
+          </v-avatar>
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="overline">
+                {{ item.age | age }}
+              </div>
+              <v-list-item-title class="headline mb-1 wrap-title">
+                <span class="news-details" v-html="getCardsText(item)"></span>
+              </v-list-item-title>
 
-            <v-list-item-content v-if="item.type === 17">
-              <v-simple-table>
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th class="text-left">
-                      #
-                    </th>
-                    <th class="text-left">
-                      Name
-                    </th>
-                    <th class="text-left">
-                      Points
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr
-                      v-for="player in item.meta.u"
-                      :key="player.n"
-                  >
-                    <td>{{ player.p }}</td>
-                    <td>{{ player.n }}</td>
-                    <td>{{ player.s }}</td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
+              <v-list-item-content v-if="item.type === 17">
+                <v-simple-table>
+                  <template #default>
+                    <thead>
+                      <tr>
+                        <th class="text-left">#</th>
+                        <th class="text-left">Name</th>
+                        <th class="text-left">Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="player in item.meta.u" :key="player.n">
+                        <td>{{ player.p }}</td>
+                        <td>{{ player.n }}</td>
+                        <td>{{ player.s }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-list-item-content>
+
+              <div
+                v-if="getPurchaseInfo(item)"
+                class="flex-wrap max-height news-details"
+                v-html="getPurchaseInfo(item)"
+              ></div>
             </v-list-item-content>
-
-          <div class="flex-wrap max-height news-details" v-if="getPurchaseInfo(item)" v-html="getPurchaseInfo(item)">
-          </div>
-          </v-list-item-content>
-        </v-list-item>
+          </v-list-item>
         </div>
       </v-card>
     </v-container>
     <spinner v-else></spinner>
   </div>
-  
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex' 
+import { mapGetters, mapMutations } from 'vuex'
 import api from '../api/api'
 import numeral from 'numeral'
 numeral.locale('deff')
@@ -75,20 +63,20 @@ numeral.locale('deff')
 import moment from 'moment'
 
 import Spinner from './Spinner'
-import ReloadButton from "./Generic/ReloadButton";
-import {smartPlayerStatsLoading} from "@/helper/helper";
+import ReloadButton from './Generic/ReloadButton'
+import { smartPlayerStatsLoading } from '@/helper/helper'
 
 export default {
-  name: 'feed-view',
+  name: 'FeedView',
   components: {
     Spinner,
-    ReloadButton
+    ReloadButton,
   },
   filters: {
     age: (age) => {
       const m = moment().add(age, 'seconds')
       return m.toNow()
-    }
+    },
   },
   data: () => ({
     items: [],
@@ -117,7 +105,7 @@ export default {
         this.items = data.items.sort((itemA, itemB) => {
           if (itemA.age > itemB.age) {
             return 1
-          } else if(itemA.age < itemB.age) {
+          } else if (itemA.age < itemB.age) {
             return -1
           }
           return 0
@@ -154,14 +142,28 @@ export default {
     },
     getCardsText(item) {
       let text = null
-      
+
       // sold to computer
-      if (item.type === 15 && item.meta && item.meta.s && item.meta.s.n && item.meta.p && item.meta.p.n) {
+      if (
+        item.type === 15 &&
+        item.meta &&
+        item.meta.s &&
+        item.meta.s.n &&
+        item.meta.p &&
+        item.meta.p.n
+      ) {
         text = `<strong>${item.meta.s.n}</strong> sold <strong>${item.meta.p.n}</strong> to KICKBASE`
       }
 
       // purchase from computer
-      if (item.type === 15 && item.meta && item.meta.b && item.meta.b.n && item.meta.p && item.meta.p.n) {
+      if (
+        item.type === 15 &&
+        item.meta &&
+        item.meta.b &&
+        item.meta.b.n &&
+        item.meta.p &&
+        item.meta.p.n
+      ) {
         let buyer = 'KICKBASE'
 
         if (item.meta.s && item.meta.s.n) {
@@ -203,29 +205,36 @@ export default {
             color: item.meta.b ? 'green' : 'red',
             determiner: item.meta.b ? 'less' : 'below',
           },
-        };
-        
-        const price = item.meta.v;
+        }
+
+        const price = item.meta.v
         const priceFormated = numeral(price).format('0,0 $')
         purchaseInfo = `${priceFormated}`
 
         if (item.meta.p && this.getPlayers[item.meta.p.i]) {
-          const marketValue = this.getPlayers[item.meta.p.i].marketValue;
+          const marketValue = this.getPlayers[item.meta.p.i].marketValue
           purchaseInfo += ' | MV: ' + numeral(marketValue).format('0,0 $')
           const pp = item.meta.v - marketValue
-          const ppct = (item.meta.v - marketValue)/marketValue
+          const ppct = (item.meta.v - marketValue) / marketValue
 
           if (pp > 0) {
-            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.over.color}">${options.verb} ${numeral(pp).format('0,0 $')} ${options.over.determiner} MV (${numeral(ppct).format('0.00 %')})</span>`
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.over.color}">${
+              options.verb
+            } ${numeral(pp).format('0,0 $')} ${options.over.determiner} MV (${numeral(ppct).format(
+              '0.00 %'
+            )})</span>`
           } else {
-            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.under.color}">${options.verb} ${numeral(pp).format('0,0 $')} ${options.under.determiner} MV (${numeral(ppct).format('0.00 %')})</span>`
+            purchaseInfo += `&nbsp;|&nbsp;<span style="color: ${options.under.color}">${
+              options.verb
+            } ${numeral(pp).format('0,0 $')} ${options.under.determiner} MV (${numeral(ppct).format(
+              '0.00 %'
+            )})</span>`
           }
-
         }
       }
 
       return purchaseInfo
-    }
-  }
-};
+    },
+  },
+}
 </script>

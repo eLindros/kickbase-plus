@@ -153,7 +153,8 @@ $defaultBorder: 10px solid #dadada !important;
     }
   }
 
-  .offer, &.offer {
+  .offer,
+  &.offer {
     border: $defaultBorder;
 
     &--high {
@@ -185,10 +186,10 @@ $defaultBorder: 10px solid #dadada !important;
   }
 
   &-accordion {
-
     display: block !important;
 
-    &__icon, strong {
+    &__icon,
+    strong {
       flex: 0 !important;
     }
 
@@ -206,7 +207,6 @@ $defaultBorder: 10px solid #dadada !important;
   }
 
   .v-alert {
-
     padding: 6px;
 
     &__wrapper {
@@ -257,7 +257,7 @@ $defaultBorder: 10px solid #dadada !important;
 
   @include breakpoint(xs) {
     .v-btn {
-     min-width: 100%;
+      min-width: 100%;
       white-space: normal;
       display: block;
     }
@@ -279,5 +279,4 @@ $defaultBorder: 10px solid #dadada !important;
       font-size: 16px;
     }
   }
-
 }

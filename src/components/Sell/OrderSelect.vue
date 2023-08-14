@@ -1,17 +1,12 @@
 <template>
-  <v-select
-      :items="orderOptions"
-      label="Sort order"
-      v-model="orderLabel"
-      outlined
-  ></v-select>
+  <v-select v-model="orderLabel" :items="orderOptions" label="Sort order" outlined></v-select>
 </template>
 
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  name: "sell-view-order",
+  name: 'SellViewOrder',
   props: {
     callback: {
       type: Function,
@@ -22,7 +17,7 @@ export default {
       type: Boolean,
       required: false,
       default: true,
-    }
+    },
   },
   data() {
     return {
@@ -49,7 +44,7 @@ export default {
         this.order = key
         this.storeOrder()
       }
-    }
+    },
   },
   mounted() {
     this.orderLabel = this.getOrderLabelByKey()
@@ -65,7 +60,9 @@ export default {
       return options
     },
     computedValue() {
-      return (this.isTemporary && this.getOfferOrder.temporary) ? this.getOfferOrder.temporary : this.getOfferOrder.init
+      return this.isTemporary && this.getOfferOrder.temporary
+        ? this.getOfferOrder.temporary
+        : this.getOfferOrder.init
     },
   },
   methods: {
@@ -77,7 +74,7 @@ export default {
         newOrder = this.getDefaults.offerOrder
       }
       if (this.computedValue !== newOrder) {
-        this.setOfferOrder({order: newOrder, isTemporary: this.isTemporary})
+        this.setOfferOrder({ order: newOrder, isTemporary: this.isTemporary })
       }
     },
     getOrderLabelByKey() {

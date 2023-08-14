@@ -3,19 +3,15 @@ import vNumber from './directive'
 import options from './options'
 import NumberFormat from './number-format'
 
-export {
-  number,
-  vNumber,
-  options,
-  NumberFormat
-}
+export { number, vNumber, options, NumberFormat }
 
 function install(Vue, globalOptions) {
   if (globalOptions) {
     Object.assign(options, globalOptions)
   }
   Vue.directive('number', vNumber)
-  Vue.component('number', number)
+  // eslint-disable-next-line vue/multi-word-component-names
+  Vue.component('Number', number)
 }
 
 export default install

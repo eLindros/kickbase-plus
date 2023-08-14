@@ -1,13 +1,13 @@
 <template>
   <input
-      type="text"
-      autocomplete="off"
-      :value="maskedValue"
-      @change="noop"
-      @input="input"
-      v-on:keyup.enter="change"
-      v-number="config"
-      class="v-number"
+    v-number="config"
+    type="text"
+    autocomplete="off"
+    :value="maskedValue"
+    class="v-number"
+    @change="noop"
+    @input="input"
+    @keyup.enter="change"
   />
 </template>
 
@@ -20,65 +20,73 @@ import directive from './directive'
 import options from './options'
 
 export default {
+  directives: {
+    number: directive,
+  },
   props: {
     value: {
       required: true,
     },
     nullValue: {
       type: [Number, String],
-      default: () => options.nullValue
+      default: () => options.nullValue,
     },
     masked: {
       type: Boolean,
-      default: false
+      default: false,
     },
     reverseFill: {
       type: Boolean,
-      default: options.reverseFill
+      default: options.reverseFill,
     },
     precision: {
       type: Number,
-      default: () => options.precision
+      default: () => options.precision,
     },
     decimal: {
       type: String,
-      default: () => options.decimal
+      default: () => options.decimal,
     },
     separator: {
       type: String,
-      default: () => options.separator
+      default: () => options.separator,
     },
     prefix: {
       type: String,
-      default: () => options.prefix
+      default: () => options.prefix,
     },
     suffix: {
       type: String,
-      default: () => options.suffix
+      default: () => options.suffix,
     },
-  },
-  directives: {
-    number: directive
   },
   data() {
     return {
       maskedValue: null,
       unmaskedValue: null,
-      initialized: false
+      initialized: false,
     }
+  },
+  computed: {
+    emittedValue() {
+      return this.masked ? this.maskedValue : this.unmaskedValue
+    },
+    config() {
+      return this.$props
+    },
   },
   watch: {
     value(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.maskedValue = newValue
       }
-    }
+    },
   },
   mounted() {
     this.maskedValue = this.value
   },
   methods: {
-    input({target}) {
+    input({ target }) {
       this.maskedValue = target.value
       this.unmaskedValue = target.unmaskedValue
       if (this.initialized) {
@@ -92,15 +100,7 @@ export default {
     },
     noop() {
       // dummy function
-    }
-  },
-  computed: {
-    emittedValue() {
-      return this.masked ? this.maskedValue : this.unmaskedValue
     },
-    config() {
-      return this.$props
-    }
-  }
+  },
 }
 </script>

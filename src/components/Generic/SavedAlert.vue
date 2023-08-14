@@ -1,10 +1,17 @@
 <template>
-  <v-alert class="saved-alert" type="success" :text=isTextStyle transition="fade-transition" :value="value">{{message}}</v-alert>
+  <v-alert
+    class="saved-alert"
+    type="success"
+    :text="isTextStyle"
+    transition="fade-transition"
+    :value="value"
+    >{{ message }}</v-alert
+  >
 </template>
 
 <script>
 export default {
-  name: "SavedAlert",
+  name: 'SavedAlert',
   props: {
     value: {
       type: Boolean,
@@ -20,7 +27,7 @@ export default {
       type: Boolean,
       default: true,
       required: false,
-    }
-  }
+    },
+  },
 }
 </script>

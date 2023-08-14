@@ -1,5 +1,5 @@
-import Constants from "../Constants"
-import fuzzysort from "fuzzysort"
+import Constants from '../Constants'
+import fuzzysort from 'fuzzysort'
 
 function setPlayers(state, players) {
   state.players = players
@@ -158,14 +158,14 @@ function setRanking(state, ranking) {
 
 function addLoadingMessage(state, message) {
   state.loadingMessages.push({
-    message
+    message,
   })
 }
 
 function addErrorLoadingMessage(state, message) {
   state.loadingMessages.push({
     message,
-    error: true
+    error: true,
   })
 }
 
@@ -175,32 +175,50 @@ function setOfferThreshold(state, offerThreshold) {
 }
 
 function setOfferShowTooLowOffersOnly(state, offerShowTooLowOffersOnly) {
-  localStorage.setItem(Constants.LOCALSTORAGE.OFFER_SHOW_TOO_LOW_OFFERS_ONLY, offerShowTooLowOffersOnly)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.OFFER_SHOW_TOO_LOW_OFFERS_ONLY,
+    offerShowTooLowOffersOnly
+  )
   state.offerShowTooLowOffersOnly = offerShowTooLowOffersOnly
 }
 
 function setGeneralPlayerCardShowAlwaysAllDetails(state, generalPlayerCardShowAlwaysAllDetails) {
-  localStorage.setItem(Constants.LOCALSTORAGE.GENERAL_PLAYER_CARD_SHOW_ALWAYS_ALL_DETAILS, generalPlayerCardShowAlwaysAllDetails)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.GENERAL_PLAYER_CARD_SHOW_ALWAYS_ALL_DETAILS,
+    generalPlayerCardShowAlwaysAllDetails
+  )
   state.generalPlayerCardShowAlwaysAllDetails = generalPlayerCardShowAlwaysAllDetails
 }
 
 function setOfferOpenPlayerNotOnMarketPanel(state, offerOpenPlayerNotOnMarketPanel) {
-  localStorage.setItem(Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_NOT_ON_MARKET, offerOpenPlayerNotOnMarketPanel)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_NOT_ON_MARKET,
+    offerOpenPlayerNotOnMarketPanel
+  )
   state.offerOpenPlayerNotOnMarketPanel = offerOpenPlayerNotOnMarketPanel
 }
 
 function setOfferOpenPlayerWithoutAnyOfferPanel(state, offerOpenPlayerWithoutAnyOfferPanel) {
-  localStorage.setItem(Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_WITHOUT_ANY_OFFER, offerOpenPlayerWithoutAnyOfferPanel)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_WITHOUT_ANY_OFFER,
+    offerOpenPlayerWithoutAnyOfferPanel
+  )
   state.offerOpenPlayerWithoutAnyOfferPanel = offerOpenPlayerWithoutAnyOfferPanel
 }
 
 function setTransfermarketExpiryDateFadeEffect(state, transfermarketExpiryDateFadeEffect) {
-  localStorage.setItem(Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DATE_FADE_EFFECT, transfermarketExpiryDateFadeEffect)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DATE_FADE_EFFECT,
+    transfermarketExpiryDateFadeEffect
+  )
   state.transfermarketExpiryDateFadeEffect = transfermarketExpiryDateFadeEffect
 }
 
 function setTransfermarketExpiryDisplayType(state, transfermarketExpiryDisplayType) {
-  localStorage.setItem(Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DISPLAY_TYPE, transfermarketExpiryDisplayType)
+  localStorage.setItem(
+    Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DISPLAY_TYPE,
+    transfermarketExpiryDisplayType
+  )
   state.transfermarketExpiryDisplayType = transfermarketExpiryDisplayType
 }
 
@@ -230,62 +248,62 @@ function setLigainsiderPlayers(state, players) {
 
 function addPlayerLigainsiderId(state, playerId) {
   // eslint-disable-next-line no-control-regex
-  const removeAccents = it => it.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const target = state.ligainsiderPlayers.map( player => {
+  const removeAccents = (it) => it.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  const target = state.ligainsiderPlayers.map((player) => {
     return {
-      ...player, 
+      ...player,
       normalized: removeAccents(player.name),
     }
   })
 
-  if(state.players[playerId]){
-    const player = state.players[playerId];
-    let searchTerm = player.knownName ? removeAccents(player.knownName) : removeAccents(player.firstName + ' ' + player.lastName);
-   
-    switch(searchTerm) {
+  if (state.players[playerId]) {
+    const player = state.players[playerId]
+    let searchTerm = player.knownName
+      ? removeAccents(player.knownName)
+      : removeAccents(player.firstName + ' ' + player.lastName)
+
+    switch (searchTerm) {
       case 'Rafal Gikiewicz':
-        searchTerm = 'Rafa Gikiewicz';
-        break;
+        searchTerm = 'Rafa Gikiewicz'
+        break
       case 'Justin Isiah Che':
-        searchTerm ='Justin Che';
-        break;
+        searchTerm = 'Justin Che'
+        break
       case 'M. Wolf':
-        searchTerm ='Marius Wolf';
-        break;
+        searchTerm = 'Marius Wolf'
+        break
       case 'Derry Lionel Scherhant':
-        searchTerm = 'Derry Scherhant';
-        break;
+        searchTerm = 'Derry Scherhant'
+        break
       case 'Eric Maxim Choupo-Moting':
-        searchTerm = 'Choupo-Moting';
-        break;
+        searchTerm = 'Choupo-Moting'
+        break
     }
 
-    const searchLigainsiderPlayers = fuzzysort.go(searchTerm, target, {key: 'normalized'});
-    const bestResult = searchLigainsiderPlayers.length > 0 ? searchLigainsiderPlayers[0] : undefined;
-    if(bestResult && bestResult.obj && bestResult.obj.url){
-      state.players[playerId].ligainsiderId = bestResult.obj.url;
+    const searchLigainsiderPlayers = fuzzysort.go(searchTerm, target, {
+      key: 'normalized',
+    })
+    const bestResult = searchLigainsiderPlayers.length > 0 ? searchLigainsiderPlayers[0] : undefined
+    if (bestResult && bestResult.obj && bestResult.obj.url) {
+      state.players[playerId].ligainsiderId = bestResult.obj.url
     }
   }
 }
-
 
 function setSelectedPlayers(state, player) {
   if (player.id) {
     if (state.selectedPlayers[player.id] !== undefined) {
-      delete state.selectedPlayers[player.id];
+      delete state.selectedPlayers[player.id]
     } else {
-      state.selectedPlayers[player.id] = player;
+      state.selectedPlayers[player.id] = player
     }
-    setSelectedPlayersMarketValueSum(state);
+    setSelectedPlayersMarketValueSum(state)
   }
 }
 
 function setSelectedPlayersMarketValueSum(state) {
-  const players = Object.values(state.selectedPlayers);
-  state.selectedPlayersMarketValueSum = players.reduce(
-    (acc, obj) => acc + obj.marketValue,
-    0
-  );
+  const players = Object.values(state.selectedPlayers)
+  state.selectedPlayersMarketValueSum = players.reduce((acc, obj) => acc + obj.marketValue, 0)
 }
 
 export default {

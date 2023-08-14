@@ -37,7 +37,8 @@ export default {
     // updated cursor position after format the value
     el.onkeydown = (e) => {
       if (
-        ([110, 190].includes(e.keyCode) || e.key === config.decimal) && el.value.includes(config.decimal)
+        ([110, 190].includes(e.keyCode) || e.key === config.decimal) &&
+        el.value.includes(config.decimal)
       ) {
         e.preventDefault()
       } else if ([8].includes(e.keyCode)) {
@@ -77,5 +78,5 @@ export default {
 
   unbind: (el) => {
     core.getInputElement(el)[CONFIG_KEY].cleanup()
-  }
+  },
 }

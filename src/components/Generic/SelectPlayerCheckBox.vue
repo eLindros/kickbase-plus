@@ -1,12 +1,9 @@
 <template>
-          <td><v-checkbox
-            v-model="isSelectedPlayer">
-            </v-checkbox>
-          </td>
+  <td><v-checkbox v-model="isSelectedPlayer"> </v-checkbox></td>
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex';
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -16,27 +13,22 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      'getSelectedPlayers'
-    ]),
+    ...mapGetters(['getSelectedPlayers']),
     isSelectedPlayer: {
-        get() {
-            return this.getSelectedPlayers[this.player.id] !== undefined;
-        },
-        set(value) {
-          if(value && this.getSelectedPlayers[this.player.id] === undefined){
-            this.setSelectedPlayers(this.player);
-          } else if (!value && this.getSelectedPlayers[this.player.id] !== undefined){
-            this.setSelectedPlayers(this.player)
-          }
+      get() {
+        return this.getSelectedPlayers[this.player.id] !== undefined
+      },
+      set(value) {
+        if (value && this.getSelectedPlayers[this.player.id] === undefined) {
+          this.setSelectedPlayers(this.player)
+        } else if (!value && this.getSelectedPlayers[this.player.id] !== undefined) {
+          this.setSelectedPlayers(this.player)
         }
+      },
     },
   },
   methods: {
-       ...mapMutations([
-      'setSelectedPlayers'
-    ]),
-
-  }
+    ...mapMutations(['setSelectedPlayers']),
+  },
 }
 </script>

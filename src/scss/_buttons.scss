@@ -1,5 +1,5 @@
 .kp-button {
-  transition: all .4s;
+  transition: all 0.4s;
 
   background: #eee;
   border: 1px solid #333;
@@ -10,10 +10,11 @@
   }
 
   &--in-options-bar {
-    @include inlineButton()
+    @include inlineButton();
   }
 
-  &__decline-all, &__decline {
+  &__decline-all,
+  &__decline {
     border-color: $decline_all;
     color: $decline_all !important;
 

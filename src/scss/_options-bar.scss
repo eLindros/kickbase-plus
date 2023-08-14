@@ -25,7 +25,6 @@
       .v-btn {
         margin-bottom: 8px;
       }
-
     }
   }
 
@@ -101,17 +100,17 @@
   }
 
   .v-card {
-    &__title, &__text {
+    &__title,
+    &__text {
       padding: 0;
     }
   }
 
   &__info-button {
-    @include inlineButton()
+    @include inlineButton();
   }
 
   &__info_content {
-
     .v-alert {
       padding: 10px !important;
     }
@@ -151,9 +150,7 @@
       filter: blur(5px);
     }
   }
-
 }
-
 
 @include breakpoint(xs) {
   .v-list-item__title {

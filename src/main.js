@@ -2,12 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import numeral from 'numeral'
-import vueNumeralFilterInstaller from 'vue-numeral-filter';
-import VueNumberInput from '@chenfengyuan/vue-number-input';
+import vueNumeralFilterInstaller from 'vue-numeral-filter'
+import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 import router from './router/router'
 import store from './store/store'
-import Constants from "./Constants";
+import Constants from './Constants'
 import './assets/tailwind.css'
 
 require('./scss/styles.scss')
@@ -15,89 +15,115 @@ require('./scss/styles.scss')
 Vue.config.productionTip = false
 
 numeral.register('locale', 'deff', {
-    delimiters: {
-        thousands: '.',
-        decimal: ','
-    },
-    abbreviations: {
-        thousand: 'k',
-        million: 'm',
-        billion: 'b',
-        trillion: 't'
-    },
-    ordinal: function () {
-        return '.';
-    },
-    currency: {
-        symbol: '€'
-    }
+  delimiters: {
+    thousands: '.',
+    decimal: ',',
+  },
+  abbreviations: {
+    thousand: 'k',
+    million: 'm',
+    billion: 'b',
+    trillion: 't',
+  },
+  ordinal: function () {
+    return '.'
+  },
+  currency: {
+    symbol: '€',
+  },
 })
 
-Vue.use(vueNumeralFilterInstaller, {locale: 'deff'});
-Vue.use(VueNumberInput);
+Vue.use(vueNumeralFilterInstaller, { locale: 'deff' })
+Vue.use(VueNumberInput)
 
 // TODO: refactor this. its a mess
 let offerThreshold = localStorage.getItem(Constants.LOCALSTORAGE.OFFER_THRESHOLD) * 1
 if (!offerThreshold) {
-    offerThreshold = store.getters.getDefaults.offerThreshold
+  offerThreshold = store.getters.getDefaults.offerThreshold
 }
 store.commit('setOfferThreshold', offerThreshold)
 
 let offerOrder = localStorage.getItem(Constants.LOCALSTORAGE.OFFER_ORDER)
 if (!offerOrder) {
-    offerOrder = store.getters.getDefaults.offerOrder
+  offerOrder = store.getters.getDefaults.offerOrder
 }
-store.commit('setOfferOrder', {order: offerOrder, isTemporary: false})
+store.commit('setOfferOrder', { order: offerOrder, isTemporary: false })
 
-let offerPanelPlayerNotOnMarket = localStorage.getItem(Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_NOT_ON_MARKET)
-if (typeof offerPanelPlayerNotOnMarket === "undefined" || offerPanelPlayerNotOnMarket === null) {
-    offerPanelPlayerNotOnMarket = store.getters.getDefaults.offerOpenPlayerNotOnMarketPanel
+let offerPanelPlayerNotOnMarket = localStorage.getItem(
+  Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_NOT_ON_MARKET
+)
+if (typeof offerPanelPlayerNotOnMarket === 'undefined' || offerPanelPlayerNotOnMarket === null) {
+  offerPanelPlayerNotOnMarket = store.getters.getDefaults.offerOpenPlayerNotOnMarketPanel
 } else {
-    offerPanelPlayerNotOnMarket = (offerPanelPlayerNotOnMarket === "true")
+  offerPanelPlayerNotOnMarket = offerPanelPlayerNotOnMarket === 'true'
 }
 store.commit('setOfferOpenPlayerNotOnMarketPanel', offerPanelPlayerNotOnMarket)
 
-let offerOpenPlayerWithoutAnyOfferPanel = localStorage.getItem(Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_WITHOUT_ANY_OFFER)
-if (typeof offerOpenPlayerWithoutAnyOfferPanel === "undefined" || offerOpenPlayerWithoutAnyOfferPanel === null) {
-    offerOpenPlayerWithoutAnyOfferPanel = store.getters.getDefaults.offerOpenPlayerWithoutAnyOfferPanel
+let offerOpenPlayerWithoutAnyOfferPanel = localStorage.getItem(
+  Constants.LOCALSTORAGE.OFFER_PANEL_PLAYER_WITHOUT_ANY_OFFER
+)
+if (
+  typeof offerOpenPlayerWithoutAnyOfferPanel === 'undefined' ||
+  offerOpenPlayerWithoutAnyOfferPanel === null
+) {
+  offerOpenPlayerWithoutAnyOfferPanel =
+    store.getters.getDefaults.offerOpenPlayerWithoutAnyOfferPanel
 } else {
-    offerOpenPlayerWithoutAnyOfferPanel = (offerOpenPlayerWithoutAnyOfferPanel === "true")
+  offerOpenPlayerWithoutAnyOfferPanel = offerOpenPlayerWithoutAnyOfferPanel === 'true'
 }
 store.commit('setOfferOpenPlayerWithoutAnyOfferPanel', offerOpenPlayerWithoutAnyOfferPanel)
 
-let offerShowTooLowOffersOnly = localStorage.getItem(Constants.LOCALSTORAGE.OFFER_SHOW_TOO_LOW_OFFERS_ONLY)
-if (typeof offerShowTooLowOffersOnly === "undefined" || offerShowTooLowOffersOnly === null) {
-    offerShowTooLowOffersOnly = store.getters.getDefaults.offerShowTooLowOffersOnly
+let offerShowTooLowOffersOnly = localStorage.getItem(
+  Constants.LOCALSTORAGE.OFFER_SHOW_TOO_LOW_OFFERS_ONLY
+)
+if (typeof offerShowTooLowOffersOnly === 'undefined' || offerShowTooLowOffersOnly === null) {
+  offerShowTooLowOffersOnly = store.getters.getDefaults.offerShowTooLowOffersOnly
 } else {
-    offerShowTooLowOffersOnly = (offerShowTooLowOffersOnly === "true")
+  offerShowTooLowOffersOnly = offerShowTooLowOffersOnly === 'true'
 }
 store.commit('setOfferShowTooLowOffersOnly', offerShowTooLowOffersOnly)
 
-let generalPlayerCardShowAlwaysAllDetails = localStorage.getItem(Constants.LOCALSTORAGE.GENERAL_PLAYER_CARD_SHOW_ALWAYS_ALL_DETAILS)
-if (typeof generalPlayerCardShowAlwaysAllDetails === "undefined" || generalPlayerCardShowAlwaysAllDetails === null) {
-    generalPlayerCardShowAlwaysAllDetails = store.getters.getDefaults.generalPlayerCardShowAlwaysAllDetails
+let generalPlayerCardShowAlwaysAllDetails = localStorage.getItem(
+  Constants.LOCALSTORAGE.GENERAL_PLAYER_CARD_SHOW_ALWAYS_ALL_DETAILS
+)
+if (
+  typeof generalPlayerCardShowAlwaysAllDetails === 'undefined' ||
+  generalPlayerCardShowAlwaysAllDetails === null
+) {
+  generalPlayerCardShowAlwaysAllDetails =
+    store.getters.getDefaults.generalPlayerCardShowAlwaysAllDetails
 } else {
-    generalPlayerCardShowAlwaysAllDetails = (generalPlayerCardShowAlwaysAllDetails === "true")
+  generalPlayerCardShowAlwaysAllDetails = generalPlayerCardShowAlwaysAllDetails === 'true'
 }
 store.commit('setGeneralPlayerCardShowAlwaysAllDetails', generalPlayerCardShowAlwaysAllDetails)
 
-let transfermarketExpiryDateFadeEffect = localStorage.getItem(Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DATE_FADE_EFFECT)
-if (typeof transfermarketExpiryDateFadeEffect === "undefined" || transfermarketExpiryDateFadeEffect === null) {
-    transfermarketExpiryDateFadeEffect = store.getters.getDefaults.transfermarketExpiryDateFadeEffect
+let transfermarketExpiryDateFadeEffect = localStorage.getItem(
+  Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DATE_FADE_EFFECT
+)
+if (
+  typeof transfermarketExpiryDateFadeEffect === 'undefined' ||
+  transfermarketExpiryDateFadeEffect === null
+) {
+  transfermarketExpiryDateFadeEffect = store.getters.getDefaults.transfermarketExpiryDateFadeEffect
 } else {
-    transfermarketExpiryDateFadeEffect = (transfermarketExpiryDateFadeEffect === "true")
+  transfermarketExpiryDateFadeEffect = transfermarketExpiryDateFadeEffect === 'true'
 }
 store.commit('setTransfermarketExpiryDateFadeEffect', transfermarketExpiryDateFadeEffect)
 
-let transfermarketExpiryDisplayType = localStorage.getItem(Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DISPLAY_TYPE)
-if (typeof transfermarketExpiryDisplayType === "undefined" || transfermarketExpiryDisplayType === null) {
-    transfermarketExpiryDisplayType = store.getters.getDefaults.transfermarketExpiryDisplayType
+let transfermarketExpiryDisplayType = localStorage.getItem(
+  Constants.LOCALSTORAGE.TRANSFER_MARKET_EXPIRY_DISPLAY_TYPE
+)
+if (
+  typeof transfermarketExpiryDisplayType === 'undefined' ||
+  transfermarketExpiryDisplayType === null
+) {
+  transfermarketExpiryDisplayType = store.getters.getDefaults.transfermarketExpiryDisplayType
 }
 store.commit('setTransfermarketExpiryDisplayType', transfermarketExpiryDisplayType)
 
 new Vue({
-    vuetify,
-    router,
-    store,
-    render: h => h(App)
+  vuetify,
+  router,
+  store,
+  render: (h) => h(App),
 }).$mount('#app')

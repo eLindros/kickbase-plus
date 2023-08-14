@@ -1,26 +1,55 @@
 <template>
-  <player-card :class="{ 'own-bid': player.hasOwnBid, 'no-bid': player.hasNoBid, 'only': player.hasOnlySelfBid }"
-    class="bid-row" :player="player" :show-purchase-statistic=false>
+  <player-card
+    :class="{
+      'own-bid': player.hasOwnBid,
+      'no-bid': player.hasNoBid,
+      only: player.hasOnlySelfBid,
+    }"
+    class="bid-row"
+    :player="player"
+    :show-purchase-statistic="false"
+  >
     <v-container>
       <v-row>
-        <v-alert text width="100%" dense class="pa-0 px-2"
-          :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'" style="cursor: pointer"
-          @click="toggleExpiryAsDateTime">
-          <div style="font-size: x-small;" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
-          <div style="font-size: x-small;" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
+        <v-alert
+          text
+          width="100%"
+          dense
+          class="pa-0 px-2"
+          :color="isDarkTheme ? 'deep-purple lighten-3' : 'deep-purple darken-4'"
+          style="cursor: pointer"
+          @click="toggleExpiryAsDateTime"
+        >
+          <div v-if="expiryAsDateTime === false" style="font-size: x-small">
+            {{ expiryDate }}
+          </div>
+          <div v-if="expiryAsDateTime === true" style="font-size: x-small">
+            {{ expiryDateAsDateTime }}
+          </div>
         </v-alert>
       </v-row>
       <v-row justify="space-between" align="center" no-gutters>
-        <v-col cols="2"><v-avatar size="30">
+        <v-col cols="2"
+          ><v-avatar size="30">
             <v-img v-if="player.userProfile" :src="player.userProfile" aspect-ratio="1"></v-img>
-            <v-img v-else src="/assets/img/kickbase.png" aspect-ratio="1"></v-img>
-          </v-avatar></v-col>
+            <v-img v-else src="/assets/img/kickbase.png" aspect-ratio="1"></v-img> </v-avatar
+        ></v-col>
         <v-col cols="8">
           <v-form @submit.prevent="dummySubmit">
             <div class="bid-input-container">
-              <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall"
-                :min="1" align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
-                v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
+              <vue-numeric-input
+                :initial-number="bidValue"
+                :has-bid="playerBid !== null"
+                :reset-call="resetCall"
+                :min="1"
+                align="center"
+                :mousewheel="false"
+                :placeholder="inputPlaceholder"
+                @input="setInputValue"
+                @input-reset="inputReset"
+                @submit="setInputValue"
+                @preview="preview"
+              ></vue-numeric-input>
               <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
             </div>
           </v-form>
@@ -31,23 +60,34 @@
         <div class="bid-input-container">
           <div class="text-caption">
             <span v-if="getComputedBid !== 'no bid'">
-              you <span v-if="previewValue && !getValidBidNumber" class="font-italic">would</span> bid
-              <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
+              you
+              <span v-if="previewValue && !getValidBidNumber" class="font-italic">would</span>
+              bid <strong>{{ getComputedDifference.number }}</strong> Euros{{
+                getComputedDifferenceWording
+              }}
               (<span
-                :class="{ 'text--green': (getComputedDifference.number <= 0), 'text--red': (getComputedDifference.number > 0) }">{{
-                  getComputedDifference.percentage
-                }} %</span>)
+                :class="{
+                  'text--green': getComputedDifference.number <= 0,
+                  'text--red': getComputedDifference.number > 0,
+                }"
+                >{{ getComputedDifference.percentage }} %</span
+              >)
             </span>
           </div>
         </div>
-
       </v-row>
     </v-container>
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
         <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
-        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
+        <v-btn
+          v-for="percent in bidButtons"
+          :key="percent"
+          dense
+          outlined
+          @click="sendPercentageBid(percent)"
+        >
           <span v-html="getButtonLabel(percent)"></span>
         </v-btn>
         <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
@@ -55,18 +95,28 @@
       </div>
     </div>
 
-    <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
+    <v-btn
+      v-if="player.hasOwnBid"
+      class="kp-button kp-button__decline mb-5"
+      block
+      x-large
+      @click="revokeBid"
+    >
       revoke own bid ({{ getComputedBid }})
     </v-btn>
     <!--
     TODO: re-introduce with settings options
         -->
 
-    <template v-slot:extra-expansion-panel
-      v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
+    <template
+      v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false"
+      #extra-expansion-panel
+    >
       <v-expansion-panel>
         <v-expansion-panel-header class="elevation-0">
-          <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1">fa-money-bill-wave</v-icon>
+          <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1"
+            >fa-money-bill-wave</v-icon
+          >
           <strong>{{ player.offers.length }}</strong> user bid on this player
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -74,14 +124,14 @@
             <template>
               <tbody>
                 <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Details
-                  </th>
+                  <th>Name</th>
+                  <th>Details</th>
                 </tr>
-                <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{ 'foo': offer.isSelf }">
+                <tr
+                  v-for="(offer, okey) in sortedOffers"
+                  :key="okey"
+                  :class="{ foo: offer.isSelf }"
+                >
                   <td>
                     <span v-if="offer.userName">{{ offer.userName }}</span>
                     <span v-else>KICKBASE</span>:
@@ -102,14 +152,13 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </template>
-
   </player-card>
 </template>
 
 <script>
 import api from '../api/api'
 import { mapGetters } from 'vuex'
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce'
 
 import moment from 'moment'
 import numeral from 'numeral'
@@ -119,21 +168,21 @@ numeral.locale('deff')
 import PlayerCard from './Player/PlayerCard'
 import VueNumericInput from './Generic/NumericInput'
 import SavedAlert from './Generic/SavedAlert'
-import { sleep, getBundesligaClubImageUrlById, getPositionWording } from "@/helper/helper";
+import { sleep, getBundesligaClubImageUrlById, getPositionWording } from '@/helper/helper'
 
 const lastDayChangesClassConst = 'hidden-sm-and-down'
 
 export default {
-  props: {
-    player: {
-      type: Object,
-      required: true
-    },
-  },
   components: {
     PlayerCard,
     VueNumericInput,
     SavedAlert,
+  },
+  props: {
+    player: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -141,7 +190,7 @@ export default {
       playerBidRepresentation: null,
       options: {
         responsive: false,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
       },
       calcPercent: 0.0096,
       calc05Percent: 0.005,
@@ -158,11 +207,21 @@ export default {
       toggledExpiryDate: false,
       expiryAsDateTime: false,
       expiryTimer: null,
-      bidButtons: [
-        -0.9,
-        0,
-      ]
+      bidButtons: [-0.9, 0],
     }
+  },
+  watch: {
+    inputValue(newValue) {
+      this.debouncedCallback(() => {
+        if (
+          newValue === this.inputValue &&
+          newValue !== null &&
+          this.triggeredByEnterKey === false
+        ) {
+          this.sendForm()
+        }
+      })
+    },
   },
   mounted() {
     this.lastDayChangesClass = lastDayChangesClassConst
@@ -178,9 +237,9 @@ export default {
       if (typeof args[0] === 'function') {
         args[0]()
       }
-    }, 1000);
+    }, 1000)
 
-    this.expiryAsDateTime = (this.getTransfermarketExpiryDisplayType === 'timestamp')
+    this.expiryAsDateTime = this.getTransfermarketExpiryDisplayType === 'timestamp'
 
     if (this.getTransfermarketExpiryDateFadeEffect === true) {
       this.expiryTimer = setInterval(() => {
@@ -189,16 +248,7 @@ export default {
         } else {
           this.expiryAsDateTime = !this.expiryAsDateTime
         }
-      }, 7000);
-    }
-  },
-  watch: {
-    inputValue(newValue) {
-      this.debouncedCallback(() => {
-        if (newValue === this.inputValue && newValue !== null && this.triggeredByEnterKey === false) {
-          this.sendForm()
-        }
-      });
+      }, 7000)
     }
   },
   computed: {
@@ -232,7 +282,6 @@ export default {
             b.isSelf = true
             return 1
           }
-
         })
 
         return sortedOffers
@@ -267,18 +316,18 @@ export default {
     },
     getComputedBid() {
       let calcBid = this.getBidNumber
-      return (calcBid) ? numeral(calcBid).format('0,0') : 'no bid'
+      return calcBid ? numeral(calcBid).format('0,0') : 'no bid'
     },
     getComputedDifference() {
       const calcBid = this.getBidNumber
 
-      const number = (calcBid) ? numeral(calcBid - this.player.price).format('0,0') : 'no bid'
-      const c = (calcBid - this.player.price) / this.player.price * 100
+      const number = calcBid ? numeral(calcBid - this.player.price).format('0,0') : 'no bid'
+      const c = ((calcBid - this.player.price) / this.player.price) * 100
       const percentage = Number.parseFloat(c).toPrecision(2)
 
       return {
         number,
-        percentage
+        percentage,
       }
     },
     getComputedDifferenceWording() {
@@ -302,11 +351,11 @@ export default {
             {
               label: 'market value',
               // backgroundColor: '#f87979',
-              data: []
-            }
-          ]
+              data: [],
+            },
+          ],
         }
-        for (let y = mv.length; y >= (mv.length - 21); y--) {
+        for (let y = mv.length; y >= mv.length - 21; y--) {
           if (mv[y]) {
             const date = moment(mv[y].d)
             values.labels.push(date.format('DD MM'))
@@ -323,22 +372,22 @@ export default {
     getLastDayChanges() {
       const headers = [
         {
-          'text': 'day',
-          'value': 'day',
-          'sortable': false,
+          text: 'day',
+          value: 'day',
+          sortable: false,
         },
         {
-          'text': 'change',
-          'value': 'change',
-          'sortable': false,
-        }
-      ];
+          text: 'change',
+          value: 'change',
+          sortable: false,
+        },
+      ]
       const mv = this.getLastChanges
 
       if (mv && mv.datasets && mv.datasets.length) {
         const values = mv.datasets[0].data.slice(0).reverse()
-        const day7Value = (values[6]) ? numeral(values[0] - values[6]).format('0,0') : null
-        const day14Value = (values[13]) ? numeral(values[0] - values[13]).format('0,0') : null
+        const day7Value = values[6] ? numeral(values[0] - values[6]).format('0,0') : null
+        const day14Value = values[13] ? numeral(values[0] - values[13]).format('0,0') : null
 
         if (day7Value === 0 || day14Value === 0) {
           return null
@@ -348,22 +397,22 @@ export default {
           headers,
           values: [
             {
-              'day': 'yesterday',
-              'change': numeral(values[0] - values[1]).format('0,0')
+              day: 'yesterday',
+              change: numeral(values[0] - values[1]).format('0,0'),
             },
             {
-              'day': '7 days change',
-              'change': day7Value
+              day: '7 days change',
+              change: day7Value,
             },
             {
-              'day': '14 days change',
-              'change': day14Value
-            }
-          ]
+              day: '14 days change',
+              change: day14Value,
+            },
+          ],
         }
       }
       return {
-        headers
+        headers,
       }
     },
     getPosition() {
@@ -375,16 +424,22 @@ export default {
   },
   methods: {
     incrementPercentBidCountBig() {
-      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1 : 1
-      this.sendPercentageBid(percent);
+      const percent = this.playerBid
+        ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1
+        : 1
+      this.sendPercentageBid(percent)
     },
     incrementPercentBidCount() {
-      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
-      this.sendPercentageBid(percent);
+      const percent = this.playerBid
+        ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1
+        : 0.1
+      this.sendPercentageBid(percent)
     },
     decrementPercentBidCount() {
-      const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 - 0.1 : - 0.1
-      this.sendPercentageBid(percent);
+      const percent = this.playerBid
+        ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 - 0.1
+        : -0.1
+      this.sendPercentageBid(percent)
     },
     toggleExpiryAsDateTime() {
       this.toggledExpiryDate = true
@@ -393,8 +448,7 @@ export default {
     inputReset() {
       this.resetCall = false
     },
-    dummySubmit() {
-    },
+    dummySubmit() {},
     preview(previewValue) {
       this.previewValue = previewValue
     },
@@ -449,35 +503,41 @@ export default {
       } else if (this.playerBid) {
         bid = this.playerBid
       }
-      api.sendBid(this.player.id, bid, async (data) => {
-        if (data.offerId) {
-          this.playerBid = bid
-          this.inputValue = null
-          this.previewValue = null
-          this.showSavedAlert = true
+      api.sendBid(
+        this.player.id,
+        bid,
+        async (data) => {
+          if (data.offerId) {
+            this.playerBid = bid
+            this.inputValue = null
+            this.previewValue = null
+            this.showSavedAlert = true
+            this.triggeredByEnterKey = false
+            await api.loadBids(false)
+            await sleep(1500)
+            this.showSavedAlert = false
+          }
+        },
+        false,
+        async () => {
           this.triggeredByEnterKey = false
-          await api.loadBids(false)
+          this.playerBid = null
+          this.inputValue = null
+          this.resetCall = true
+          this.previewValue = null
           await sleep(1500)
-          this.showSavedAlert = false
+          this.resetCall = false
         }
-      }, false, async () => {
-        this.triggeredByEnterKey = false
-        this.playerBid = null
-        this.inputValue = null
-        this.resetCall = true
-        this.previewValue = null
-        await sleep(1500)
-        this.resetCall = false
-      })
+      )
     },
     getUsersPlayers(userId) {
       const users = this.getUsers
-      return (
-        users[userId] && users[userId].players && users[userId].players.length
-      ) ? users[userId].players.length : 0
+      return users[userId] && users[userId].players && users[userId].players.length
+        ? users[userId].players.length
+        : 0
     },
     getPercentMVValue(percent) {
-      return this.player.marketValue + (this.player.marketValue * percent / 100)
+      return this.player.marketValue + (this.player.marketValue * percent) / 100
     },
     getPercentMVValueRepresentation(percent) {
       return numeral(this.getPercentMVValue(percent)).format('0,0')
@@ -491,7 +551,7 @@ export default {
       }
 
       return `<strong>MV${mvA}</strong>`
-    }
-  }
+    },
+  },
 }
 </script>
