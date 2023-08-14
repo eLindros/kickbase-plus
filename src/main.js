@@ -8,6 +8,7 @@ import VueNumberInput from '@chenfengyuan/vue-number-input';
 import router from './router/router'
 import store from './store/store'
 import Constants from "./Constants";
+import './assets/tailwind.css'
 
 require('./scss/styles.scss')
 
