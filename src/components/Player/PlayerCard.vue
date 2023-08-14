@@ -166,12 +166,16 @@ import {
   nextMatch,
   getPositionWording,
 } from "@/helper/helper";
+import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
+import PlayerPointsStatistic from "@/components/Player/PlayerPointsStatistic";
 
 export default {
   name: "PlayerCard",
   components: {
     ExternalInfo,
     PlayerImage,
+    PlayerPointsStatistic,
+    PlayerMarketValueTrend,
   },
   props: {
     player: {
