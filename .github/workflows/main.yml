@@ -21,10 +21,9 @@ jobs:
       - name: npm install and build
         run: |
           npm install
-          npm run format 
           npm run build --if-present
       - name: Archive npm failure logs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: npm-logs
