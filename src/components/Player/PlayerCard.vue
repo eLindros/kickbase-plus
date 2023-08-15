@@ -33,21 +33,21 @@
             </v-chip-group>
           </div>
           <div class="flex flex-col align-start">
-          <div class="truncate ma-0 pa-0 text-xl font-bold uppercase">
+            <div class="truncate ma-0 pa-0 text-xl font-bold uppercase">
               <ExternalInfo :src="getLigainsiderLink">
                 <span v-if="player.knownName">{{ player.knownName }}</span>
                 <span v-else>{{ player.lastName }}</span>
               </ExternalInfo>
             </div>
-            <v-row class="justify-start ma-0" style="width:100%">
-              <v-col class="pa-0 mr-2">
-                <v-row class="text-body-2 font-weight-bold ma-0">
+            <div class="flex justify-start ma-0 width-full">
+              <div class="pa-0 mr-2">
+                <div class="text-base font-bold ma-0">
                   {{ player.totalPoints | numeral("0,0") }}
-                </v-row>
-                <v-row class="grey--text mt-0" style="font-size: xx-small;">
+                </div>
+                <div class="text-gray-200 mt-0 text-xs">
                   Pkt.
-                </v-row>
-              </v-col>
+                </div>
+              </div>
               <v-col class="pa-0">
                 <v-row class="text-body-2 font-weight-bold ma-0">
                   {{ player.averagePoints }}
@@ -77,7 +77,7 @@
                   {{ getDiffMV | numeral("0,0$") }}
                 </div>
               </v-col>
-            </v-row>
+            </div>
           </div>
         </div>
       </div>
