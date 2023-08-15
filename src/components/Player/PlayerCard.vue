@@ -1,12 +1,12 @@
 <template>
-  <v-card max-width="400" min-width="350" class="mr-3 mb-3">
-    <v-container class="pa-0 ma-0">
-      <v-row no-gutters justify="start">
-        <v-col cols="4">
-          <PlayerImage :player="this.player" />
-        </v-col>
-        <v-col class="justify-start align-start" cols="8">
-          <div class="d-flex justify-start align-start">
+  <v-card class="mr-3 mb-3 max-w-sm min-w-min">
+    <div class="">
+      <div class="flex justify-start m-0 p-0">
+        <div class="w-1/3">
+          <PlayerImage :player="player" />
+        </div>
+        <div class="justify-start align-start w-2/3">
+          <div class="flex justify-start align-start">
             <v-chip-group class="pa-0 ma-0">
               <v-chip x-small label class="mr-1">{{ player.number }}</v-chip>
               <v-chip x-small label class="mr-1">{{ getPosition }}</v-chip>
@@ -15,12 +15,12 @@
               </v-chip>
               <v-spacer></v-spacer>
               <v-chip
+                v-if="nextMatchComputed && nextMatchComputed.img"
                 :color="getAgainstColor"
                 x-small
                 label
-                v-if="nextMatchComputed && nextMatchComputed.img"
               >
-                <span class="mr-2">VS</span>
+                <span class="mr-1">VS</span>
                 <v-img
                   height="24"
                   width="24"
@@ -32,10 +32,8 @@
               </v-chip>
             </v-chip-group>
           </div>
-          <div class="d-flex flex-column align-start">
-            <div
-              class="text-no-wrap overflow-hidden ma-0 pa-0 text-h6 font-weight-black text-uppercase"
-            >
+          <div class="flex flex-col align-start">
+          <div class="truncate ma-0 pa-0 text-xl font-bold uppercase">
               <ExternalInfo :src="getLigainsiderLink">
                 <span v-if="player.knownName">{{ player.knownName }}</span>
                 <span v-else>{{ player.lastName }}</span>
