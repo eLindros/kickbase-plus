@@ -79,9 +79,9 @@
               </v-col>
             </v-row>
           </div>
-        </v-col>
-      </v-row>
-    </v-container>
+        </div>
+      </div>
+    </div>
     <v-divider />
     <slot></slot>
     <v-divider />
