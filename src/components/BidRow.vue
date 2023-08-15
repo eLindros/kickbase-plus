@@ -1,33 +1,31 @@
 <template>
   <player-card :class="{ 'own-bid': player.hasOwnBid, 'no-bid': player.hasNoBid, 'only': player.hasOnlySelfBid }"
     class="bid-row" :player="player" :show-purchase-statistic=false>
-    <v-container>
-      <v-row>
         <v-alert text width="100%" dense class="pa-0 px-2"
           :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'" style="cursor: pointer"
           @click="toggleExpiryAsDateTime">
           <div style="font-size: x-small;" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
           <div style="font-size: x-small;" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
         </v-alert>
-      </v-row>
-      <v-row justify="space-between" align="center" no-gutters>
-        <v-col cols="2"><v-avatar size="30">
+      <div class="justify-between content-center gap-0">
+        <div class="w-2/12">
+          <v-avatar size="30">
             <v-img v-if="player.userProfile" :src="player.userProfile" aspect-ratio="1"></v-img>
             <v-img v-else src="/assets/img/kickbase.png" aspect-ratio="1"></v-img>
-          </v-avatar></v-col>
-        <v-col cols="8">
+          </v-avatar>
+        </div>
+        <div class="w-8/12">
           <v-form @submit.prevent="dummySubmit">
-            <div class="bid-input-container">
+            <div class="bid-input-container w-full">
               <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall"
                 :min="1" align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
                 v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
               <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
             </div>
           </v-form>
-        </v-col>
-        <v-col></v-col>
-      </v-row>
-      <v-row>
+        </div>
+      <div>
+      <div>
         <div class="bid-input-container">
           <div class="text-caption">
             <span v-if="getComputedBid !== 'no bid'">
@@ -40,9 +38,8 @@
             </span>
           </div>
         </div>
+      </div>
 
-      </v-row>
-    </v-container>
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
