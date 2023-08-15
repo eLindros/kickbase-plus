@@ -39,26 +39,26 @@
                 <span v-else>{{ player.lastName }}</span>
               </ExternalInfo>
             </div>
-            <div class="flex justify-start ma-0 width-full">
+            <div class="flex justify-start ma-0 w-full">
               <div class="pa-0 mr-2">
-                <div class="text-base font-bold ma-0">
+                <div class="text-sm font-bold ma-0">
                   {{ player.totalPoints | numeral("0,0") }}
                 </div>
-                <div class="text-gray-200 mt-0 text-xs">
+                <div class="font-extralight mt-0" style="font-size: xx-small;">
                   Pkt.
                 </div>
               </div>
-              <v-col class="pa-0">
-                <v-row class="text-body-2 font-weight-bold ma-0">
+              <div class="pa-0">
+                <div class="text-sm font-bold ma-0">
                   {{ player.averagePoints }}
-                </v-row>
-                <v-row class="grey--text mt-0" style="font-size: xx-small;">
+                </div>
+                <div class="font-extralight mt-0" style="font-size: xx-small;">
                   ⌀&nbsp;Pkt.
-                </v-row>
-              </v-col>
+                </div>
+              </div>
               <v-spacer></v-spacer>
-              <v-col cols="7" class="pa-0 pr-5">
-                <div class="text-body-2 font-weight-bold text-right">
+              <div class="pa-0 pr-5 w-7/12">
+                <div class="text-sm font-bold text-right">
                   {{ getComputedPrice }}
                 </div>
                 <div
@@ -68,15 +68,9 @@
                   <v-icon :color="getGrowthColor" dense x-small>{{
                     getGrowthIcon
                   }}</v-icon>
-                  Marktwert
-                </div>
-                <div
-                  :style="'font-size: xx-small;color:' + getGrowthColor"
-                  class="mt-0 text-right"
-                >
                   {{ getDiffMV | numeral("0,0$") }}
                 </div>
-              </v-col>
+              </div>
             </div>
           </div>
         </div>
