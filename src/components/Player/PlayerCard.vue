@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mr-3 mb-3 max-w-sm min-w-min">
+  <v-card class="max-w-sm min-w-min">
     <div class="">
       <div class="flex justify-start m-0 p-0">
         <div class="w-1/3">

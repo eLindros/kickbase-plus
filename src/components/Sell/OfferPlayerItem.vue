@@ -1,34 +1,21 @@
 <template>
-  <player-card
-      :class="[...getPlayerCardCssClasses()]"
-      :player="player"
-      :hide-meta="hideMeta"
-      v-if="show"
-  >
-    <v-card
-        v-for="offer in player.offers"
-        :key="offer.id"
-        class="mb-6 elevation-0 offer"
-        :class="[...getOfferCssClasses(offer)]"
-    >
-      <v-card-text>
-        <p class="mb-0" v-if="hasNonCPUOffers(player)===true">
-              <span v-if="offer.userName">
-                {{ offer.userName }}
-              </span>
+  <player-card :class="[...getPlayerCardCssClasses()]" :player="player" v-if="show">
+    <v-card v-for="offer in player.offers" :key="offer.id" class="mb-6 elevation-0 offer"
+      :class="[...getOfferCssClasses(offer)]">
+      <v-alert text dense class="pa-0 px-2 w-full" style="font-size: x-small;"
+        :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'">
+        {{ offer.validUntilDate | expiry }}
+        <span style="font-size: x-small;" v-if="!offerExpired(offer)">expires</span>
+        <span style="font-size: x-small;" v-if="offerExpired(offer)">expired</span>
+      </v-alert>
+        <p class="mb-0" v-if="hasNonCPUOffers(player) === true">
+          <span v-if="offer.userName">
+            {{ offer.userName }}
+          </span>
           <span v-else>KICKBASE</span>
         </p>
         <p class="text-subtitle-1 text-sm-h5 text--primary mb-0">
-          <strong>{{ getOffer(offer) }}</strong> |
-          <span class="text-caption text-sm-body-1">
-            <span v-if="offer.userName">from {{ offer.date | expiry }}</span>
-            <span v-else>
-              <span class="hidden-xs-only" v-if="!offerExpired(offer)">expires</span>
-              <span class="hidden-xs-only" v-if="offerExpired(offer)">expired</span>
-              <span class="hidden-sm-and-up">exp.</span>
-              {{ offer.validUntilDate | expiry }}
-            </span>
-          </span>
+          <strong>{{ getOffer(offer) }}</strong>
         </p>
         <div class="text-subtitle-2 text-sm-h6 text--primary mb-0 d-flex ">
           <span class="profit-info" :class="(isAnHighOffer(offer)) ? 'profit-info--green' : 'profit-info--red'">
@@ -39,21 +26,20 @@
           </span>
         </div>
         <div class="expired-info" v-if="offerExpired(offer)">
-        <v-icon color="white">fa-hourglass-end</v-icon>
+          <v-icon color="white">fa-hourglass-end</v-icon>
           this offer expired {{ offer.validUntilDate | expiry }}
         </div>
-      </v-card-text>
       <v-card-actions v-if="offerExpired(offer) === false">
         <accept-button :offer="offer" :player="player" :is-high-offer="isAnHighOffer(offer)"
-                       v-on:acceptOffer="acceptOffer"
-                       ></accept-button>
+          v-on:acceptOffer="acceptOffer"></accept-button>
       </v-card-actions>
     </v-card>
 
     <div class="mb-5">
-      <v-btn v-if="hasOffer(player)" class="kp-button kp-button__decline-all"  x-large block @click="removePlayerFromMarket(player)">
+      <v-btn v-if="hasOffer(player)" class="kp-button kp-button__decline-all" x-large block
+        @click="removePlayerFromMarket(player)">
         <v-icon left>fa-times</v-icon>
-        DECLINE <span v-if="hasNonCPUOffers(player)===true">&nbsp;ALL&nbsp;</span> AND ADD AGAIN
+        DECLINE <span v-if="hasNonCPUOffers(player) === true">&nbsp;ALL&nbsp;</span> AND ADD AGAIN
       </v-btn>
     </div>
   </player-card>
@@ -62,13 +48,13 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 numeral.locale('deff')
 
 import AcceptButton from './AcceptButton'
 import PlayerCard from "../Player/PlayerCard";
-import {isHighOffer, getCalcOffer, getPercent, offerIsExpired} from "@/helper/helper";
+import { isHighOffer, getCalcOffer, getPercent, offerIsExpired } from "@/helper/helper";
 
 export default {
   name: "offer-player-item",
@@ -107,6 +93,9 @@ export default {
     },
     hidePlayerCardDetail() {
       return (!this.player.offers || (this.player.offers & this.player.offers.length === 0)) === true
+    },
+    isDarkTheme() {
+      return this.$vuetify.theme.dark
     },
   },
   methods: {

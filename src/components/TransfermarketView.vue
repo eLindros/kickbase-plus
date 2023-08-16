@@ -44,7 +44,7 @@
     <div class="flex-grow options-bar__sibling" v-if="loading === false">
       <v-text-field label="search for player at current market" v-model="search" prepend-icon="fa-search"
         class="hidden-md-and-up"></v-text-field>
-      <div v-if="getFilteredPlayers.length" class="flex flex-wrap gap=2">
+      <div v-if="getFilteredPlayers.length" class="flex flex-wrap gap-2">
         <bid-row v-for="player in getFilteredPlayers" :key="player.id" :player="player" />
       </div>
     </div>
