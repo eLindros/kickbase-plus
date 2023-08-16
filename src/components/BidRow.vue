@@ -19,7 +19,7 @@
               align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
               v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
             <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
-            <div v-if="getComputedBid !== 'no bid'" class="text-center w-full absolute bottom-0 left-0 z-10"
+            <div v-if="getComputedBid !== 'no bid'" class="text-center w-full absolute bottom-0 left-0 z-[3]"
               :class="{ 'text-green-500': (getComputedDifference.number <= 0), 'text-red-500': (getComputedDifference.number > 0) }"
               style="font-size: xx-small;">
               {{ getComputedDifference.number }} Euros {{

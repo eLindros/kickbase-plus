@@ -190,7 +190,7 @@
 
       </v-app-bar>
 
-      <v-main :class="this.$vuetify.theme.dark ? 'grey darken-4' : 'grey lighten-3'">
+      <v-main :class="this.$vuetify.theme.dark ? 'grey darken-2' : 'grey lighten-3'">
         <v-container
             fluid
             fill-height
