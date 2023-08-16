@@ -9,31 +9,29 @@
     </v-alert>
     <div class="flex justify-between items-center gap-0">
       <div class="w-2/12">
-        <img v-if="player.userProfile" :src="player.userProfile" width="50px" height="50px" />
-        <img v-else src="/assets/img/kickbase.png" width="50%" height="50%" class="mx-auto" />
+        <img v-if="player.userProfile" :src="player.userProfile" width="40px"/>
+        <img v-else src="/assets/img/kickbase.png" width="40px" class="mx-auto" />
       </div>
       <div class="w-8/12 p-2">
         <v-form @submit.prevent="dummySubmit">
-          <div class="bid-input-container w-full">
+          <div class="bid-input-container w-full text-center">
             <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall" :min="1"
               align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
               v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
             <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
+            <div v-if="getComputedBid !== 'no bid'" class="text-center w-full absolute bottom-0 left-0 z-10"
+              :class="{ 'text-green-400': (getComputedDifference.number <= 0), 'text-red-400': (getComputedDifference.number > 0) }"
+              style="font-size: xx-small;">
+              {{ getComputedDifference.number }} Euros {{
+                getComputedDifference.percentage
+              }}
+            </div>
           </div>
         </v-form>
       </div>
       <div class="w-2/12 p-2 text-3xl" :class="getRevokeButtonColor" @click="revokeBid">
         <i class="far fa-times-circle"></i>
       </div>
-    </div>
-    <div class="text-center w-full" style="font-size: xx-small;">
-      <span v-if="getComputedBid !== 'no bid'">
-        {{ getComputedDifference.number }} Euros
-        &nbsp;<span
-          :class="{ 'text-green-400': (getComputedDifference.number <= 0), 'text-red-400': (getComputedDifference.number > 0) }">{{
-            getComputedDifference.percentage
-          }}</span>
-      </span>
     </div>
 
     <div class="flex justify-around items-center w-full">
@@ -44,47 +42,6 @@
       </div>
       <div class="m-1 cursor-pointer" @click="incrementPercentBidCount"><i class="fas fa-angle-right "></i></div>
     </div>
-
-    <template v-slot:extra-expansion-panel
-      v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
-      <v-expansion-panel>
-        <v-expansion-panel-header class="elevation-0">
-          <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1">fa-money-bill-wave</v-icon>
-          <strong>{{ player.offers.length }}</strong> user bid on this player
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-simple-table class="mb-5 bid-table">
-            <template>
-              <tbody>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Details
-                  </th>
-                </tr>
-                <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{ 'foo': offer.isSelf }">
-                  <td>
-                    <span v-if="offer.userName">{{ offer.userName }}</span>
-                    <span v-else>KICKBASE</span>:
-                  </td>
-                  <td>
-                    <span v-if="offer.userId != getSelf">
-                      {{ getDate(offer.date) }}
-                      <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
-                    </span>
-                    <span v-else>
-                      {{ offer.price | numeral('0,0 $') }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </template>
 
   </player-card>
 </template>
@@ -269,7 +226,7 @@ export default {
     },
     getRevokeButtonColor() {
       let revokeButtonColor = 'text-gray-500 cursor-not-allowed';
-      if(this.player.hasOwnBid){
+      if (this.player.hasOwnBid) {
         revokeButtonColor = this.isDarkTheme ? 'text-red-400 cursor-pointer' : 'text-red-800 cursor-pointer';
       } else {
         revokeButtonColor = this.isDarkTheme ? 'text-white cursor-not-allowed' : revokeButtonColor;

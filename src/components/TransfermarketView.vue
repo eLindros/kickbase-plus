@@ -41,27 +41,12 @@
 
     </options-bar>
 
-    <div class="flex-grow-1 options-bar__sibling" v-if="loading === false">
-      <v-alert :color="alertColor" dark text class="mb-5 text-body-2">
-        <strong class="text-h6 font-weight-black">{{ playersLeft }}</strong> free spots in your team
-        /
-        {{ getFilteredPlayers.length }} players match your criteria (out of a total of {{ getComputedBids.length }}
-        players on the TM)
-
-      </v-alert>
-
-      <v-alert v-if="hasActiveFilters" style="cursor: pointer" type="info" dark text @click="resetFilters">
-        you have active filters. <u>reset filters</u>
-      </v-alert>
-      <v-text-field label="Search for player at current market" v-model="search" prepend-icon="fa-search"
+    <div class="flex-grow options-bar__sibling" v-if="loading === false">
+      <v-text-field label="search for player at current market" v-model="search" prepend-icon="fa-search"
         class="hidden-md-and-up"></v-text-field>
-      <div v-if="getFilteredPlayers.length" class="d-flex flex-wrap">
+      <div v-if="getFilteredPlayers.length" class="flex flex-wrap gap=2">
         <bid-row v-for="player in getFilteredPlayers" :key="player.id" :player="player" />
       </div>
-      <v-alert v-else type="info" text>
-        no player matched your criteria. please check your filters
-      </v-alert>
-
     </div>
     <div v-else class="flex-grow-1 options-bar__sibling">
       <loading-spinner></loading-spinner>

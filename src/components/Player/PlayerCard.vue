@@ -79,7 +79,7 @@
     <v-divider />
     <slot></slot>
     <v-divider />
-    <div :class="statsCssClass">
+    <div :class="statsCssClass" class="w-full">
       <v-expansion-panels
         v-model="accordion"
         accordion
@@ -98,6 +98,7 @@
           <v-expansion-panel-content>
             <player-points-statistic
               :player="player"
+              class="max-w-xs"
               v-if="accordion === 0"
             ></player-points-statistic>
           </v-expansion-panel-content>
