@@ -1,19 +1,7 @@
 <template>
-  <v-btn
-      block
-      large
-      text
-      x-large
-      @click="acceptOffer()"
-      class="mb-2 mb-sm-5 kp-button kp-button__accept"
-      :class="{'high-offer':isHighOffer, 'low-offer':!isHighOffer}"
-  >
-    <v-icon color="white"  left>fa-check-circle</v-icon>
-    ACCEPT {{ offerWording }} OFFER
-    <span v-if="showNameInfo">
-      &nbsp;FROM <strong>{{ username }}</strong>
-    </span>
-  </v-btn>
+  <div :class="{ 'high-offer': isHighOffer, 'low-offer': !isHighOffer }" @click="acceptOffer()">
+    <i class="fa-solid fa-circle-check"></i>
+  </div>
 </template>
 <script>
 

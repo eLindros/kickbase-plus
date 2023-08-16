@@ -8,40 +8,35 @@
         <span style="font-size: x-small;" v-if="!offerExpired(offer)">expires</span>
         <span style="font-size: x-small;" v-if="offerExpired(offer)">expired</span>
       </v-alert>
-        <p class="mb-0" v-if="hasNonCPUOffers(player) === true">
-          <span v-if="offer.userName">
-            {{ offer.userName }}
-          </span>
-          <span v-else>KICKBASE</span>
-        </p>
-        <p class="text-subtitle-1 text-sm-h5 text--primary mb-0">
-          <strong>{{ getOffer(offer) }}</strong>
-        </p>
-        <div class="text-subtitle-2 text-sm-h6 text--primary mb-0 d-flex ">
-          <span class="profit-info" :class="(isAnHighOffer(offer)) ? 'profit-info--green' : 'profit-info--red'">
-            Offer: {{ calcOffer(offer, player.marketValue) | numeral('0,0 $') }} ({{ percent(offer) }}%)
-          </span>
-          <span class="profit-info" :class="(profit(offer) > 1) ? 'profit-info--green' : 'profit-info--red'">
-            Profit: {{ profit(offer) | numeral('0,0 $') }}
-          </span>
+      <div class="flex justify-between items-center gap-0">
+        <div class="w-2/12">
+          <img v-if="offer.userProfile" :src="offer.userProfile" width="40px" />
+          <img v-else src="/assets/img/kickbase.png" width="40px" class="mx-auto" />
         </div>
-        <div class="expired-info" v-if="offerExpired(offer)">
-          <v-icon color="white">fa-hourglass-end</v-icon>
-          this offer expired {{ offer.validUntilDate | expiry }}
+        <div class="w-8/12 p-2">
+          <div class="w-full border text-center">{{ getOffer(offer) }}</div>
+          <div class="flex justify-between" style="font-size: xx-small;">
+            <span :class="(isAnHighOffer(offer)) ? 'profit-info--green' : 'profit-info--red'">
+              Offer: {{ calcOffer(offer, player.marketValue) | numeral('0,0 $') }} ({{ percent(offer) }}%)
+            </span>
+            <span :class="(profit(offer) > 1) ? 'profit-info--green' : 'profit-info--red'">
+              Profit: {{ profit(offer) | numeral('0,0 $') }}
+            </span>
+          </div>
         </div>
-      <v-card-actions v-if="offerExpired(offer) === false">
-        <accept-button :offer="offer" :player="player" :is-high-offer="isAnHighOffer(offer)"
-          v-on:acceptOffer="acceptOffer"></accept-button>
-      </v-card-actions>
+        <div class="w-2/12 p-2 text-3xl">
+          <accept-button v-if="offerExpired(offer) === false" :offer="offer" :player="player"
+            :is-high-offer="isAnHighOffer(offer)" v-on:acceptOffer="acceptOffer"></accept-button>
+          <div @click="removePlayerFromMarket(player)">
+            <i class="far fa-times-circle"></i>
+          </div>
+        </div>
+      </div>
+      <div class="expired-info" v-if="offerExpired(offer)">
+        <v-icon color="white">fa-hourglass-end</v-icon>
+        this offer expired {{ offer.validUntilDate | expiry }}
+      </div>
     </v-card>
-
-    <div class="mb-5">
-      <v-btn v-if="hasOffer(player)" class="kp-button kp-button__decline-all" x-large block
-        @click="removePlayerFromMarket(player)">
-        <v-icon left>fa-times</v-icon>
-        DECLINE <span v-if="hasNonCPUOffers(player) === true">&nbsp;ALL&nbsp;</span> AND ADD AGAIN
-      </v-btn>
-    </div>
   </player-card>
 </template>
 
