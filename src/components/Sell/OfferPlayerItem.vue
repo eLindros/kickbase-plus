@@ -15,20 +15,21 @@
         </div>
         <div class="w-8/12 p-2">
           <div class="w-full border text-center">{{ getOffer(offer) }}</div>
-          <div class="flex justify-between" style="font-size: xx-small;">
-            <span :class="(isAnHighOffer(offer)) ? 'profit-info--green' : 'profit-info--red'">
-              Offer: {{ calcOffer(offer, player.marketValue) | numeral('0,0 $') }} ({{ percent(offer) }}%)
+          <div class="flex justify-between gap-0" style="font-size: xx-small;">
+            <span :class="(isAnHighOffer(offer)) ? 'text-green-500' : 'text-red-500'">
+              <i :class="(calcOffer(offer, player.marketValue) > 0) ? 'fas fa-angle-up' : 'fas fa-angle-down'"></i> {{
+                calcOffer(offer, player.marketValue) | numeral('+0,0 $') }} ({{ percent(offer) }}%)
             </span>
-            <span :class="(profit(offer) > 1) ? 'profit-info--green' : 'profit-info--red'">
-              Profit: {{ profit(offer) | numeral('0,0 $') }}
+            <span :class="(profit(offer) > 1) ? 'text-green-500' : 'text-red-500'">
+              <i class="fas fa-coins"></i> {{ profit(offer) | numeral('+0,0 $') }}
             </span>
           </div>
         </div>
-        <div class="w-2/12 p-2 text-3xl">
+        <div class="flex justify-start gap-2 w-2/12 text-xl">
           <accept-button v-if="offerExpired(offer) === false" :offer="offer" :player="player"
             :is-high-offer="isAnHighOffer(offer)" v-on:acceptOffer="acceptOffer"></accept-button>
-          <div @click="removePlayerFromMarket(player)">
-            <i class="far fa-times-circle"></i>
+          <div @click="removePlayerFromMarket(player)" class="cursor-pointer">
+            <i class="fas fa-times text-red-600"></i>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ 'high-offer': isHighOffer, 'low-offer': !isHighOffer }" @click="acceptOffer()">
-    <i class="fa-solid fa-circle-check"></i>
+  <div :class="{ 'high-offer': isHighOffer, 'low-offer': !isHighOffer }" class="cursor-pointer" @click="acceptOffer()">
+    <i class="fas fa-check text-green-500"></i>
   </div>
 </template>
 <script>
