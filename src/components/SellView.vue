@@ -122,7 +122,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-
+      <div class="flex flex-wrap gap-2">
       <offer-player-item
           v-for="player in playerWithAnOffer"
           :key="player.id"
@@ -132,6 +132,7 @@
           v-on:setPlayerOnMarketAgain="setPlayerOnMarketAgain"
       >
       </offer-player-item>
+      </div>
     </div>
     <div v-else class="flex-grow-1 options-bar__sibling" >
       <spinner></spinner>

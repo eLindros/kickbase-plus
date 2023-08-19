@@ -1,113 +1,47 @@
 <template>
-  <player-card
-      :class="{'own-bid':player.hasOwnBid, 'no-bid':player.hasNoBid, 'only':player.hasOnlySelfBid}"
-      class="bid-row"
-      :player="player"
-      :show-purchase-statistic=false
-  >
-    <template v-slot:pre-meta>
-      <v-alert
-          text
-          :color="(isDarkTheme) ? 'deep-purple lighten-3': 'deep-purple darken-4'"
-          icon="fa-clock"
-          class="expiry-info"
-          style="cursor: pointer"
-          @click="toggleExpiryAsDateTime"
-      >
-        <transition name="fade">
-          <span v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</span>
-        </transition>
-        <transition name="fade">
-          <span v-if="expiryAsDateTime === false">{{ expiryDate }}</span>
-        </transition>
-
-        <div class="expiry-info__shadow-info" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
-        <div class="expiry-info__shadow-info" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
-      </v-alert>
-    </template>
-
-    <v-form @submit.prevent="dummySubmit" class="playerBidForm mt-5 mb-4">
-      <div class="d-sm-flex d-block">
-        <div class="bid-input-container mr-5">
-          <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall" :min="1"
-            align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
-            v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
-          <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
-        </div>
-        <div class="bid-input-container">
-          <div class="text-caption">
-            <span v-if="getComputedBid !== 'no bid'">
-              you <span v-if="previewValue && !getValidBidNumber" class="font-italic">would</span> bid
-              <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
-              (<span
-                :class="{ 'text--green': (getComputedDifference.number <= 0), 'text--red': (getComputedDifference.number > 0) }">{{
-                  getComputedDifference.percentage
-                }} %</span>)
-            </span>
-          </div>
-        </div>
+  <player-card :class="{ 'own-bid': player.hasOwnBid, 'no-bid': player.hasNoBid, 'only': player.hasOnlySelfBid }"
+    class="bid-row" :player="player" :show-purchase-statistic=false>
+    <v-alert text width="100%" dense class="pa-0 px-2"
+      :color="(isDarkTheme) ? 'deep-purple lighten-3' : 'deep-purple darken-4'" style="cursor: pointer"
+      @click="toggleExpiryAsDateTime">
+      <div style="font-size: x-small;" v-if="expiryAsDateTime === false">{{ expiryDate }}</div>
+      <div style="font-size: x-small;" v-if="expiryAsDateTime === true">{{ expiryDateAsDateTime }}</div>
+    </v-alert>
+    <div class="flex justify-between items-center gap-0">
+      <div class="w-2/12">
+        <img v-if="player.userProfile" :src="player.userProfile" width="40px"/>
+        <img v-else src="/assets/img/kickbase.png" width="40px" class="mx-auto" />
       </div>
-
-    </v-form>
-    <div class="mb-5">
-      <h3 class="text-subtitle-1">Bid-Buttons:</h3>
-      <div class="bids-button-row">
-        <v-btn dense outlined @click="decrementPercentBidCount">-0.1%</v-btn>
-        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
-        <span v-html="getButtonLabel(percent)"></span>
-        </v-btn>
-         <v-btn dense outlined @click="incrementPercentBidCountBig">+1%</v-btn>
-         <v-btn dense outlined @click="incrementPercentBidCount">+0.1% </v-btn>
+      <div class="w-8/12 p-2">
+        <v-form @submit.prevent="dummySubmit">
+          <div class="bid-input-container w-full text-center">
+            <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :reset-call="resetCall" :min="1"
+              align="center" :mousewheel=false v-on:input="setInputValue" v-on:input-reset="inputReset"
+              v-on:submit="setInputValue" v-on:preview="preview" :placeholder="inputPlaceholder"></vue-numeric-input>
+            <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
+            <div v-if="getComputedBid !== 'no bid'" class="text-center w-full absolute bottom-0 left-0 z-[3]"
+              :class="{ 'text-green-500': (getComputedDifference.number <= 0), 'text-red-500': (getComputedDifference.number > 0) }"
+              style="font-size: xx-small;">
+              {{ getComputedDifference.number }} Euros {{
+                getComputedDifference.percentage
+              }}
+            </div>
+          </div>
+        </v-form>
+      </div>
+      <div class="w-2/12 p-2 text-3xl" :class="getRevokeButtonColor" @click="revokeBid">
+        <i class="far fa-times-circle"></i>
       </div>
     </div>
-    
-    <v-btn v-if="player.hasOwnBid" class="kp-button kp-button__decline mb-5" @click="revokeBid" block x-large>
-      revoke own bid ({{ getComputedBid }})
-    </v-btn>
-    <!--
-    TODO: re-introduce with settings options
-        -->
-        
-    <template v-slot:extra-expansion-panel
-      v-if="player.offers && player.offers.length && player.hasOnlySelfBid === false">
-      <v-expansion-panel>
-        <v-expansion-panel-header class="elevation-0">
-          <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1">fa-money-bill-wave</v-icon>
-          <strong>{{ player.offers.length }}</strong> user bid on this player
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-simple-table class="mb-5 bid-table">
-            <template>
-              <tbody>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Details
-                  </th>
-                </tr>
-                <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{ 'foo': offer.isSelf }">
-                  <td>
-                    <span v-if="offer.userName">{{ offer.userName }}</span>
-                    <span v-else>KICKBASE</span>:
-                  </td>
-                  <td>
-                    <span v-if="offer.userId != getSelf">
-                      {{ getDate(offer.date) }}
-                      <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
-                    </span>
-                    <span v-else>
-                      {{ offer.price | numeral('0,0 $') }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </template>
+
+    <div class="flex justify-around items-center w-full">
+      <div class="m-1 cursor-pointer" @click="decrementPercentBidCount"><i class="fas fa-angle-left"></i></div>
+      <div class="m-1 cursor-pointer" @click="sendPercentageBid(-0.9)"><i class="fas fa-angle-double-left"></i></div>
+      <div class="m-1 cursor-pointer" @click="sendPercentageBid(0)"><i class="far fa-dot-circle "></i></div>
+      <div class="m-1 cursor-pointer" @click="incrementPercentBidCountBig"><i class="fas fa-angle-double-right "></i>
+      </div>
+      <div class="m-1 cursor-pointer" @click="incrementPercentBidCount"><i class="fas fa-angle-right "></i></div>
+    </div>
 
   </player-card>
 </template>
@@ -278,26 +212,26 @@ export default {
     getComputedDifference() {
       const calcBid = this.getBidNumber
 
-      const number = (calcBid) ? numeral(calcBid - this.player.price).format('0,0') : 'no bid'
+      const number = (calcBid) ? numeral(calcBid - this.player.price).format('+0,0') : 'no bid'
       const c = (calcBid - this.player.price) / this.player.price * 100
-      const percentage = Number.parseFloat(c).toPrecision(2)
+      const percentage = numeral(Number.parseFloat(c).toPrecision(2) / 100).format('+0.0%')
 
       return {
         number,
         percentage
       }
     },
-    getComputedDifferenceWording() {
-      let wording = ', which is exactly the market value'
-      if (this.getComputedDifference.number < 0) {
-        wording = ' less than the market value'
-      } else if (this.getComputedDifference.number > 0) {
-        wording = ' more than the market value'
-      }
-      return wording
-    },
     isDarkTheme() {
       return this.$vuetify.theme.dark
+    },
+    getRevokeButtonColor() {
+      let revokeButtonColor = 'text-gray-500 cursor-not-allowed';
+      if (this.player.hasOwnBid) {
+        revokeButtonColor = this.isDarkTheme ? 'text-red-400 cursor-pointer' : 'text-red-800 cursor-pointer';
+      } else {
+        revokeButtonColor = this.isDarkTheme ? 'text-white cursor-not-allowed' : revokeButtonColor;
+      }
+      return revokeButtonColor;
     },
     getLastChanges() {
       if (this.getPlayers[this.player.id]) {
@@ -383,8 +317,8 @@ export default {
     incrementPercentBidCountBig() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100) + 1 : 1
       this.sendPercentageBid(percent);
-			},
-		incrementPercentBidCount() {
+    },
+    incrementPercentBidCount() {
       const percent = this.playerBid ? Math.round((this.playerBid / this.player.marketValue - 1) * 100 * 10) / 10 + 0.1 : 0.1
       this.sendPercentageBid(percent);
     },

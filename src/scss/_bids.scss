@@ -1,18 +1,6 @@
-.expiry-info {
-  position: relative;
-
-  span {
-    position: absolute;
-  }
-
-  &__shadow-info {
-    opacity: 0;
-  }
-}
-
 .bid-row {
   
-  margin: 0 0 30px 0;
+  margin: 0 0 10px 0;
   
   .head {
     background: #212121;
@@ -40,30 +28,7 @@
   
 }
 
-.bids-button-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-
-  .v-btn {
-    margin: 0 10px 10px 0;
-    padding: 0 4px;
-  }
-}
-
-.players-name {
-  @media (max-width: 640px){
-    order: 5
-  }
-}
-
-
 .bid-input-container {
-  width: 50%;
-  @include breakpoint(xs) {
-    width: 100%;
-    margin-bottom: 16px;
-  }
 
   position: relative;
 

@@ -126,38 +126,24 @@ $defaultBorder: 10px solid #dadada !important;
       .v-alert {
         padding: 4px 8px;
         margin: 0 6px 0 0;
-        flex-grow: 1;
+        flex-grow: 0;
         flex-shrink: 0;
       }
     }
   }
 
-  &__player-image {
-    @include breakpoint(xs) {
-      display: none;
-    }
-  }
-
-  &__image {
-    margin-top: -20px;
-    position: relative;
-
-    @include breakpoint(xs) {
-      margin-top: 0;
-    }
-  }
-
   &__team-image {
     position: absolute;
-    max-width: 64px;
-    width: 64px;
+    width: 30px;
     bottom: 0;
-    right: 0;
+    left: 0;
     z-index: 2;
-    @include breakpoint(xs) {
-      position: relative;
-      width: 32px;
-    }
+    object-position: right bottom;
+  }
+
+  &__player-image {
+    height: 140px;
+    object-position: right bottom;
   }
 
   &.own-bid {
