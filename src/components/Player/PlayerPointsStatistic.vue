@@ -22,7 +22,7 @@
                 <strong>{{ latestSeasonStats.secondsPlayed / 60 | numeral }}</strong>&nbsp;minutes
                 (<strong class="font-italic">⌀ {{
                   latestSeasonStats.secondsPlayed / 60 / latestSeasonStats.matches | numeral
-                }}</strong>mins per game)
+                }}</strong>&nbsp;mins per game)
               </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                 <strong>{{ latestSeasonStats.goals }}</strong>
                 (⌀ {{ (latestSeasonStats.goals / latestSeasonStats.matches) | numeral('0.[00]') }} per game,
                 on average scores a goal every <strong
-                  class="font-italic">{{ latestSeasonStats.secondsPerGoal / 60 | numeral }}</strong>minutes)
+                  class="font-italic">{{ latestSeasonStats.secondsPerGoal / 60 | numeral }}</strong>&nbsp;minutes)
               </td>
             </tr>
             <tr>
