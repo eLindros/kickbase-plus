@@ -12,14 +12,14 @@
             <tr>
               <th>Matches</th>
               <td>
-                <strong>{{ latestSeasonStats.matches }}</strong><span v-if="pastMatchDays">of {{ pastMatchDays }}</span>
+                <strong>{{ latestSeasonStats.matches }}</strong><span v-if="pastMatchDays">&nbsp;of {{ pastMatchDays }}</span>
                 ({{ latestSeasonStats.startMatches }} from the start)
               </td>
             </tr>
             <tr>
               <th>Minutes played</th>
               <td>
-                <strong>{{ latestSeasonStats.secondsPlayed / 60 | numeral }}</strong>minutes
+                <strong>{{ latestSeasonStats.secondsPlayed / 60 | numeral }}</strong>&nbsp;minutes
                 (<strong class="font-italic">⌀ {{
                   latestSeasonStats.secondsPlayed / 60 / latestSeasonStats.matches | numeral
                 }}</strong>mins per game)
