@@ -1,161 +1,110 @@
 <template>
-  <div>
-    <v-card outlined>
-      <v-container class="pa-0">
-        <v-row no-gutters justify="start">
-          <v-col cols="3">
-            <PlayerImage :player="this.player" />
-          </v-col >
-          <v-col cols="9" class="mt-2">
-            <span class="grey px-2 mr-1">{{ player.number }}</span>
-            <span class="grey px-2 mr-1">{{ getPosition }}</span>
-            <span class="px-2 mr-1" :class="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
-            {{ getStatus.status }}</span>
-            <v-card-title class="text-no-wrap pa-0">
-              <ExternalInfo :src="getLigainsiderLink">
-                <h2 v-if="player.knownName">{{ player.knownName }}</h2>
-                <h2 v-else>{{ player.firstName }} {{ player.lastName }}</h2>
-              </ExternalInfo>
-            </v-card-title>
-          </v-col>
-
-        </v-row>
-      </v-container>
-    </v-card>
-    <v-card class="elevation-6 pa-4 mt-5 player-card">
-      <div v-if="hasPreHeadSlot" class="player-card__pre-head">
-        <div class="player-card__pre-head__content">
-          <slot name="pre-head"></slot>
+  <v-card class="w-full sm:max-w-xs min-w-xs">
+    <div class="">
+      <div class="flex justify-start m-0 p-0">
+        <div class="w-1/3">
+          <PlayerImage :player="player" />
         </div>
-      </div>
-      <div class="player-card-content-wrapper">
-        <div class="player-card-meta" v-if="hideMeta === false" :style="{ width: playerMetaWidth }">
-          <div class="player-card-meta__content">
-            <slot name="pre-meta"></slot>
-            <PlayerImage :player="this.player" />
-            <div class="player-card-meta__item" v-if="hidePlayerStatus === false">
-              <status-pill :player="player"></status-pill>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fourth" v-if="hidePlayerMarketValue === false">
-              <v-alert type="info" dense text icon="fa-euro-sign" class="mb-0">
-                {{ getComputedPrice }} (MV)
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-third">
-              <v-alert :color="getGrowthColor" dense text :icon="getGrowthIcon" class="mt-0">{{
-                getDiffMV | numeral('0,0 $')
-              }}
-                <span v-if="getDiffMV > 0">(growth)</span>
-                <span v-if="getDiffMV < 0">(shrinkage)</span>
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
-              <v-alert :color="genericInfoFieldColor" dense text icon="fa-poll">
-                ⌀ {{ player.averagePoints }} / {{ player.totalPoints }}
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
-              <v-alert :color="getPricePerPointColor" dense text icon="fa-bullseye">
-                {{ getComputedPricePerPoint }} KpP
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth"
-              v-if="nextMatchComputed && nextMatchComputed.img">
-              <v-alert :color="nextGameColor" dense text icon="fa-beer">
-                <div class="d-flex align-center text-left ">
-                  <span class="mr-2">VS</span>
-                  <v-img height="24" width="24" class="flex-grow-0 mr-1" contain aspect-ratio="1"
-                    :src="nextMatchComputed.img"></v-img>
-                  <span class="text-caption">{{ nextMatchComputed.abbr }}</span>
-                </div>
-              </v-alert>
-            </div>
-            <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPosition === false">
-              <v-alert :color="genericInfoFieldColor" dense text icon="fa-futbol">{{ getPosition }}</v-alert>
-            </div>
+        <div class="justify-start align-start w-2/3">
+          <div class="flex justify-start align-start">
+            <v-chip-group class="pa-0 ma-0">
+              <v-chip x-small label class="mr-1">{{ player.number }}</v-chip>
+              <v-chip x-small label class="mr-1">{{ getPosition }}</v-chip>
+              <v-chip x-small label :color="getStatus.color"><v-icon dense x-small>{{ getStatus.icon }}</v-icon>
+              </v-chip>
+              <v-spacer></v-spacer>
+              <v-chip v-if="nextMatchComputed && nextMatchComputed.img" :color="getAgainstColor" x-small label>
+                <span class="mr-1">VS</span>
+                <v-img height="24" width="24" class="flex-grow-0" contain aspect-ratio="1"
+                  :src="nextMatchComputed.img"></v-img>
+              </v-chip>
+            </v-chip-group>
           </div>
-        </div>
-
-        <div class="player-card-slot" ref="playerCardContent">
-          <div class="player-card-head">
-            <h2 class="text-h5 text-sm-h4 mb-3 font-weight-bold">
+          <div class="flex flex-col align-start">
+            <div class="truncate ma-0 pa-0 text-xl font-bold uppercase">
               <ExternalInfo :src="getLigainsiderLink">
                 <span v-if="player.knownName">{{ player.knownName }}</span>
-                <span v-else>{{ player.firstName }} {{ player.lastName }}</span>
-                <span class="hidden-xs-only caption">(#{{ player.id }})</span>
+                <span v-else>{{ player.lastName }}</span>
               </ExternalInfo>
-            </h2>
+            </div>
+            <div class="flex justify-start ma-0 w-full">
+              <FullDialog>
+                <template #placeholder>
+                  <div class="pa-0 mr-2">
+                    <div class="text-sm font-bold ma-0">
+                      {{ player.totalPoints | numeral("0,0") }}
+                    </div>
+                    <div class="font-extralight mt-0" style="font-size: xx-small;">
+                      Pkt.
+                    </div>
+                  </div>
+                </template>
+                <player-points-statistic :player="player" class="px-5" />
+              </FullDialog>
+              <div class="pa-0">
+                <div class="text-sm font-bold ma-0">
+                  {{ player.averagePoints }}
+                </div>
+                <div class="font-extralight mt-0" style="font-size: xx-small;">
+                  ⌀&nbsp;Pkt.
+                </div>
+              </div>
+              <v-spacer></v-spacer>
+              <FullDialog>
+                <template #placeholder>
+                  <div class="pa-0 pr-5">
+                    <div class="text-sm font-bold text-right">
+                      {{ getComputedPrice }}
+                    </div>
+                    <div class="mt-0 text-right" :style="'font-size: xx-small;color:' + getGrowthColor">
+                      <v-icon :color="getGrowthColor" dense x-small>{{
+                        getGrowthIcon
+                      }}</v-icon>
+                      {{ getDiffMV | numeral("0,0$") }}
+                    </div>
+                  </div>
+                </template>
+                  <player-market-value-trend :player="player" />
+              </FullDialog>
+            </div>
           </div>
-          <slot></slot>
-
-          <div :class="statsCssClass">
-            <v-expansion-panels v-model="accordion" accordion focusable class="elevation-1 player-card-accordion">
-              <v-expansion-panel>
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="yellow darken-2">fa-medal</v-icon>
-                  season statistics and points
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <player-points-statistic :player="player" v-if="accordion === 0"></player-points-statistic>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel v-if="showPurchaseStatistic">
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="teal darken-2">fa-search-dollar</v-icon>
-                  purchase statistics
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-data-table :headers="getPlayerStatistics.headers" :items="getPlayerStatistics.values"
-                    :hide-default-footer="true" class="elevation-1"></v-data-table>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header class="elevation-0">
-                  <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-chart-line</v-icon>
-                  market value trend
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <player-market-value-trend :player="player"></player-market-value-trend>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <slot name="extra-expansion-panel"></slot>
-            </v-expansion-panels>
-          </div>
-          <v-btn @click="toggleStatistics" class="hidden-sm-and-up">
-            <span v-if="statsCssClass === initStatsCssClass">show</span>
-            <span v-else>hide</span>
-            &nbsp;statistics
-          </v-btn>
         </div>
       </div>
-    </v-card>
-  </div>
+    </div>
+    <v-divider />
+    <slot></slot>
+  </v-card>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
 
-import StatusPill from "../StatusPill";
 import ExternalInfo from "../Generic/ExternalInfo";
 import PlayerImage from "./PlayerImage";
 import numeral from "numeral";
+import {
+  getMarketValueGrowth,
+  getBundesligaClubImageUrlById,
+  nextMatch,
+  getPositionWording,
+} from "@/helper/helper";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
-import { getMarketValueGrowth, getBundesligaClubImageUrlById, nextMatch, getPositionWording } from "@/helper/helper"
 import PlayerPointsStatistic from "@/components/Player/PlayerPointsStatistic";
+import FullDialog from "../Generic/FullDialog.vue";
 
 export default {
   name: "PlayerCard",
   components: {
-    PlayerPointsStatistic,
-    StatusPill,
-    PlayerMarketValueTrend,
     ExternalInfo,
     PlayerImage,
+    PlayerPointsStatistic,
+    PlayerMarketValueTrend,
+    FullDialog
   },
   props: {
     player: {
       required: true,
-      type: Object
+      type: Object,
     },
     hideMeta: {
       type: Boolean,
@@ -186,58 +135,53 @@ export default {
       type: Boolean,
       required: false,
       default: true,
-    }
+    },
   },
   data() {
     return {
-      accordion: null,
-      statsCssClass: 'hidden-xs-only',
-      initStatsCssClass: null,
       playerMetaWidth: null,
-    }
+    };
   },
   mounted() {
-    this.initStatsCssClass = this.statsCssClass
-    this.determinePlayerMetaWidth()
+    this.determinePlayerMetaWidth();
   },
   computed: {
-    ...mapGetters([
-      'getPlayers',
-      'getMatches',
-      'getLigainsiderTeams',
-    ]),
+    ...mapGetters(["getPlayers", "getMatches", "getLigainsiderTeams"]),
     hasPreHeadSlot() {
-      return !!this.$slots['pre-head']
+      return !!this.$slots["pre-head"];
     },
     getPlayerImage() {
-      return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`
+      return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`;
     },
     getComputedPrice() {
-      return numeral(this.player.price).format('0,0')
+      return numeral(this.player.price).format("0,0$");
+    },
+    getAgainstColor() {
+      return this.$vuetify.theme.dark ? "grey darken-4" : "white";
     },
     getGrowthColor() {
-      let positive = '#2a5b2a'
-      let negative = '#682828'
+      let positive = "#2a5b2a";
+      let negative = "#682828";
       if (this.$vuetify.theme.dark) {
-        positive = '#afd3af'
-        negative = '#e6b6b6'
+        positive = "#afd3af";
+        negative = "#e6b6b6";
       }
-      let color = 'fa-caret-right'
+      let color = "fa-angle-right";
       if (this.getDiffMV > 0) {
-        color = positive
+        color = positive;
       } else if (this.getDiffMV < 0) {
-        color = negative
+        color = negative;
       }
-      return color
+      return color;
     },
     getGrowthIcon() {
-      let icon = 'fa-caret-right'
+      let icon = "fa-angle-right";
       if (this.getDiffMV > 0) {
-        icon = 'fa-caret-up'
+        icon = "fa-angle-up";
       } else if (this.getDiffMV < 0) {
-        icon = 'fa-caret-down'
+        icon = "fa-angle-down";
       }
-      return icon
+      return icon;
     },
     getPricePerPoint() {
       return (this.player.marketValue / 1000 / this.player.averagePoints) | 0;
@@ -256,94 +200,23 @@ export default {
         ? positive
         : negative;
     },
-    getPlayerStatistics() {
-      return {
-        headers: [
-          {
-            'text': 'Stat',
-            'value': 'stat',
-            'sortable': false,
-          },
-          {
-            'text': '',
-            'value': 'value',
-            'sortable': false,
-          },
-        ],
-        values: [
-          {
-            'stat': 'Profit',
-            'value': numeral(this.getDiffPurchasePrice).format('0,0')
-          },
-          {
-            'stat': 'Growth to today',
-            'value': numeral(this.getDiffMV).format('0,0')
-          },
-          {
-            'stat': 'Current market value',
-            'value': numeral(this.player.marketValue).format('0,0')
-          },
-          {
-            'stat': 'Last market value',
-            'value': numeral(this.getYesterdaysMV).format('0,0')
-          },
-          {
-            'stat': 'Purchase price',
-            'value': numeral(this.getPlayersPurchaseSum).format('0,0')
-          },
-          {
-            'stat': 'Market value change since purchase',
-            'value': numeral(this.getPlayersMarketValueChange).format('0,0')
-          },
-        ]
-      }
-    },
     getPosition() {
-      return getPositionWording(this.player.position)
+      return getPositionWording(this.player.position);
     },
     teamImage() {
-      return getBundesligaClubImageUrlById(this.player.teamId)
-    },
-    getYesterdaysMV() {
-      if (
-        this.getPlayers[this.player.id]
-        && this.getPlayers[this.player.id].marketValues
-        && this.getPlayers[this.player.id].marketValues.length
-        && this.getPlayers[this.player.id].marketValues.length > 3
-      ) {
-        return this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2].m
-      }
-      return null
+      return getBundesligaClubImageUrlById(this.player.teamId);
     },
     getDiffMV() {
-      return getMarketValueGrowth(this.player.id)
-    },
-    getDiffPurchasePrice() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer && this.player.offers) {
-        return this.player.offers[0].price - this.getPlayers[this.player.id].leaguePlayer.buyPrice
-      }
-      return null
-    },
-    getPlayersMarketValueChange() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer) {
-        return this.getPlayers[this.player.id].leaguePlayer.marketValueChange
-      }
-      return null
-    },
-    getPlayersPurchaseSum() {
-      if (this.getPlayers[this.player.id] && this.getPlayers[this.player.id].leaguePlayer) {
-        return this.getPlayers[this.player.id].leaguePlayer.buyPrice
-      }
-      return null
+      return getMarketValueGrowth(this.player.id);
     },
     genericInfoFieldColor() {
-      return (this.$vuetify.theme.dark) ? '#ccc' : '#2A3B4D'
+      return this.$vuetify.theme.dark ? "#ccc" : "#2A3B4D";
     },
     nextGameColor() {
-      return (this.$vuetify.theme.dark) ? '#9b30ff' : '#5500a9'
+      return this.$vuetify.theme.dark ? "#9b30ff" : "#5500a9";
     },
     nextMatchComputed() {
-      return nextMatch(this.getMatches, this.player)
+      return nextMatch(this.getMatches, this.player);
     },
     getLigainsiderLink() {
       if (this.getPlayers[this.player.id]) {
@@ -351,7 +224,8 @@ export default {
           this.addPlayerLigainsiderId(this.player.id);
         }
         if (this.getPlayers[this.player.id].ligainsiderId) {
-          return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId}`;
+          return `https://www.ligainsider.de${this.getPlayers[this.player.id].ligainsiderId
+            }`;
         }
       }
       return undefined;
@@ -368,41 +242,39 @@ export default {
     getStatus() {
       let status = {
         icon: "fa-thumbs-up",
-        color: "green",
+        color: "success",
         status: "fit",
       };
       switch (this.player.status) {
         case 0:
           return status;
         case 1:
-          status.icon = "fa-plus-square"
-          status.color = "red"
-          status.status = "verletzt"
+          status.icon = "fa-plus-square";
+          status.color = "red";
+          status.status = "verletzt";
           return status;
         default:
-          status.icon = "fa-question"
+          status.icon = "fa-question";
           status.color = "orange";
-          status.status = "??"
+          status.status = "??";
           return status;
       }
     },
   },
   methods: {
-    ...mapMutations([
-      "addPlayerLigainsiderId",
-    ]),
+    ...mapMutations(["addPlayerLigainsiderId"]),
     toggleStatistics() {
       if (this.statsCssClass === this.initStatsCssClass) {
-        this.statsCssClass = null
+        this.statsCssClass = null;
       } else {
-        this.statsCssClass = this.initStatsCssClass
+        this.statsCssClass = this.initStatsCssClass;
       }
     },
     determinePlayerMetaWidth() {
       if (this.$refs.playerCardContent) {
-        this.playerMetaWidth = this.$refs.playerCardContent.offsetWidth
+        this.playerMetaWidth = this.$refs.playerCardContent.offsetWidth;
       }
     },
-  }
-}
+  },
+};
 </script>
