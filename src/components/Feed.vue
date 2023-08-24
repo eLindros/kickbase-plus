@@ -8,8 +8,9 @@
       
       <v-card style="margin-bottom: 20px;" v-for="item in items" :key="item.id">
         <div class="d-flex flex-no-wrap justify-space-between">
+          <PlayerImage v-if="!getPlayerImage(item).f" :player="getPlayerImage(item)"/>
         <v-avatar
-          v-if="getPlayerImage(item)"
+          v-else
           tile
           size="125"
         >
@@ -74,6 +75,7 @@ numeral.locale('deff')
 
 import moment from 'moment'
 
+import PlayerImage from "./PlayerImage";
 import Spinner from './Spinner'
 import ReloadButton from "./Generic/ReloadButton";
 import {smartPlayerStatsLoading} from "@/helper/helper";
@@ -82,7 +84,8 @@ export default {
   name: 'feed-view',
   components: {
     Spinner,
-    ReloadButton
+    ReloadButton,
+    PlayerImage
   },
   filters: {
     age: (age) => {
@@ -133,21 +136,23 @@ export default {
       }
     },
     getPlayerImage(item) {
-      let pid = null
+      let player = {};
 
       if (item.meta && item.meta.p && item.meta.p.i) {
-        pid = item.meta.p.i
+        player.id = item.meta.p.i;
+        player.teamId = item.meta.p.t || null;
       }
 
       if (item.meta && item.meta.pid) {
-        pid = item.meta.pid
+        player.id = item.meta.pid;
+        player.teamId = item.meta.tid || null;
       }
 
       if (item.meta && item.meta.f) {
-        return item.meta.f
+        player.f = item.meta.f;
       }
-      if (pid) {
-        return `https://kkstr.s3.amazonaws.com/pool/playersbig/${pid}.png`
+      if (player.id) {
+        return player;
       }
 
       return null
