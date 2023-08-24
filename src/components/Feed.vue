@@ -75,7 +75,7 @@ numeral.locale('deff')
 
 import moment from 'moment'
 
-import PlayerImage from "./PlayerImage";
+import PlayerImage from "./Player/PlayerImage";
 import Spinner from './Spinner'
 import ReloadButton from "./Generic/ReloadButton";
 import {smartPlayerStatsLoading} from "@/helper/helper";
