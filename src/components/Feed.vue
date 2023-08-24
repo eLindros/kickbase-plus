@@ -8,7 +8,9 @@
       
       <v-card style="margin-bottom: 20px;" v-for="item in items" :key="item.id">
         <div class="d-flex flex-no-wrap justify-space-between">
-          <PlayerImage v-if="getPlayerImage(item) && !getPlayerImage(item).f" :player="getPlayerImage(item)"/>
+          <div v-if="getPlayerImage(item) && !getPlayerImage(item).f" class="w-1/3">
+            <PlayerImage  :player="getPlayerImage(item)"/>
+          </div>
         <v-avatar
           v-else
           tile
