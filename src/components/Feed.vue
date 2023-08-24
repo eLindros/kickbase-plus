@@ -8,12 +8,15 @@
       
       <v-card style="margin-bottom: 20px;" v-for="item in items" :key="item.id">
         <div class="d-flex flex-no-wrap justify-space-between">
+          <div v-if="getPlayerImage(item) && !getPlayerImage(item).f" class="w-1/3">
+            <PlayerImage  :player="getPlayerImage(item)"/>
+          </div>
         <v-avatar
-          v-if="getPlayerImage(item)"
+          v-else
           tile
           size="125"
         >
-          <v-img :src="getPlayerImage(item)" aspect-ratio="1"></v-img>
+          <v-img :src="getPlayerImage(item) && getPlayerImage(item).f" aspect-ratio="1"></v-img>
         </v-avatar>
         <v-list-item three-line>
           <v-list-item-content>
@@ -74,6 +77,7 @@ numeral.locale('deff')
 
 import moment from 'moment'
 
+import PlayerImage from "./Player/PlayerImage";
 import Spinner from './Spinner'
 import ReloadButton from "./Generic/ReloadButton";
 import {smartPlayerStatsLoading} from "@/helper/helper";
@@ -82,7 +86,8 @@ export default {
   name: 'feed-view',
   components: {
     Spinner,
-    ReloadButton
+    ReloadButton,
+    PlayerImage
   },
   filters: {
     age: (age) => {
@@ -133,24 +138,23 @@ export default {
       }
     },
     getPlayerImage(item) {
-      let pid = null
+      let player = {};
 
       if (item.meta && item.meta.p && item.meta.p.i) {
-        pid = item.meta.p.i
+        player.id = item.meta.p.i;
+        player.teamId = item.meta.p.t || null;
       }
 
       if (item.meta && item.meta.pid) {
-        pid = item.meta.pid
+        player.id = item.meta.pid;
+        player.teamId = item.meta.tid || null;
       }
 
       if (item.meta && item.meta.f) {
-        return item.meta.f
-      }
-      if (pid) {
-        return `https://kkstr.s3.amazonaws.com/pool/playersbig/${pid}.png`
+        player.f = item.meta.f;
       }
 
-      return null
+      return player;
     },
     getCardsText(item) {
       let text = null

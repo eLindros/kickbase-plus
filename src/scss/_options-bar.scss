@@ -17,15 +17,10 @@
 
     .other-buttons {
       position: fixed;
-      top: 165px;
-      right: 20px;
+      bottom: 5px;
+      right: 10px;
       z-index: 6;
       max-width: 64px;
-
-      .v-btn {
-        margin-bottom: 8px;
-      }
-
     }
   }
 
@@ -46,8 +41,8 @@
   &__expand-btn {
     position: fixed;
     z-index: 2;
-    top: 90px;
-    right: 20px;
+    bottom: 5px;
+    left: 10px;
 
     .v-btn__content {
       word-wrap: break-word !important;
