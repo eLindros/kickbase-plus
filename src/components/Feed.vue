@@ -8,13 +8,13 @@
       
       <v-card style="margin-bottom: 20px;" v-for="item in items" :key="item.id">
         <div class="d-flex flex-no-wrap justify-space-between">
-          <PlayerImage v-if="!getPlayerImage(item).f" :player="getPlayerImage(item)"/>
+          <PlayerImage v-if="getPlayerImage(item) && !getPlayerImage(item).f" :player="getPlayerImage(item)"/>
         <v-avatar
           v-else
           tile
           size="125"
         >
-          <v-img :src="getPlayerImage(item)" aspect-ratio="1"></v-img>
+          <v-img :src="getPlayerImage(item) && getPlayerImage(item).f" aspect-ratio="1"></v-img>
         </v-avatar>
         <v-list-item three-line>
           <v-list-item-content>
