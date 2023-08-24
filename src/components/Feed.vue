@@ -151,11 +151,8 @@ export default {
       if (item.meta && item.meta.f) {
         player.f = item.meta.f;
       }
-      if (player.id) {
-        return player;
-      }
 
-      return null
+      return player;
     },
     getCardsText(item) {
       let text = null
