@@ -32,9 +32,13 @@ export default {
         }
     },
   },
+  beforeUnmount() {
+    this.clearSelectedPlayers();
+  },
   methods: {
        ...mapMutations([
-      'setSelectedPlayers'
+      'setSelectedPlayers',
+      'clearSelectedPlayers'
     ]),
 
   }

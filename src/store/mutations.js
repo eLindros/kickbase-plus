@@ -288,6 +288,11 @@ function setSelectedPlayersMarketValueSum(state) {
   );
 }
 
+function clearSelectedPlayers(state) {
+  state.selectedPlayers = {};
+  state.selectedPlayersMarketValueSum = 0;
+}
+
 export default {
   setInitialized,
   addPlayer,
@@ -332,4 +337,5 @@ export default {
   addPlayerLigainsiderId,
   setSelectedPlayers,
   setSelectedPlayersMarketValueSum,
+  clearSelectedPlayers,
 }
