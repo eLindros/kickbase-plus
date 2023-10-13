@@ -274,7 +274,7 @@ function setSelectedPlayers(state, player) {
     if (state.selectedPlayers[player.id] !== undefined) {
       delete state.selectedPlayers[player.id];
     } else {
-      state.selectedPlayers[player.id] = player;
+      Vue.set(state.selectedPlayers, player.id, player);
     }
     setSelectedPlayersMarketValueSum(state);
   }
