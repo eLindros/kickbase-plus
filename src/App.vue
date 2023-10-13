@@ -270,6 +270,7 @@ export default {
       'getLeagues',
       'getLeague',
       'getDefaults',
+      'getSelectedPlayers',
       'getSelectedPlayersMarketValueSum',
     ]),
     hasUser() {
@@ -287,13 +288,8 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-          if (this.getSelectedPlayersMarketValueSum == 0) {
-            details += 'Budget: ' + numeral(this.getUsersDetails.budget).format('0,0');
-            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue).format('0,0')
-          } else {
             details += 'Budget: ' + numeral( this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
             details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0')
-          }
       }
       if (this.getBids && this.getUsersDetails) {
         details += '<br>Bids: ' + numeral(this.getPlayerBidsSum).format('0,0')
@@ -305,7 +301,7 @@ export default {
         details += '&nbsp;/ Transfers: ' + ((this.getUsersDetails.bought || 0) + (this.getUsersDetails.sold || 0))
 
         if (this.getUsersDetails.players && this.getUsersDetails.players.length) {
-          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getUsersDetails.players.length
+          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getUsersDetails.players.length - this.getSelectedPlayers.length
         }
 
       }
