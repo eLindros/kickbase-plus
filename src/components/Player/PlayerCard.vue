@@ -154,7 +154,7 @@ export default {
       return `https://kkstr.s3.amazonaws.com/pool/playersbig/${this.player.id}.png`;
     },
     getComputedPrice() {
-      return numeral(this.player.price).format("0,0$");
+      return numeral(this.player.marketValue).format("0,0$");
     },
     getAgainstColor() {
       return this.$vuetify.theme.dark ? "grey darken-4" : "white";
