@@ -270,7 +270,7 @@ export default {
       'getLeagues',
       'getLeague',
       'getDefaults',
-      'getSelectedPlayers',
+      'getSelectedPlayersCount',
       'getSelectedPlayersMarketValueSum',
     ]),
     hasUser() {
@@ -288,8 +288,8 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-            details += 'Budget: ' + numeral( this.getBudgetSum).format('0,0');
-            details += '&nbsp;/ Team: ' + numeral( this.getTeamValueSum ).format('0,0')
+            details += 'Budget: ' + this.getBudgetSum;
+            details += '&nbsp;/ Team: ' + this.getTeamValueSum
       }
       if (this.getBids && this.getUsersDetails) {
         details += '<br>Bids: ' + numeral(this.getPlayerBidsSum).format('0,0')
@@ -340,13 +340,13 @@ export default {
       return process.env.VUE_APP_VERSION ? process.env.VUE_APP_VERSION : 'unknown'
     },
     getBudgetSum(){
-      return  this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum;
+      return  numeral(this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
     },
     getTeamValueSum(){
-      return  this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum;
+      return  numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0');
     },
     getPlayersCount() {
-      return this.getUsersDetails.players.length - Object.keys(this.getSelectedPlayers).length;
+      return this.getUsersDetails.players.length - this.getSelectedPlayersCount || 0;
     }
   },
   methods: {
