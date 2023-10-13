@@ -301,7 +301,7 @@ export default {
         details += '&nbsp;/ Transfers: ' + ((this.getUsersDetails.bought || 0) + (this.getUsersDetails.sold || 0))
 
         if (this.getUsersDetails.players && this.getUsersDetails.players.length) {
-          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getPlayersCount + '('+ this.getSelectedPlayersCount + ')'
+          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getPlayersCount
         }
 
       }
