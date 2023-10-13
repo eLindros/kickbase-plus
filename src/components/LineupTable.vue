@@ -47,6 +47,7 @@
 
 <script>
 import numeral from "numeral";
+import {mapMutations} from 'vuex';
 import StatusPill from './StatusPill';
 import SelectPlayerCheckBox from "./Generic/SelectPlayerCheckBox.vue";
 export default {
@@ -61,9 +62,15 @@ export default {
         SelectPlayerCheckBox,
     },
   methods: { 
+       ...mapMutations([
+      'clearSelectedPlayers'
+    ]),
       marketValueFormated(item) {
         return numeral(item.marketValue).format("0,0");
       },
+  },
+  beforeDestroy() {
+    this.clearSelectedPlayers();
   }
 };
 </script>

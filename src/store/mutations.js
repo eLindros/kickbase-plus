@@ -1,5 +1,6 @@
 import Constants from "../Constants"
 import fuzzysort from "fuzzysort"
+import Vue from "vue";
 
 function setPlayers(state, players) {
   state.players = players
@@ -274,7 +275,7 @@ function setSelectedPlayers(state, player) {
     if (state.selectedPlayers[player.id] !== undefined) {
       delete state.selectedPlayers[player.id];
     } else {
-      state.selectedPlayers[player.id] = player;
+      Vue.set(state.selectedPlayers, player.id, player);
     }
     setSelectedPlayersMarketValueSum(state);
   }
@@ -286,6 +287,11 @@ function setSelectedPlayersMarketValueSum(state) {
     (acc, obj) => acc + obj.marketValue,
     0
   );
+}
+
+function clearSelectedPlayers(state) {
+  state.selectedPlayers = {};
+  state.selectedPlayersMarketValueSum = 0;
 }
 
 export default {
@@ -332,4 +338,5 @@ export default {
   addPlayerLigainsiderId,
   setSelectedPlayers,
   setSelectedPlayersMarketValueSum,
+  clearSelectedPlayers,
 }

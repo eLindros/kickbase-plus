@@ -22,6 +22,10 @@ function getSelectedPlayers(state) {
   return state.selectedPlayers
 }
 
+function getSelectedPlayersCount(state) {
+  return Object.keys(state.selectedPlayers).length
+}
+
 function getSelectedPlayersMarketValueSum(state) {
   return state.selectedPlayersMarketValueSum
 }
@@ -180,6 +184,7 @@ export default {
   getBids,
   getPlayers,
   getSelectedPlayers,
+  getSelectedPlayersCount,
 	getSelectedPlayersMarketValueSum,
   getUsers,
   getBearerToken,
