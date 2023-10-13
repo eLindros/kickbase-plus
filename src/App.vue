@@ -221,7 +221,6 @@ numeral.locale('deff')
 import api from './api/api'
 import ligainsider from './api/ligainsider'
 import LoginDialog from './components/LoginDialog'
-import { get } from 'http'
 
 export default {
   name: 'App',
