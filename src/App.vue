@@ -221,6 +221,7 @@ numeral.locale('deff')
 import api from './api/api'
 import ligainsider from './api/ligainsider'
 import LoginDialog from './components/LoginDialog'
+import { get } from 'http'
 
 export default {
   name: 'App',
@@ -288,8 +289,8 @@ export default {
     getPlayersDetails() {
       let details = ''
       if (this.getUsersDetails && this.getUsersDetails.budget) {
-            details += 'Budget: ' + numeral( this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum).format('0,0');
-            details += '&nbsp;/ Team: ' + numeral(this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum).format('0,0')
+            details += 'Budget: ' + numeral( this.getBudgetSum).format('0,0');
+            details += '&nbsp;/ Team: ' + numeral( this.getTeamValueSum ).format('0,0')
       }
       if (this.getBids && this.getUsersDetails) {
         details += '<br>Bids: ' + numeral(this.getPlayerBidsSum).format('0,0')
@@ -301,7 +302,7 @@ export default {
         details += '&nbsp;/ Transfers: ' + ((this.getUsersDetails.bought || 0) + (this.getUsersDetails.sold || 0))
 
         if (this.getUsersDetails.players && this.getUsersDetails.players.length) {
-          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getUsersDetails.players.length - Object.keys(this.getSelectedPlayers).length
+          details += ' / <span class="d-none d-sm-none d-md-inline-block">Players</span><span class="d-inline-block d-md-none">Ply</span>: ' + this.getPlayersCount
         }
 
       }
@@ -338,6 +339,15 @@ export default {
     },
     version() {
       return process.env.VUE_APP_VERSION ? process.env.VUE_APP_VERSION : 'unknown'
+    },
+    getBudgetSum(){
+      return  this.getUsersDetails.budget + this.getSelectedPlayersMarketValueSum;
+    },
+    getTeamValueSum(){
+      return  this.getUsersDetails.teamValue - this.getSelectedPlayersMarketValueSum;
+    },
+    getPlayersCount() {
+      return this.getUsersDetails.players.length - Object.keys(this.getSelectedPlayers).length;
     }
   },
   methods: {
