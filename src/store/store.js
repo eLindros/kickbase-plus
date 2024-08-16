@@ -96,7 +96,15 @@ const store = new Vuex.Store({
       42: {
         name: 'SV Darmstadt 98',
         ligainsiderUrl: '/sv-darmstadt-98/1267/'
-      },         
+      },
+      39: {
+        name: 'FC St. Pauli',
+        ligainsiderUrl: '/fc-st-pauli/20/'
+      },
+      51: {
+        name: 'Holstein Kiel',
+        ligainsiderUrl: '/ksv-holstein/1295/'
+      }, 			
     },
     bids: [],
     players: {},
